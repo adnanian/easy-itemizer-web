@@ -5,6 +5,7 @@
 # Remote library imports
 from flask import request, render_template
 from flask_restful import Resource
+from models.models import *
 
 # Local imports
 from config import app, db, api
