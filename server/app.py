@@ -14,9 +14,9 @@ from config import app, db, api
 
 
 
-@app.route('/')
-def index():
-    return '<h1>Phase 5 Project ... In Progress</h1>'
+# @app.route('/')
+# def index():
+#     return '<h1>Phase 5 Project ... In Progress</h1>'
 
 # Views go here! use either route!
 # @app.errorhandler(404)
