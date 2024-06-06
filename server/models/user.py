@@ -14,6 +14,21 @@ class User(db.Model, SerializerMixin):
     add/remove items, and manage inventory.
     """
 
+    serialize_rules = (
+        '-_password_hash',
+        '-memberships.user',
+        '-memberships.requests',
+        '-memberships.organization',
+        '-organizations.membership',
+        '-organizations.users',
+        '-organizations.assignments',
+        '-organizations.items',
+        '-organizations.organization_logs',
+        '-requests.user',
+        '-requests.organization',
+        '-items.user'
+    )
+
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)

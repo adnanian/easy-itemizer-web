@@ -11,6 +11,19 @@ class Request(db.Model, SerializerMixin):
     A request belongs to one organization and one user.
     """
     
+    serialize_rules = (
+        '-user.requests',
+        '-user.memberships',
+        '-user.organizations',
+        '-user.items'
+        '-organization.requests',
+        '-organization.memberships',
+        '-organization.assignments',
+        '-organization.users',
+        '-organization.items',
+        '-organization.organization_logs'
+    )
+    
     __tablename__ = 'requests'
     id = db.Column(db.Integer, primary_key=True)
     reason_to_join = db.Column(db.String, default="Reason", nullable=False)

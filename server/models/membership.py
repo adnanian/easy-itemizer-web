@@ -18,6 +18,19 @@ class Membership(db.Model, SerializerMixin):
     
     """
     
+    serialize_rules = (
+        '-user.memberships',
+        '-user.organizations',
+        '-user.items',
+        '-user.requests',
+        '-organization.memberships',
+        '-organization.users',
+        '-organization.assignments',
+        '-organization.items',
+        '-organization.requests'
+        '-organization.organization_logs'
+    )
+    
     __tablename__ = 'memberships'
     id = db.Column(db.Integer, primary_key=True)
     role = db.Column(db.Enum('REGULAR', 'ADMIN', 'OWNER', name='role_enum'), nullable=False)

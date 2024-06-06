@@ -16,6 +16,25 @@ class Item(db.Model, SerializerMixin):
     A user can have many items.
     """
     
+    serialize_rules = (
+        '-assignments',
+        '-organizations'
+    )
+    
+    serialize_only = (
+        'id',
+        'name',
+        'description',
+        'image_url',
+        'part_number',
+        'is_public',
+        'user_id',
+        'user.first_name',
+        'user.last_name',
+        'user.username',
+        'user.email'
+    )
+    
     __tablename__ = 'items'
     
     id = db.Column(db.Integer, primary_key=True)

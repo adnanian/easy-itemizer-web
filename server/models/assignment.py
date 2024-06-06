@@ -12,6 +12,15 @@ class Assignment(db.Model, SerializerMixin):
     Purpose of this model is to ensure that an item type locally used in an organization would
     have an accurately different quantity than that of another organization.
     """
+    
+    serialize_rules = (
+        '-organization.assignments',
+        '-organization.items',
+        '-organization.memberships',
+        '-organization.users',
+        '-organization.requests',
+        '-organization.organization_logs'
+    )
 
     __tablename__ = "assignments"
     id = db.Column(db.Integer, primary_key=True)

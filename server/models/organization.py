@@ -18,6 +18,19 @@ class Organization(db.Model, SerializerMixin):
     A log belongs to one organization.
     """
     
+    serialize_rules = (
+        '-memberships.user',
+        '-memberships.organization',
+        '-users.memberships',
+        '-users.organizations',
+        '-assignments.organization',
+        '-assignments.item_id',
+        '-assignments.organization_id'
+        '-items',
+        '-requests.organization',
+        '-organization_logs.organization'
+    )
+    
     __tablename__ = 'organizations'
     
     id = db.Column(db.Integer, primary_key=True)
