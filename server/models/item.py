@@ -1,7 +1,9 @@
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from config import db
 from models.assignment import Assignment
+from helpers import is_non_empty_string
 
 class Item(db.Model, SerializerMixin):
     """
@@ -10,6 +12,8 @@ class Item(db.Model, SerializerMixin):
     An assignment belongs to one item.
     An item can be used in many organizations.
     An organization can have many assignments.
+    An item belongs to one user.
+    A user can have many items.
     """
     
     __tablename__ = 'items'
@@ -32,5 +36,26 @@ class Item(db.Model, SerializerMixin):
     organizations = association_proxy('assignments', 'organization', creator=lambda org_obj: Assignment(organization=org_obj))
     
     
-def __repr__(self):
-    return f"<Item {self.id}, {self.name}, {self.description}, {self.part_number}, {self.is_public}"
+    def __repr__(self):
+        return f"<Item {self.id}, {self.name}, {self.description}, {self.part_number}, {self.is_public}"
+    
+    @validates('name')
+    def validate_name(self, key, name):
+        """Validates that the name is a non-empty, non-unique string.
+
+        Args:
+            key (str): the attribute name.
+            name (str): the name attribute value.
+
+        Raises:
+            ValueError: if name is NOT a non-empty string.
+            ValueError: if name is not unique.
+
+        Returns:
+            str: the value of name..
+        """
+        if not is_non_empty_string(name):
+            raise ValueError(f"{key.title()} must be a non-empty string.")
+        if Item.query.filter_by(name=name).first():
+            raise ValueError(f"An item with name, {name}, already exists.")
+        return name

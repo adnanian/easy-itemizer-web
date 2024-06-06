@@ -1,6 +1,7 @@
 from sqlalchemy_serializer import SerializerMixin
 from config import db
 from sqlalchemy.orm import validates
+from helpers import is_non_empty_string, get_model_invoker, RoleType
 
 class Membership(db.Model, SerializerMixin):
     """
@@ -32,3 +33,36 @@ class Membership(db.Model, SerializerMixin):
     def __repr__(self):
         return f"<Membership {self.id}, {self.role}, {self.joined_at}, {self.last_updated}, {self.user_id}, {self.organization_id}>"
     
+    @validates('role')
+    def validate_role(self, key, role):
+        """Validates that a valid role name was entered.
+
+        Args:
+            key (str): the attribute name.
+            role (str): the role attribute value.
+
+        Raises:
+            ValueError: if there is already a membership with the given user_id and orgnization_id under membership.
+            ValueError: if an invalid role name from the list of roles was entered.
+            ValueError: if a user attempts to assign ownership to an organization when there already is one.
+            ValueError: if a user is already a member of an organization.
+
+        Returns:
+            str: the value of role.
+        """
+        if Membership.query.filter(Membership.user_id == self.user_id, Membership.organization_id == self.organization_id).first():
+            #print(stack_trace())
+            print(get_model_invoker())
+            if (get_model_invoker() != 'patch'):
+                raise ValueError(f"User {self.user_id} already belongs to organization {self.organization_id}.")
+        # if not is_non_empty_string(role):
+        #      raise ValueError(f"{key.title()} must be a non-empty string.")
+        role = role.upper()
+        #print(role, self.organization_id)
+        if not RoleType.is_valid_role_name(role):
+            raise ValueError(f"{key.title()} must be one of the following values: {RoleType.get_all()}")
+        if role == RoleType.OWNER and Membership.query.filter(Membership.organization_id==self.organization_id, Membership.role==RoleType.OWNER).first():
+            raise ValueError(f"Only one member of an organization can be the owner.")
+        if (not Membership.query.filter(Membership.organization_id==self.organization_id).first()) and (role != RoleType.OWNER):
+            raise ValueError(f"{key.title()} must be owner for the first member.")
+        return role

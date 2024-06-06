@@ -1,8 +1,10 @@
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from config import db
 from models.membership import Membership
 from models.assignment import Assignment
+from helpers import is_non_empty_string
 
 class Organization(db.Model, SerializerMixin):
     """
@@ -12,6 +14,8 @@ class Organization(db.Model, SerializerMixin):
     An organization has many assignments (items asigned specifically for that org).
     A user can belong to many organizations.
     A membership, assignment, and request, can each belong to one user.
+    An organization can have many logs.
+    A log belongs to one organization.
     """
     
     __tablename__ = 'organizations'
@@ -39,6 +43,25 @@ class Organization(db.Model, SerializerMixin):
     organization_logs = db.relationship('OrganizationLog', back_populates='organization', cascade='all, delete-orphan')
     
     
-def __repr__(self):
-    return f"<Organization {self.id}, {self.name}, {self.description}, {self.banner_url}, {self.created_at}, {self.last_updated}>"
+    def __repr__(self):
+        return f"<Organization {self.id}, {self.name}, {self.description}, {self.banner_url}, {self.created_at}, {self.last_updated}>"
+    
+    @validates('name')
+    def validate_name(self, key, name):
+        """Validates that the name is a non-empty, non-unique string.
+
+        Args:
+            key (str): the attribute name.
+            name (str): the name attribute value.
+
+        Raises:
+            ValueError: if name is NOT a non-empty string.
+            ValueError: if name is not unique.
+
+        Returns:
+            str: the value of name..
+        """
+        if not(is_non_empty_string(name) and Organization.query.filter_by(name=name).first() is None):
+            raise ValueError(f"{key.title()} must be a unique, non-empty string.")
+        return name
     
