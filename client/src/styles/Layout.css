@@ -5,17 +5,14 @@ header {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 60px;
     text-align: center;
-    /* background: linear-gradient(to right,red, blue, indigo); */
-    /* background: linear-gradient(45deg, var(--left-color), var(--center-color), var(--right-color)), url('itemizer-banner.jpg') no-repeat center center;
-    background-size: cover; */
     background: 
       linear-gradient(
         135deg,
-        darkslategray, 
-        darkgreen, 
-        darkslategray
+        var(--c3),
+        var(--c4),
+        var(--c3)
         ), url('/images/easy-itemizer-banner.jpg?v=1234') no-repeat center center;
-    background-size: cover;
+    background-size: cover !important;
   }
   
   footer {
