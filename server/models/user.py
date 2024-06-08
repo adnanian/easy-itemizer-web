@@ -56,7 +56,7 @@ class User(db.Model, SerializerMixin):
         creator=lambda org_obj: Membership(organization=org_obj),
     )
     # users -< items
-    items = db.relationship("Item", back_populates="user")
+    items = db.relationship("Item", back_populates="user", cascade="all, delete")
     # users -< requests >- organizations
     requests = db.relationship(
         "Request", back_populates="user", cascade="all, delete-orphan"
