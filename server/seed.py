@@ -179,12 +179,14 @@ def clear_tables():
     Delete all items from the tables before recreating the seeds.
     """
     print("Deleting old data.")
-    Item.query.delete()
-    User.query.delete()
-    Organization.query.delete()
-    Membership.query.delete()
-    Assignment.query.delete()
+    
     Request.query.delete()
+    Assignment.query.delete()
+    Membership.query.delete()
+    Item.query.delete()
+    Organization.query.delete()
+    User.query.delete()
+    
     print("Old data deletion complete.")
 
 def seed_users():
@@ -336,11 +338,10 @@ def seed_relational_models():
             user = random.choice(user_selection)
             user_selection.remove(user)
             role = RoleType.OWNER if n == 0 else random.choice((RoleType.REGULAR, RoleType.REGULAR, RoleType.REGULAR, RoleType.ADMIN))
-            print(f"Role: {role}")
             membership = Membership(
-                role=role,
                 user_id=user.id,
-                organization_id=org.id
+                organization_id=org.id,
+                role=role
             )
             db.session.add(membership)
             print_progress(True, "M")
@@ -351,10 +352,10 @@ def seed_relational_models():
             current_quantity = random.randint(0, MAX_COUNT)
             enough_threshold = random.randint(1, 20)
             assignment = Assignment(
-                current_quantity=current_quantity,
-                enough_threshold=enough_threshold,
                 item_id=item.id,
-                organization_id=org.id
+                organization_id=org.id,
+                current_quantity=current_quantity,
+                enough_threshold=enough_threshold
             )
             db.session.add(assignment)
             print_progress(n < assignment_size - 1 or request_size > 0, "A")
@@ -363,9 +364,9 @@ def seed_relational_models():
             user = random.choice(user_selection)
             user_selection.remove(user)
             request = Request(
-                reason_to_join=fake.sentence(),
                 user_id=user.id, 
-                organization_id=org.id
+                organization_id=org.id,
+                reason_to_join=fake.sentence()
             )
             db.session.add(request)
             print_progress(n < request_size - 1, "R")

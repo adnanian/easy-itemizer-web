@@ -76,7 +76,6 @@ class Membership(db.Model, SerializerMixin):
             raise ValueError(f"{key.title()} must be one of the following values: {RoleType.get_all()}")
         if role == RoleType.OWNER and Membership.query.filter(Membership.organization_id==self.organization_id, Membership.role==RoleType.OWNER).first():
             raise ValueError(f"Only one member of an organization can be the owner.")
-        print(Membership.query.filter(Membership.organization_id==self.organization_id).first())
         if (not Membership.query.filter(Membership.organization_id==self.organization_id).first()) and (role != RoleType.OWNER):
             raise ValueError(f"{key.title()} must be owner for the first member.")
         return role
