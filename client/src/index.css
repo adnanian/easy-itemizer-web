@@ -28,7 +28,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(to bottom right, black, #200, black);
+  background: linear-gradient(to right, black, #202, black), url('/images/easy-itemizer-background.jpg?v=1234') no-repeat center center;;
   background-size: cover;
 }
 

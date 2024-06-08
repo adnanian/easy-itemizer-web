@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { UserContext } from "../../UserContext";
 
 /**
  * A navigational bar. If there is no user currently logged in, then
@@ -8,13 +10,12 @@ import { NavLink } from "react-router-dom";
  * a navigational link that says "Logout", which redirects the user
  * back to the login page, will be shown.
  * 
- * @param {Object} props 
- * @param {Object} props.user the current user.
- * @param {Function} props.onLogout the callback function to execute to logout of the current user's account.
  * @returns a nav bar.
  */
-export default function NavBar({ user, onLogout }) {
+export default function NavBar() {
     const navLinkClassName = 'nav-link';
+
+    const {currentUser, setCurrentUser} = useContext(UserContext);
 
     return (
         <nav className="navigation">
@@ -25,7 +26,7 @@ export default function NavBar({ user, onLogout }) {
                 About
             </NavLink>
             {
-                user ? (
+                currentUser ? (
                     <>
                         <NavLink
                             to={"/organizations"}
@@ -42,7 +43,7 @@ export default function NavBar({ user, onLogout }) {
                         <NavLink
                             to="/login"
                             className={navLinkClassName}
-                            onClick={onLogout}
+                            onClick={() => setCurrentUser(null)}
                         >
                             Logout
                         </NavLink>

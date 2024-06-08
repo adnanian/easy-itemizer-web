@@ -1,0 +1,112 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 60px;
+    text-align: center;
+    /* background: linear-gradient(to right,red, blue, indigo); */
+    /* background: linear-gradient(45deg, var(--left-color), var(--center-color), var(--right-color)), url('itemizer-banner.jpg') no-repeat center center;
+    background-size: cover; */
+    background: 
+      linear-gradient(
+        135deg,
+        darkslategray, 
+        darkgreen, 
+        darkslategray
+        ), url('/images/easy-itemizer-banner.jpg?v=1234') no-repeat center center;
+    background-size: cover;
+  }
+  
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: darkslategray;
+  }
+  
+  footer > * {
+    align-items: center;
+    text-align: center;
+  }
+  
+  #site-logo {
+    text-decoration: none;
+    margin: 0 30px 0 30px;
+  }
+  
+  #site-logo div img {
+    width: 80px;
+    height: 40px;
+  }
+  
+  .logo {
+    margin: 0 5px;
+    font-size: 40px;
+  }
+  
+  div.logo {
+    border-top: 2px solid #333;
+    border-right: 7px solid black;
+    border-bottom: 2px solid #444;
+    border-left: 1px solid #111;
+    background-color: #bbb;
+    border-radius: 15px;
+    padding: 0 15px 0;
+  }
+  
+  div.logo span {
+    color: #141
+  }
+  
+  div.logo:hover {
+    border-top: 2px solid darkolivegreen;
+    border-right: 5px solid darkgreen;
+    border-bottom: 2px solid darkolivegreen;
+    border-left: 1px solid darkgreen;
+  }
+  
+  div.logo:hover * {
+    text-decoration: underline;
+    font-weight: bold;
+    color: #1a1;
+  }
+  
+  
+  .navigation {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 100px;
+  }
+  
+  .navigation a {
+    display: inline-flex;
+    padding: 0 40px;
+  }
+  
+  a.nav-link {
+    margin: 5px 30px;
+    background-color: silver;
+    border-radius: 6px;
+    border-color: #333;
+    border-top: 2px solid #666;
+    border-right: 5px solid black;
+    border-bottom: 2px solid #222;
+    border-left: 1px solid black;
+    color: #555;
+    font-size: 40px;
+    text-decoration: none;
+  }
+  
+  a.nav-link:hover {
+    text-decoration: underline;
+    color: #111;
+    border-top: 2px solid darksalmon;
+    border-right: 5px solid maroon;
+    border-bottom: 2px solid darksalmon;
+    border-left: 1px solid maroon;
+  }

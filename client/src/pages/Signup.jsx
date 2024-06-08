@@ -17,5 +17,6 @@ export default function Signup() {
         iAgree: false
     }
 
+    return <h1>Signup Here...</h1>
     
 }
