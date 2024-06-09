@@ -107,3 +107,8 @@ header {
     border-bottom: 2px solid darksalmon;
     border-left: 1px solid maroon;
   }
+
+  header, footer {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }

@@ -2,6 +2,10 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  box-sizing: border-box;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -16,10 +20,17 @@
   --back-gradient-transparency: 0.90;
 
   --c1: rgba(0, 0, 0, var(--back-gradient-transparency));
-  --c2: rgba(34, 0, 34, var(--back-gradient-transparency));
+  --c2: rgba(68, 0, 68, var(--back-gradient-transparency));
   --c3: rgba(47, 79, 79, var(--back-gradient-transparency));
   --c4: rgba(0, 100, 0, var(--back-gradient-transparency));
-  
+
+  --div-border-radius: 15px;
+  --div-border-top: 4px solid #black;
+  --div-border-right: 8px solid black;
+  --div-border-bottom: 1px solid #333;
+  --div-border-left: 1px solid #333;
+  --default-font-size: 20px;
+  --scale: 0.71;
 }
 
 
@@ -33,6 +44,9 @@ a:hover {
 }
 
 body {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0;
   margin: 0;
   place-items: center;
   min-width: 320px;
@@ -96,4 +110,64 @@ h1.page-title span {
   color: white;
   border-radius: 10px;
   padding: 15px;
+}
+
+main {
+  display: inherit;
+  flex-grow: 1;
+}
+
+main > .form-div {
+  margin-top: 20px;
+}
+
+.form-div {
+  background-color: teal;
+  width: fit-content;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--div-border-radius);
+  border-top: var(--div-border-top);
+  border-right: var(--div-border-right);
+  border-bottom: var(--div-border-bottom);
+  border-left: var(--div-border-left);
+}
+
+.form-div * {
+  display: inherit;
+  flex-direction: inherit;
+  align-items: inherit;
+  justify-content: inherit;
+  padding: 0 80px;
+  text-align: center !important;
+}
+
+.form-div :is(label, input, button) {
+  font-size: var(--default-font-size);
+}
+
+.form-div input {
+  width: 80%;
+}
+
+.form-div button {
+  height: 40px;
+}
+
+@media screen and (max-width: 1366px) {
+
+  h1 {
+    font-size: 2.27em;
+  }
+
+  .form-div :is(label, input, button, .link-button) {
+    font-size: calc(var(--default-font-size) * var(--scale));
+  }
+
+  .form-div * {
+    padding: 0 56px !important;
+  }
 }
