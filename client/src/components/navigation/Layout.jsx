@@ -5,7 +5,12 @@ export default function Layout() {
     return (
         <>
             <header>
-                <Link className="site-logo" to="/">#EASY_ITEMIZER</Link>
+                <Link id="site-logo" to="/">
+                    <div className="logo">
+                        <img className="logo" src="/easy-itemizer-logo.jpg"/>
+                        <span className="logo">EASY ITEMIZER</span>
+                    </div>
+                </Link>
                 <NavBar/>
             </header>
             <Outlet/>

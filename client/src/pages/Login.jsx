@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
+import { UserContext } from "../UserContext";
 
 export default function Login() {
     const [formData, setFormData] = useState({
         usernameOrEmail: "",
         password: ""
     });
+    
+    const {currentUser, setCurrentUser} = useContext(UserContext);
     const navigate = useNavigate();
 
     /**
@@ -31,7 +34,41 @@ export default function Login() {
      */
     function handleSubmit(e) {
         e.preventDefault();
-        // TODO
+        fetch("http://127.0.0.1:5000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username_or_email: formData.usernameOrEmail,
+                password: formData.password
+            })
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json().then((user) => {
+                        alert(`Logged In! Welcome, ${user.first_name}!`);
+                        setCurrentUser(user);
+                        navigate("/");
+                    });
+                } else {
+                    return response.json().then((error) => {
+                        console.log(error);
+                        throw new Error(error.message);
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error("Login failed.");
+                console.error(error);
+                alert("Account with entered credentials does not exist. Please try again!");
+            })
+            .finally(() => {
+                setFormData((oldFormData) => {
+                    const newFormData = {...oldFormData};
+                    newFormData.usernameOrEmail = "";
+                    newFormData.password = "";
+                    return newFormData;
+                });
+            });
     }
 
     return (

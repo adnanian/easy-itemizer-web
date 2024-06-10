@@ -16,10 +16,9 @@ header {
   }
   
   footer {
-    position: fixed;
+    position: sticky;
     bottom: 0;
     left: 0;
-    width: 100%;
     display: flex;
     justify-content: center;
     padding: 20px;
@@ -108,7 +107,7 @@ header {
     border-left: 1px solid maroon;
   }
 
-  header, footer {
+  /* header, footer {
     flex-grow: 0;
     flex-shrink: 0;
-  }
+  } */

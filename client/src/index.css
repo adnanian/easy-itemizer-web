@@ -2,11 +2,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  box-sizing: border-box;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-
+  height: 100%;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -17,7 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
   
-  --back-gradient-transparency: 0.90;
+  --back-gradient-transparency: 0.875;
 
   --c1: rgba(0, 0, 0, var(--back-gradient-transparency));
   --c2: rgba(68, 0, 68, var(--back-gradient-transparency));
@@ -51,14 +47,6 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background: 
-    linear-gradient(
-      135deg,
-      var(--c1),
-      var(--c2),
-      var(--c1)
-    ), url('/images/easy-itemizer-background.jpg?v=1234') no-repeat center center;
-  background-size: cover !important;
 }
 
 h1 {
@@ -112,9 +100,32 @@ h1.page-title span {
   padding: 15px;
 }
 
+/*
+References for #root and main:
+https://www.youtube.com/watch?v=YmI72GTRuqM
+https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis
+https://www.w3schools.com/cssref/css3_pr_background-size.php
+*/
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 main {
-  display: inherit;
   flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+  background: 
+    linear-gradient(
+      135deg,
+      var(--c1),
+      var(--c2),
+      var(--c1)
+    ), url('/images/easy-itemizer-background.jpg?v=1234') no-repeat center bottom;
+  background-size: 100% 100% !important;
+  background-attachment: scroll !important;
 }
 
 main > .form-div {
@@ -170,4 +181,9 @@ main > .form-div {
   .form-div * {
     padding: 0 56px !important;
   }
+
+  #signup-div {
+    margin-bottom: 20px;
+  }
+
 }
