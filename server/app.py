@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import request, session, g, render_template
+from flask import request, session, g, render_template, send_from_directory
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from models.models import *
@@ -114,12 +114,17 @@ class CheckSession(Resource):
     if user := User.query.filter_by(id=session.get('user_id')).first():
       return user.to_dict(), 200
     return {'message': '401 Unauthorized'}, 401
-
-api.add_resource(Signup, '/api/signup', endpoint='signup')
+  
+class Index(Resource):
+    def get(self):
+        return send_from_directory("../client/dist", "index.html")
+        
+api.add_resource(Index, "/")
+api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
-api.add_resource(Logout, '/api/logout', endpoint='logout')
-api.add_resource(CheckSession, '/api/check_session', endpoint='check_session')
-api.add_resource(UserById, '/api/users/<int:id>', endpoint='user_by_id')
+api.add_resource(Logout, '/logout', endpoint='logout')
+api.add_resource(CheckSession, '/check_session', endpoint='check_session')
+api.add_resource(UserById, '/users/<int:id>', endpoint='user_by_id')
 
 # @app.route('/')
 # def index():

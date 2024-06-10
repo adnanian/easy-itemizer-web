@@ -180,6 +180,7 @@ def clear_tables():
     """
     print("Deleting old data.")
     
+    # Check if cascading works for single instances.
     Request.query.delete()
     Assignment.query.delete()
     Membership.query.delete()
