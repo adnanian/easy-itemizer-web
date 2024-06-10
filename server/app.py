@@ -120,11 +120,11 @@ class Index(Resource):
         return send_from_directory("../client/dist", "index.html")
         
 api.add_resource(Index, "/")
-api.add_resource(Signup, '/signup', endpoint='signup')
-api.add_resource(Login, '/login', endpoint='login')
-api.add_resource(Logout, '/logout', endpoint='logout')
-api.add_resource(CheckSession, '/check_session', endpoint='check_session')
-api.add_resource(UserById, '/users/<int:id>', endpoint='user_by_id')
+api.add_resource(Signup, '/api/signup', endpoint='signup')
+api.add_resource(Login, '/api/login', endpoint='login')
+api.add_resource(Logout, '/api/logout', endpoint='logout')
+api.add_resource(CheckSession, '/api/check_session', endpoint='check_session')
+api.add_resource(UserById, '/api/users/<int:id>', endpoint='user_by_id')
 
 # @app.route('/')
 # def index():

@@ -14,11 +14,12 @@ const UserProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:5000/check_session")
+        fetch("/api/check_session")
         .then((response) => {
             if (response.ok) {
                 response.json().then((user) => setCurrentUser(user));
             }
+            console.log(response);
         });
     }, []);
 
