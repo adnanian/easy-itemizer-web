@@ -14,7 +14,12 @@ const UserProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        //fetch_data()
+        fetch("http://127.0.0.1:5000/check_session")
+        .then((response) => {
+            if (response.ok) {
+                response.json().then((user) => setCurrentUser(user));
+            }
+        });
     }, []);
 
     return <UserContext.Provider value={{ currentUser, setCurrentUser }}>{children}</UserContext.Provider>
