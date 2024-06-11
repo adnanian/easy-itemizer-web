@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
-from flask import request, session, g, render_template, send_from_directory
+# Remote imports
+from flask import request, session, g, render_template, send_from_directory, url_for, flash
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
+
+# Local imports
 from models.models import *
 from resources.resources import *
-from config import app, db, api
+from config import app, db, api, generate_confirmation_token, confirm_token, send_email
 
 
 @app.before_request
@@ -15,9 +18,11 @@ def check_if_logged_in():
   Returns:
       JSON: if a user is not logged in, then an "Unauthorized" message will be returned.
   """
-  endpoint_whitelist = ['signup', 'login', 'check_session']
+  print(f"Current endpoint: {request.endpoint}", flush=True)
+  endpoint_whitelist = ['signup', 'login', 'check_session', 'confirm']
   if not (session.get('user_id') or request.endpoint in endpoint_whitelist):
-    return {'error': 'Unauthorized'}, 401
+    print("Returning unauthorized message", flush=True)
+    return {'error': 'Unauthorized! You must be logged in ree'}, 401
 
 @app.before_request
 def get_record_by_id():
@@ -58,17 +63,37 @@ class Signup(Resource):
         first_name=request.get_json().get('first_name'),
         last_name=request.get_json().get('last_name'),
         username=request.get_json().get('username'),
-        email=request.get_json().get('email'),
-        is_verified=True
+        email=request.get_json().get('email')
       )
       new_user.password_hash = request.get_json().get('password')
       db.session.add(new_user)
       db.session.commit()
-      session['user_id'] = new_user.id
-      return new_user.to_dict(), 201
+      # Send a confirmation token.
+      token = generate_confirmation_token(new_user.email)
+      confirm_url = url_for('user.confirm_email', token=token, _external=True)
+      html = render_template("email-templates/activate.html", confirm_url=confirm_url)
+      subject = "Please Verify Your Email"
+      send_email(subject, [new_user.email],html)
+      return {"message": "A confirmation email has been sent via email."}, 201
     except (IntegrityError, ValueError) as e:
       print(e)
       return {'message': str(e)}, 422
+    
+class Confirm(Resource):
+  def get(self, token):
+    try:
+        email = confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+    user = User.query.filter_by(email=email).first_or_404()
+    if user.is_verified:
+        flash('Account already confirmed. Please login.', 'success')
+    else:
+        user.is_verified = True
+        db.session.add(user)
+        db.session.commit()
+        flash('You have confirmed your account. Thanks!', 'success')
+    return {"message": "ACCOUNT CONFIRMED"}, 200
   
 class Login(Resource):
   """Logs user into the account."""
@@ -115,12 +140,13 @@ class CheckSession(Resource):
       return user.to_dict(), 200
     return {'message': '401 Unauthorized'}, 401
   
-class Index(Resource):
-    def get(self):
-        return send_from_directory("../client/dist", "index.html")
+# class Index(Resource):
+#     def get(self):
+#         return send_from_directory("../client/dist", "index.html")
         
-api.add_resource(Index, "/")
+#api.add_resource(Index, "/api")
 api.add_resource(Signup, '/api/signup', endpoint='signup')
+api.add_resource(Confirm, '/api/confirm/<string:token>', endpoint='confirm')
 api.add_resource(Login, '/api/login', endpoint='login')
 api.add_resource(Logout, '/api/logout', endpoint='logout')
 api.add_resource(CheckSession, '/api/check_session', endpoint='check_session')

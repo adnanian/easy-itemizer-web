@@ -41,7 +41,38 @@ export default function Signup() {
      * @param {*} actions Formik actions.
      */
     function handleSubmit(values, actions) {
-        // TODO
+        fetch("/api/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                first_name: values.firstName,
+                last_name: values.lastName,
+                username: values.username,
+                email: values.email,
+                password: values.password
+            })
+        })
+            .then((response) =>
+                response.json().then((data) => ({ data, status: response.status }))
+            )
+            .then(({ data, status }) => {
+                console.log('Response status:', status);
+                if (status === 201) {
+                    navigate("/login");
+                    console.log('New user successfully created.');
+                    alert('New user successfully created.');
+                } else {
+                    console.error('Unexpected response:', data);
+                    alert(data.message);
+                }
+            })
+            .catch((error) => {
+                console.error('Network error:', error);
+                alert(error.message);
+            })
+            .finally(() => actions.resetForm());
     }
 
     return (
