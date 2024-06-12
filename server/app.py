@@ -129,17 +129,22 @@ class Login(Resource):
         """
         login_name = request.get_json().get("username_or_email")
         print(login_name, flush=True)
-        if login_name:
-            user = (
-                User.query.filter_by(username=login_name).first()
-                or User.query.filter_by(email=login_name).first()
-            )
-            if user and user.authenticate(request.get_json().get("password")):
-                print(user, flush=True)
-                session["user_id"] = user.id
-                return user.to_dict(), 200
-        return {"message": "401 Unauthorized"}, 401
+        try:
+            if login_name:
+                user = (
+                    User.query.filter_by(username=login_name).first()
+                    or User.query.filter_by(email=login_name).first()
+                )
+                if user and user.authenticate(request.get_json().get("password")):
+                    print(user, flush=True)
+                    session["user_id"] = user.id
+                    return user.to_dict(), 200
+        except Exception as e:
+            print(f"{str(e)}")
+            return {"message": "401 Unauthorized"}, 401
 
+        
+        
 
 class Logout(Resource):
     """Logs user out of the webiste."""
@@ -178,20 +183,28 @@ class CheckSession(Resource):
 #         return send_from_directory("../client/dist", "index.html")
 
 # api.add_resource(Index, "")
+api.add_resource(Signup, "/signup")
+api.add_resource(Confirm, "/confirm/<string:token>")
+api.add_resource(Login, "/login")
+api.add_resource(Logout, "/logout")
+api.add_resource(CheckSession, "/check_session")
+api.add_resource(UserById, "/users/<int:id>")
+
+# With /api
+# api.add_resource(Signup, "/api/signup")
+# api.add_resource(Confirm, "/api/confirm/<string:token>")
+# api.add_resource(Login, "/api/login")
+# api.add_resource(Logout, "/api/logout")
+# api.add_resource(CheckSession, "/api/check_session")
+# api.add_resource(UserById, "/api/users/<int:id>")
+
+# With /api + endpoint
 # api.add_resource(Signup, "/signup")
 # api.add_resource(Confirm, "/confirm/<string:token>")
 # api.add_resource(Login, "/login")
 # api.add_resource(Logout, "/logout")
 # api.add_resource(CheckSession, "/check_session")
 # api.add_resource(UserById, "/users/<int:id>")
-
-# With /api
-api.add_resource(Signup, "/api/signup")
-api.add_resource(Confirm, "/api/confirm/<string:token>")
-api.add_resource(Login, "/api/login")
-api.add_resource(Logout, "/api/logout")
-api.add_resource(CheckSession, "/api/check_session")
-api.add_resource(UserById, "/api/users/<int:id>")
 
 # @app.route('/')
 # def index():

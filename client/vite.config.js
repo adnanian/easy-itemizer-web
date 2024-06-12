@@ -14,7 +14,7 @@ export default defineConfig({
     proxy: {
       "/api":{
         // we can adjust the target based on our backend port
-        target: process.env.VITE_API_URL,
+        target: "http://127.0.0.1:5000",
         changeOrigin:true,
         rewrite: (path)=>path.replace(/^\/api/,""),
         secure: false
