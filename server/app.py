@@ -34,7 +34,7 @@ def check_if_logged_in():
     """
     # breakpoint()
     print(f"Current endpoint: {request.endpoint}", flush=True)
-    endpoint_whitelist = ["signup", "login", "check_session", "confirm"]
+    endpoint_whitelist = ["signup", "login", "checksession", "confirm"]
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
         print("Returning unauthorized message", flush=True)
         return {"error": "Unauthorized! You must be logged in ree"}, 401
@@ -178,12 +178,20 @@ class CheckSession(Resource):
 #         return send_from_directory("../client/dist", "index.html")
 
 # api.add_resource(Index, "")
-api.add_resource(Signup, "/signup")
-api.add_resource(Confirm, "/confirm/<string:token>")
-api.add_resource(Login, "/login")
-api.add_resource(Logout, "/logout")
-api.add_resource(CheckSession, "/check_session")
-api.add_resource(UserById, "/users/<int:id>")
+# api.add_resource(Signup, "/signup")
+# api.add_resource(Confirm, "/confirm/<string:token>")
+# api.add_resource(Login, "/login")
+# api.add_resource(Logout, "/logout")
+# api.add_resource(CheckSession, "/check_session")
+# api.add_resource(UserById, "/users/<int:id>")
+
+# With /api
+api.add_resource(Signup, "/api/signup")
+api.add_resource(Confirm, "/api/confirm/<string:token>")
+api.add_resource(Login, "/api/login")
+api.add_resource(Logout, "/api/logout")
+api.add_resource(CheckSession, "/api/check_session")
+api.add_resource(UserById, "/api/users/<int:id>")
 
 # @app.route('/')
 # def index():
@@ -195,15 +203,11 @@ api.add_resource(UserById, "/users/<int:id>")
 #     return render_template("index.html")
 
 
-@app.route("/", defaults={"path": ""})
+# @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def catch_all(path):
     return render_template("index.html")
 
 
 if __name__ == "__main__":
-    with app.app_context():
-        print("HERE ARE ALL MY ROUTES: ", flush=True)
-        for rule in app.url_map.iter_rules():
-            print(rule, flush=True)
     app.run(port=5000, debug=True)

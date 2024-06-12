@@ -18,12 +18,12 @@ load_dotenv()
 
 
 # deployed version uncomment below code, local version comment out below code
-app = Flask(
-    __name__,
-    static_url_path='',
-    static_folder='../client/dist',
-    template_folder='../client/dist'
-)
+# app = Flask(
+#     __name__,
+#     static_url_path='',
+#     static_folder='../client/dist',
+#     template_folder='../client/dist'
+# )
 
 # Instantiate app, set attributes
 
@@ -31,7 +31,7 @@ app = Flask(
 #app = Flask(__name__)
 
 # Instantiate app, set attributes
-#app = Flask(__name__)
+app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False

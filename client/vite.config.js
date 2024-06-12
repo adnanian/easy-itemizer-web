@@ -11,13 +11,14 @@ export default defineConfig({
     cors:true,
     // we write our fetches to /api/route and it will go through this proxy
     // PROXY ONLY WORKS IN DEVELOPMENT AND WONT WORK IN PRODUCTION/DEPLOYED
-    // proxy: {
-    //   "/api":{
-    //     // we can adjust the target based on our backend port
-    //     target: "http://localhost:5000",
-    //     changeOrigin:true,
-    //     rewrite: (path)=>path.replace(/^\/api/,"")
-    //   }
-    // }
+    proxy: {
+      "/api":{
+        // we can adjust the target based on our backend port
+        target: process.env.VITE_API_URL,
+        changeOrigin:true,
+        rewrite: (path)=>path.replace(/^\/api/,""),
+        secure: false
+      }
+    }
   }
 })
