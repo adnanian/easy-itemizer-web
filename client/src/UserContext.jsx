@@ -14,7 +14,7 @@ const UserProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        fetch("/api/check_session")
+        fetch("/check_session")
         .then((response) => {
             if (response.ok) {
                 response.json().then((user) => setCurrentUser(user));

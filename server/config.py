@@ -11,8 +11,8 @@ from flask_mail import Mail, Message
 from sqlalchemy import MetaData
 import secrets
 from itsdangerous import URLSafeTimedSerializer
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 # Local imports
 
@@ -28,7 +28,7 @@ app = Flask(
 # Instantiate app, set attributes
 
 # deployed version comment out below code, local version comment in below code
-# app = Flask(__name__)
+#app = Flask(__name__)
 
 # Instantiate app, set attributes
 #app = Flask(__name__)
@@ -66,7 +66,8 @@ db.init_app(app)
 api = Api(app)
 
 # Instantiate CORS
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 bcrypt = Bcrypt(app)
 

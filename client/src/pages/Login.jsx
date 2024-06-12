@@ -34,7 +34,7 @@ export default function Login() {
      */
     function handleSubmit(e) {
         e.preventDefault();
-        fetch("/api/login", {
+        fetch("/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -57,6 +57,7 @@ export default function Login() {
                 }
             })
             .catch((error) => {
+                //debugger
                 console.error("Login failed.");
                 console.error(error);
                 alert("Account with entered credentials does not exist. Please try again!");
