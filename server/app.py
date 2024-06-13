@@ -194,7 +194,7 @@ class Index(Resource):
     def get(self):
         return send_from_directory("../client/dist", "index.html")
 
-api.add_resource(Index, "")
+api.add_resource(Index, "/")
 api.add_resource(Signup, "/signup")
 api.add_resource(Confirm, "/confirm/<string:token>")
 api.add_resource(Login, "/login")
