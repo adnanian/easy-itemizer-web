@@ -43,7 +43,7 @@ export default function Signup() {
      * @param {*} actions Formik actions.
      */
     function handleSubmit(values, actions) {
-        fetch("/api/signup", {
+        fetch("/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

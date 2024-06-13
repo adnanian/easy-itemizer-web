@@ -18,7 +18,7 @@ const SuperProvider = ({ children }) => {
     const [items, setItems] = useState(null);
 
     useEffect(() => {
-        fetch("/api/check_session")
+        fetch("/check_session")
         .then((response) => {
             if (response.ok) {
                 response.json().then((user) => setCurrentUser(user));
@@ -27,7 +27,7 @@ const SuperProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        fetch("/api/items")
+        fetch("/items")
         .then((response) => {
             if (response.ok) {
                 return response.json().then((items) => setItems(items));

@@ -190,11 +190,11 @@ class CheckSession(Resource):
         return {"message": "401 Unauthorized"}, 401
 
 
-# class Index(Resource):
-#     def get(self):
-#         return send_from_directory("../client/dist", "index.html")
+class Index(Resource):
+    def get(self):
+        return send_from_directory("../client/dist", "index.html")
 
-# api.add_resource(Index, "")
+api.add_resource(Index, "")
 api.add_resource(Signup, "/signup")
 api.add_resource(Confirm, "/confirm/<string:token>")
 api.add_resource(Login, "/login")
@@ -229,9 +229,9 @@ api.add_resource(CheckSession, "/check_session")
 
 
 # @app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
-def catch_all(path):
-    return render_template("index.html")
+# @app.route("/<path:path>")
+# def catch_all(path):
+#     return render_template("index.html")
 
 
 if __name__ == "__main__":
