@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes as RouteList, Route } from "react-router-dom";
-import { UserProvider } from "./UserContext";
+import { SuperProvider } from "./SuperContext";
 import Home from "./pages/Home"
 import About from "./pages/About";
 import Signup from "./pages/Signup";
@@ -13,7 +13,7 @@ import Login from "./pages/Login";
 export default function App() {
   return (
     <BrowserRouter>
-      <UserProvider>
+      <SuperProvider>
         <RouteList>
           <Route path="/" element={<Layout/>}>
             <Route index element={<Home/>}/>
@@ -25,7 +25,7 @@ export default function App() {
           </Route>
           <Route path="*" element={<ErrorPage />}/>
         </RouteList>
-      </UserProvider>
+      </SuperProvider>
     </BrowserRouter>
   )
 }

@@ -5,3 +5,7 @@
     justify-content: center;
     margin: 0 auto;
 }
+
+#no-items {
+    margin: 20px 0;
+}

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { UserContext } from "../../UserContext";
+import { UserContext } from "../../SuperContext";
 
 /**
  * A navigational bar. If there is no user currently logged in, then

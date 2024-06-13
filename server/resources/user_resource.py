@@ -1,6 +1,6 @@
 from flask import request, g
 from resources.dry_resource import DRYResource
-from config import db
+from config import db, api
 from models.models import User
 
 class UserById(DRYResource):
@@ -42,3 +42,5 @@ class UserById(DRYResource):
         except ValueError as e:
             print(e)
             return {'error': 'Not Modified'}, 304
+        
+api.add_resource(UserById, "/users/<int:id>", endpoint="user_by_id")

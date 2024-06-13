@@ -91,6 +91,7 @@ button:focus-visible {
 /* StyledTitle */
 .page-title {
   align-self: flex-start;
+  margin-top: 20px !important;
 }
 
 h1.page-title span {
@@ -98,6 +99,22 @@ h1.page-title span {
   color: white;
   border-radius: 10px;
   padding: 15px;
+}
+
+/* BigText */
+div.big-text {
+  background-color: black;
+  border-radius: var(--default-font-size);
+  border-top: var(--div-border-top);
+  border-right: var(--div-border-right);
+  border-bottom: var(--div-border-bottom);
+  border-left: var(--div-border-left);
+}
+
+div.big-text * {
+  color: silver;
+  font-size: calc(var(--default-font-size) * 2);
+  padding: 10px 40px;
 }
 
 /*

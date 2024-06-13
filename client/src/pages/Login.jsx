@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../SuperContext";
 
 export default function Login() {
     const [formData, setFormData] = useState({

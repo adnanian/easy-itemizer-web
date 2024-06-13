@@ -27,19 +27,19 @@ from config import app, db, api, generate_confirmation_token, confirm_token, sen
 #     print("Body: %s", request.get_data(), flush=True)
 
 
-@app.before_request
-def check_if_logged_in():
-    """This view will be run to check if there's a logged in user before attempting to access other data.
+# @app.before_request
+# def check_if_logged_in():
+#     """This view will be run to check if there's a logged in user before attempting to access other data.
 
-    Returns:
-        JSON: if a user is not logged in, then an "Unauthorized" message will be returned.
-    """
-    # breakpoint()
-    print(f"Current endpoint: {request.endpoint}", flush=True)
-    endpoint_whitelist = ["signup", "login", "checksession", "confirm"]
-    if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
-        print("Returning unauthorized message", flush=True)
-        return {"error": "Unauthorized! You must be logged in ree"}, 401
+#     Returns:
+#         JSON: if a user is not logged in, then an "Unauthorized" message will be returned.
+#     """
+#     # breakpoint()
+#     print(f"Current endpoint: {request.endpoint}", flush=True)
+#     endpoint_whitelist = ["signup", "login", "checksession", "confirm"]
+#     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
+#         print("Returning unauthorized message", flush=True)
+#         return {"error": "Unauthorized! You must be logged in ree"}, 401
 
 
 @app.before_request
@@ -200,7 +200,7 @@ api.add_resource(Confirm, "/confirm/<string:token>")
 api.add_resource(Login, "/login")
 api.add_resource(Logout, "/logout")
 api.add_resource(CheckSession, "/check_session")
-api.add_resource(UserById, "/users/<int:id>")
+
 
 # With /api
 # api.add_resource(Signup, "/api/signup")
