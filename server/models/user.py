@@ -142,8 +142,10 @@ class User(db.Model, SerializerMixin):
         Args:
             password (str): the new password.
         """
-        password_hash = bcrypt.generate_password_hash(password.encode('utf-8'), 30)
+        print("Setting new password", flush=True)
+        password_hash = bcrypt.generate_password_hash(password.encode('utf-8'))
         self._password_hash = password_hash.decode('utf-8')
+        print("Password set successful!", flush=True)
         
     def authenticate(self, password):
         """Check if user entered the correct password.

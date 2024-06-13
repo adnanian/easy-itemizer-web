@@ -1,6 +1,6 @@
 import { Form, Formik } from "formik";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/formik-reusable/Input";
 import "../styles/Signup.css";
 
@@ -10,6 +10,8 @@ import "../styles/Signup.css";
  * @returns the signup page.
  */
 export default function Signup() {
+    const navigate = useNavigate();
+
     const initialValues = {
         firstName: '',
         lastName: '',

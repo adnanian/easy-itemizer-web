@@ -31,7 +31,7 @@ load_dotenv()
 #app = Flask(__name__)
 
 # Instantiate app, set attributes
-app = Flask(__name__)
+app = Flask(__name__, template_folder="client/templates")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
@@ -75,6 +75,7 @@ bcrypt = Bcrypt(app)
 
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    print(serializer, flush=True)
     return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
 
 def confirm_token(token, expiration=3600):
@@ -105,4 +106,5 @@ def send_email(subject, recipients, template, sender=app.config['MAIL_DEFAULT_SE
         html=template,
         sender=sender
     )
+    print(message, flush=True)
     mail.send(message)

@@ -6,12 +6,14 @@ from flask import (
     session,
     g,
     render_template,
+    render_template_string,
     send_from_directory,
     url_for,
     flash,
 )
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
+import os
 
 # Local imports
 from models.models import *
@@ -77,6 +79,7 @@ class Signup(Resource):
             dict: a JSONified dictionary of the created User and its attributes, if creation successful, otherwise an error message.
         """
         # Retrieve form inputs
+        print("Creating a new user. Standby...", flush=True)
         try:
             new_user = User(
                 first_name=request.get_json().get("first_name"),
@@ -84,20 +87,29 @@ class Signup(Resource):
                 username=request.get_json().get("username"),
                 email=request.get_json().get("email"),
             )
+            print("Check 1 ", flush=True)
             new_user.password_hash = request.get_json().get("password")
+            print("Check 2", flush=True)
             db.session.add(new_user)
             db.session.commit()
+            print("User creation successful!", flush=True)
             # Send a confirmation token.
             token = generate_confirmation_token(new_user.email)
-            confirm_url = url_for("user.confirm_email", token=token, _external=True)
-            html = render_template(
-                "email-templates/activate.html", confirm_url=confirm_url
-            )
+            confirm_url = url_for("confirm", token=token, _external=True)
+            #print(os.getcwd(), flush=True)
+            #breakpoint()
+            path_to_template = "client/templates/activate.html"
+            with open(path_to_template, "r") as file:
+                template_content = file.read()
+            html = render_template_string(template_content, confirm_url=confirm_url)
+            #html = html = render_template_string(open("activate.html").read(), confirm_url=confirm_url)
             subject = "Please Verify Your Email"
+            print("About to send email", flush=True)
             send_email(subject, [new_user.email], html)
             return {"message": "A confirmation email has been sent via email."}, 201
         except (IntegrityError, ValueError) as e:
             print(e)
+            print("BOO YOU STINK!")
             return {"message": str(e)}, 422
 
 
