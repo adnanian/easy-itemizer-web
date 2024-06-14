@@ -1,5 +1,5 @@
 // ADD STUFF HERE
-const routePrefix = "";
+const routePrefix = "/api"
 
 /**
  * Adds the correct route prefix to a given route and returns it.
@@ -9,5 +9,5 @@ const routePrefix = "";
  * @returns the route prepended with the prefix.
  */
 function correctRoute(route) {
-    return `${routePrefix}{route}`;
+    return `${routePrefix}${route}`;
 }

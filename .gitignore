@@ -59,5 +59,3 @@ queries
 #Ignore other test files
 testtext.txt
 client/testModule.js
-client/configureClien.cjs
-server/configure_server.py
