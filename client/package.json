@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "http://127.0.0.1:5000",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,6 +11,8 @@
   },
   "dependencies": {
     "formik": "^2.4.6",
+    "inquirer": "^8.2.6",
+    "prompt-sync": "^4.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
@@ -26,5 +27,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "vite": "^4.4.5"
-  }
+  },
+  "proxy": "http://127.0.0.1:5000"
 }
