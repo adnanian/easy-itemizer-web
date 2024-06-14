@@ -98,7 +98,7 @@ class Signup(Resource):
             confirm_url = url_for("confirm", token=token, _external=True)
             #print(os.getcwd(), flush=True)
             #breakpoint()
-            path_to_template = "client/templates/activate.html"
+            path_to_template = f"{app.template_folder}/activate.html"
             with open(path_to_template, "r") as file:
                 template_content = file.read()
             html = render_template_string(template_content, confirm_url=confirm_url)
@@ -192,7 +192,7 @@ class CheckSession(Resource):
 
 class Index(Resource):
     def get(self):
-        return send_from_directory("../client/dist", "index.html")
+        return send_from_directory(f"{app.static_folder}", "index.html")
 
 api.add_resource(Index, "/")
 api.add_resource(Signup, "/signup")

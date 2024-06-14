@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 import { UserContext } from "../SuperContext";
+import { correctRoute } from "../helpers";
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -34,7 +35,7 @@ export default function Login() {
      */
     function handleSubmit(e) {
         e.preventDefault();
-        fetch("/login", {
+        fetch(correctRoute("/login"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

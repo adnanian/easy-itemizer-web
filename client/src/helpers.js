@@ -11,3 +11,5 @@ const routePrefix = "/api"
 function correctRoute(route) {
     return `${routePrefix}${route}`;
 }
+
+export { correctRoute };

@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/formik-reusable/Input";
 import "../styles/Signup.css";
+import { correctRoute } from "../helpers";
 
 /**
  * Renders a signup page where users can create new accounts.
@@ -43,7 +44,7 @@ export default function Signup() {
      * @param {*} actions Formik actions.
      */
     function handleSubmit(values, actions) {
-        fetch("/signup", {
+        fetch(correctRoute("/signup"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

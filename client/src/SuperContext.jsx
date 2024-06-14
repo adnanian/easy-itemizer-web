@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from "react";
-import { configureRoutes } from "./helpers";
+import { correctRoute } from "./helpers";
 
 const UserContext = createContext();
 const ItemContext = createContext();
@@ -19,7 +19,7 @@ const SuperProvider = ({ children }) => {
     const [items, setItems] = useState(null);
 
     useEffect(() => {
-        fetch("/check_session")
+        fetch(correctRoute("/check_session"))
         .then((response) => {
             if (response.ok) {
                 response.json().then((user) => setCurrentUser(user));
@@ -28,7 +28,7 @@ const SuperProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        fetch("/items")
+        fetch(correctRoute("/items"))
         .then((response) => {
             if (response.ok) {
                 return response.json().then((items) => setItems(items));

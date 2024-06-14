@@ -18,19 +18,20 @@ load_dotenv()
 
 
 # deployed version uncomment below code, local version comment out below code
-app = Flask(
-    __name__,
-    static_url_path='',
-    static_folder='../client/dist',
-    template_folder='../client/dist'
-)
-
-# Instantiate app, set attributes
+# app = Flask(
+#     __name__,
+#     static_url_path='',
+#     static_folder='../client/dist',
+#     template_folder='../client/dist'
+# )
 
 # deployed version comment out below code, local version comment in below code
 
 # Instantiate app, set attributes
-#app = Flask(__name__, template_folder="client/templates")
+app = Flask(__name__, template_folder="../client/templates")
+print(app.template_folder, flush=True)
+print(app.static_url_path, flush=True)
+print(app.static_folder, flush=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False

@@ -2,7 +2,6 @@
 import os
 import sys
 
-with open("./client/vite.config.js", encoding='utf-8') as vite_config:
-    print(vite_config.read())
-print("Read vite file", flush=True)
-sys.stdout.flush()
+with open("./server/config.py", encoding='utf-8') as config:
+    print(config.read())
+print("Read flask config file", flush=True)
