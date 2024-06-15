@@ -185,7 +185,7 @@ class CheckSession(Resource):
 
 class Index(Resource):
     def get(self):
-        return send_from_directory(f"{app.static_folder}", "index.html")
+        return send_from_directory("../client/dist", "index.html")
 
 api.add_resource(Index, "/")
 api.add_resource(Signup, "/signup")
