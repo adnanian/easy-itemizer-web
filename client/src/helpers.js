@@ -4,7 +4,7 @@
  * WARNING: THIS IS AUTOMATICALLY SET BY configureClient.cjs!
  * PLEASE DO NOT ALTER THE DECLARED VARIABLE MANUALLY!
  */
-const routePrefix = "/api"
+const routePrefix = ""
 
 /**
  * Adds the correct route prefix to a given route and returns it.

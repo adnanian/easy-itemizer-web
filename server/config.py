@@ -31,7 +31,7 @@ def configure_server():
     with open("../configType.txt", encoding="utf-8") as mode:
         config_type = mode.read()
     if config_type.lower() == 'development':
-        return Flask(__name__, template_folder="../client/templates")
+        return Flask(__name__)
     elif config_type.lower() == 'production':
         return Flask(
             __name__,
@@ -44,6 +44,7 @@ def configure_server():
 
 # Instantiate app, set attributes
 app = configure_server()
+print(app.template_folder, flush=True)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False

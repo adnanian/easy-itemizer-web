@@ -20,13 +20,6 @@ from models.models import *
 from resources.resources import *
 from config import app, db, api, generate_confirmation_token, confirm_token, send_email
 
-
-# @app.before_request
-# def log_request_info():
-#     print("Headers: %s", request.headers, flush=True)
-#     print("Body: %s", request.get_data(), flush=True)
-
-
 @app.before_request
 def check_if_logged_in():
     """This view will be run to check if there's a logged in user before attempting to access other data.
@@ -98,7 +91,7 @@ class Signup(Resource):
             confirm_url = url_for("confirm", token=token, _external=True)
             #print(os.getcwd(), flush=True)
             #breakpoint()
-            path_to_template = f"{app.template_folder}/activate.html"
+            path_to_template = "./email-templates/activate.html"
             with open(path_to_template, "r") as file:
                 template_content = file.read()
             html = render_template_string(template_content, confirm_url=confirm_url)
