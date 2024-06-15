@@ -4,7 +4,7 @@
  * WARNING: THIS IS AUTOMATICALLY SET BY configureClient.cjs!
  * PLEASE DO NOT ALTER THE DECLARED VARIABLE MANUALLY!
  */
-const routePrefix = ""
+const routePrefix = "/api"
 
 /**
  * Adds the correct route prefix to a given route and returns it.
@@ -14,7 +14,9 @@ const routePrefix = ""
  * @returns the route prepended with the prefix.
  */
 function correctRoute(route) {
-    return `${routePrefix}${route}`;
+    const correctedRoute = `${routePrefix}${route}`;
+    console.log(correctedRoute);
+    return correctedRoute;
 }
 
 export { correctRoute };
