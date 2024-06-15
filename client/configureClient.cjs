@@ -54,6 +54,7 @@ function updateViteConfig(fs, configType) {
             return console.log(err);
         }
         const dataArr = data.split('\n');
+        // console.log(dataArr);
         let configLineIndex = 0;
         let proxyCommentIndex;
         let addCommentColIndex;
@@ -216,6 +217,20 @@ function configureRoutes(configType) {
     updateViteConfig(fs, configType);
     updatePackageJSON(fs, configType);
     updateHelpers(fs, configType);
+    fs.readFile('./configType.txt', "utf-8", function (err, data) {
+        if (err) {
+            return console.log(err);
+        }
+
+        data=configType;
+        fs.writeFile("./configType.txt", data, "utf-8", function (err, data) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("Configuration type updated.");
+        });
+    });
+    return configType;
 }
 
 /**
