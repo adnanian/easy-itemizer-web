@@ -2,6 +2,15 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
+
+/**
+ * PLEASE BE CAREFUL ABOUT MANUALLY UPDATING THIS FILE. 
+ * THERE EXISTS A COMMON JS FILE CALLED configureRouteSettings.cjs
+ * WHICH WILL ALTER THE CONTENTS OF THIS FILE ITSELF!
+ * 
+ * MAKING ANY MANUAL CHANGES MAY CAUSE UNWANTED ADDITIONS OR DELETIONS
+ * TO THIS FILE!
+ */
 export default defineConfig({
   plugins: [react()],
   server: {

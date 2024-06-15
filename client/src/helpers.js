@@ -1,4 +1,9 @@
-// ADD STUFF HERE
+/**
+ * The prefix to append the routes to when making fetch request.
+ * 
+ * WARNING: THIS IS AUTOMATICALLY SET BY configureClient.cjs!
+ * PLEASE DO NOT ALTER THE DECLARED VARIABLE MANUALLY!
+ */
 const routePrefix = "/api"
 
 /**
