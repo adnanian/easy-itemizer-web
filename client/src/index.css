@@ -74,6 +74,27 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+button:disabled {
+  opacity: 0.35;
+}
+
+/* Formik */
+
+input.input-error, select.input-error {
+  border-color: red;
+}
+
+.error {
+  color: maroon;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+  background-color: white;
+  padding: 0 10px;
+}
+
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
