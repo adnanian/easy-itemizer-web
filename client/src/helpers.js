@@ -4,7 +4,10 @@
  * WARNING: THIS IS AUTOMATICALLY SET BY configureClient.cjs!
  * PLEASE DO NOT ALTER THE DECLARED VARIABLE MANUALLY!
  */
-const routePrefix = "/api"
+const routePrefix = "/api";
+
+// Placeholder image for items if there is not a valid URL provided.
+const itemImagePlaceholder = '/images/placeholder-item-image.jpg';
 
 /**
  * Adds the correct route prefix to a given route and returns it.
@@ -19,4 +22,4 @@ function correctRoute(route) {
     return correctedRoute;
 }
 
-export { correctRoute };
+export { correctRoute, itemImagePlaceholder };

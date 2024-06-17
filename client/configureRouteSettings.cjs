@@ -165,7 +165,7 @@ function updateHelpers(fs, configType) {
     for (let lineIndex = 0; lineIndex < dataArr.length; lineIndex++) {
         // console.log(lineIndex);
         if (dataArr[lineIndex].includes("const routePrefix")) {
-            dataArr[lineIndex] = `const routePrefix = ${newRoutePrefix}`;
+            dataArr[lineIndex] = `const routePrefix = ${newRoutePrefix};`;
             break;
         }
     }

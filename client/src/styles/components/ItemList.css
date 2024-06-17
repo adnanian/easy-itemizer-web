@@ -1,0 +1,40 @@
+#no-items {
+    margin: 20px 0;
+}
+
+div#item-search {
+    background: radial-gradient(#000, #111, #222, #333, #444);
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    border-radius: var(--default-font-size);
+    border-top: var(--div-border-top);
+    border-right: var(--div-border-right);
+    border-bottom: var(--div-border-bottom);
+    border-left: var(--div-border-left);
+}
+
+div#item-search * {
+    margin: 0 10px;
+    padding: 10px;
+    font-size: var(--default-font-size);
+}
+
+div#item-search input[type="text"] {
+    border-radius: var(--default-font-size);
+}
+
+div#item-list-container {
+    background-color: green;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+div#item-list-container li {
+    background-color: olive;
+    margin: 10px;
+    padding: 10px;
+    grid-column: 1 / 4;
+}

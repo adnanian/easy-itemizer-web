@@ -65,7 +65,7 @@ class Membership(db.Model, SerializerMixin):
         """
         if Membership.query.filter(Membership.user_id == self.user_id, Membership.organization_id == self.organization_id).first():
             #print(stack_trace())
-            print(get_model_invoker())
+            #print(get_model_invoker())
             if (get_model_invoker() != 'patch'):
                 raise ValueError(f"User {self.user_id} already belongs to organization {self.organization_id}.")
         # if not is_non_empty_string(role):

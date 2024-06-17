@@ -297,11 +297,13 @@ def create_item(key, value, active_users):
         + "-"
         + str(fake.random_number(digits=5))
     )
+    # Random boolean reference: https://stackoverflow.com/questions/6824681/get-a-random-boolean-in-python
     item = Item(
         name=key,
         description=value["description"],
         part_number=part_number,
         image_url=value["image_url"],
+        is_public=bool(random.getrandbits(1)),
         user_id=random.choice(active_users).id
     )
     return item

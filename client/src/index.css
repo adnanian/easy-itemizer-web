@@ -27,8 +27,15 @@
   --div-border-left: 1px solid #333;
   --default-font-size: 20px;
   --scale: 0.71;
-}
 
+  --three-d-border: {
+    border-radius: var(--default-font-size);
+    border-top: var(--div-border-top);
+    border-right: var(--div-border-right);
+    border-bottom: var(--div-border-bottom);
+    border-left: var(--div-border-left);
+  }
+}
 
 a {
   font-weight: 500;
@@ -130,6 +137,7 @@ div.big-text {
   border-right: var(--div-border-right);
   border-bottom: var(--div-border-bottom);
   border-left: var(--div-border-left);
+  width: fit-content;
 }
 
 div.big-text * {
@@ -204,6 +212,10 @@ main > .form-div {
 
 .form-div button {
   height: 40px;
+}
+
+.grid {
+  display: grid;
 }
 
 @media screen and (max-width: 1366px) {
