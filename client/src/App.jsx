@@ -9,6 +9,8 @@ import ErrorPage from "./pages/error-handling/ErrorPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import AccessBlocker from "./pages/error-handling/AccessBlocker";
 import Login from "./pages/Login";
+import UserMemberships from "./pages/UserMemberships";
+import UserSettings from "./pages/UserSettings";
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
           <Route path="/" element={<Layout/>}>
             <Route index element={<Home/>}/>
             <Route path="about" element={<About />} />
+            <Route path="organizations" element={<UserMemberships/>}/>
+            <Route path="settings" element={<UserSettings/>}/>
             <Route path="login" element={<Login/>}/>
             <Route path="forgot-password" element={<ForgotPassword/>}/>
             <Route path="signup" element={<Signup/>} />
