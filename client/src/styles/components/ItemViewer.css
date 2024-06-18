@@ -15,6 +15,7 @@ div#item-search {
     border-right: var(--div-border-right);
     border-bottom: var(--div-border-bottom);
     border-left: var(--div-border-left);
+    margin-top: 15px;
 }
 
 div#item-search * {
@@ -38,7 +39,7 @@ div#item-search input[type="text"] {
 #item-list {
     list-style: none;
     display: grid;
-    grid-template-columns: 300px 300px 300px 300px;
+    grid-template-columns: 300px 300px 300px;
     
     width: fit-content;
     height: 500px;
@@ -46,13 +47,6 @@ div#item-search input[type="text"] {
     overflow-y: auto;
     overflow-x: hidden;
 }
-
-/* #item-list li {
-    margin: 25px;
-    background-color: darkslateblue;
-    width: 200px;
-    height: 200px;
-} */
 
 #item-list button {
     background-color: darkslateblue;
@@ -69,4 +63,9 @@ div#item-search input[type="text"] {
     background-color: none;
     background: linear-gradient(to bottom right, indigo, blue, skyblue, aquamarine, cyan);
     color: black;
+}
+
+#item-card-container {
+    display: flex;
+    flex-direction: row;
 }

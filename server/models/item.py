@@ -28,6 +28,8 @@ class Item(db.Model, SerializerMixin):
         'image_url',
         'part_number',
         'is_public',
+        'created_at',
+        'last_updated'
         'user_id',
         'user.first_name',
         'user.last_name',
@@ -43,6 +45,8 @@ class Item(db.Model, SerializerMixin):
     image_url = db.Column(db.String)
     part_number = db.Column(db.String)
     is_public = db.Column(db.Boolean, default=True, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
+    last_updated = db.Column(db.DateTime, onupdate=db.func.now())
     # Foreign Key
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     """
