@@ -27,11 +27,13 @@ export default function ItemViewer({ user, items }) {
         }
     }
 
+    //console.log(filters);
+
     return (
         <>
             <div id="item-card-container">
                 <div>
-                    <ItemFilter filters={filters} onchange={handleChange}/>
+                    <ItemFilter filters={filters} onChange={handleChange}/>
                     <ItemList items={items} filters={filters} onSelectItem={setSelctedItem}/>
                 </div>
                 <ItemCardDetail item={selectedItem}/>

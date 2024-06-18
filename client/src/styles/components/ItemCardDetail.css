@@ -1,4 +1,14 @@
+#detailed-item-card {
+    margin: 0 auto;
+    display: auto;
+}
+
+#detailed-item-card * {
+    align-items: center;
+    justify-content: center;
+}
+
 #detailed-item-card img {
-    width: 300px;
-    height: 300px;
+    width: 250px;
+    height: 250px;
 }

@@ -6,14 +6,16 @@ import BigText from "../BigText";
 export default function ItemList({items, filters, onSelectItem}) {
     const {currentUser, setCurrentUser} = useContext(UserContext);
 
+    console.log(filters);
+
     const filteredItems = () => {
         if (filters.text === "" && !filters.userItemsOnly) {
             return items;
         } else {
             return items.filter((item) => {
-                return (filters.text === "" ? true : (
-                    item.name.toLowerCase().includes(filters.text.toLowerCase())) && 
-                    (!filters.userItemsOnly ? true : item.user_id === currentUser.id)
+                return (
+                    (filters.text === "" ? true : item.name.toLowerCase().includes(filters.text.toLowerCase())) 
+                    && (!filters.userItemsOnly ? true : item.user_id === currentUser.id)
                 );
             });
         }

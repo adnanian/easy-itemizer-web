@@ -230,6 +230,34 @@ main > .form-div {
   color: white;
 }
 
+table {
+  display: table !important;
+  table-layout: auto;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0 auto;
+  text-align: center;
+}
+
+thead {
+  width: 100%;
+  position: sticky;
+}
+
+tr {
+  display: table-row;
+}
+
+td, th {
+  display: table-cell;
+}
+
+table, tr, th, td {
+  border-style: solid;
+}
+
 @media screen and (max-width: 1366px) {
 
   h1 {

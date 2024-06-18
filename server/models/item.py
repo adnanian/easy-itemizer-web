@@ -29,7 +29,7 @@ class Item(db.Model, SerializerMixin):
         'part_number',
         'is_public',
         'created_at',
-        'last_updated'
+        'last_updated',
         'user_id',
         'user.first_name',
         'user.last_name',

@@ -15,7 +15,7 @@ div#item-search {
     border-right: var(--div-border-right);
     border-bottom: var(--div-border-bottom);
     border-left: var(--div-border-left);
-    margin-top: 15px;
+    margin: 0 auto;
 }
 
 div#item-search * {
@@ -33,16 +33,17 @@ div#item-search input[type="text"] {
     border-color: skyblue;
     border-width: 10px;
     width: fit-content;
+    height: fit-content;
     margin-top: 10px;
+    background-color: #333;
 }
 
 #item-list {
     list-style: none;
     display: grid;
     grid-template-columns: 300px 300px 300px;
-    
     width: fit-content;
-    height: 500px;
+    height: 520px;
     background: linear-gradient(to right bottom, #020, darkgreen, green, olive, yellow, lime);
     overflow-y: auto;
     overflow-x: hidden;
@@ -50,8 +51,9 @@ div#item-search input[type="text"] {
 
 #item-list button {
     background-color: darkslateblue;
-    width: 200px;
-    height: 200px;
+    width: 230px;
+    height: 230px;
+    margin: auto;
 }
 
 #item-list li {
