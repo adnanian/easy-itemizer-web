@@ -16,7 +16,7 @@ class ItemResource(Resource):
     def get(self):
         """_summary_"""
         items = [
-            item.to_dict()
+            item.to_dict(only=('id', 'name', 'part_number', 'image_url', 'user_id'))
             for item in Item.query.filter(
                 db.or_(Item.is_public == True, Item.user_id == session.get("user_id"))
             )

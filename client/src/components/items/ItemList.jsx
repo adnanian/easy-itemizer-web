@@ -2,9 +2,10 @@ import { useState } from "react";
 import BigText from "../BigText";
 import "../../styles/components/ItemList.css";
 import ItemCard from "./ItemCard";
-import Grid from "../Grid";
+import ItemCardDetail from "./ItemCardDetail";
 
-export default function ItemList( {user, items} ) {
+export default function ItemList({ user, items }) {
+    const [selectedItem, setSelctedItem] = useState(null);
     const [filters, setFilters] = useState({
         text: "",
         userItemsOnly: false
@@ -20,10 +21,16 @@ export default function ItemList( {user, items} ) {
         }
     };
 
-    const itemCards = filteredItems()?.map((item) => {
+    const sortByName = (itemA, itemB) => {
+        if (itemA.name < itemB.name) return -1;
+        if (itemA.name > itemB.name) return 1;
+        return 0;
+    }
+
+    const itemCards = filteredItems()?.sort(sortByName).map((item) => {
         return (
-            <li key={item.id}>
-                <ItemCard  item={item}/>
+            <li key={item.id} className="three-d-round-border">
+                <ItemCard item={item} onSelectItem={setSelctedItem}/>
             </li>
         )
     });
@@ -51,7 +58,7 @@ export default function ItemList( {user, items} ) {
             </BigText>
             <div id="item-search">
                 <label htmlFor="showUserItemsOnly">Show My Items Only</label>
-                <input 
+                <input
                     id="showUserItemsOnly"
                     name="showUserItemsOnly"
                     type="checkbox"
@@ -67,19 +74,16 @@ export default function ItemList( {user, items} ) {
                     onChange={handleChange}
                 />
             </div>
-            {
-                itemCards ? (
-                    <Grid blockId="item-list-container" intermediate={undefined}>
-                        <ul id="item-list" className="grid">
-                            {itemCards}
-                        </ul>
-                    </Grid>
-                ) : (
-                    <BigText id="no-items">
-                        <p>No items found.</p>
-                    </BigText>
-                )
-            }
+            <div id="item-list-container" className="round-border">
+                <ul id="item-list" className="three-d-round-border">
+                    {itemCards ? itemCards : (
+                        <BigText id="no-items">
+                            <p>No items found.</p>
+                        </BigText>
+                    )}
+                </ul>
+            </div>
+            <ItemCardDetail item={selectedItem}/>
         </>
     );
 };

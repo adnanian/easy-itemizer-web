@@ -28,13 +28,25 @@
   --default-font-size: 20px;
   --scale: 0.71;
 
-  --three-d-border: {
-    border-radius: var(--default-font-size);
+  /* --three-d-border: {
+    border-radius: var(--div-border-radius);
     border-top: var(--div-border-top);
     border-right: var(--div-border-right);
     border-bottom: var(--div-border-bottom);
     border-left: var(--div-border-left);
-  }
+  } */
+}
+
+.round-border {
+  border-radius: var(--div-border-radius);
+}
+
+.three-d-round-border {
+  border-radius: var(--div-border-radius);
+  border-top: var(--div-border-top);
+  border-right: var(--div-border-right);
+  border-bottom: var(--div-border-bottom);
+  border-left: var(--div-border-left);
 }
 
 a {
@@ -214,8 +226,8 @@ main > .form-div {
   height: 40px;
 }
 
-.grid {
-  display: grid;
+.link-card {
+  color: white;
 }
 
 @media screen and (max-width: 1366px) {

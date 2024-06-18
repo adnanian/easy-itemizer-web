@@ -1,14 +1,19 @@
-import { itemImagePlaceholder } from "../../helpers";
+import { correctRoute, itemImagePlaceholder } from "../../helpers";
 import "../../styles/components/ItemCard.css";
 
-export default function ItemCard({item}) {
+export default function ItemCard({item, onSelectItem}) {
+
+    function fetchItemDetails() {
+        fetch(correctRoute(`/items/${item.id}`))
+        .then((response) => response.json())
+        .then((data) => onSelectItem(data));
+    }
+
     return (
-        <div className="item-card">
-            <img src={item.image_url || itemImagePlaceholder}/>
+        <button className="item-card" onClick={fetchItemDetails}>
+            <img src={item.image_url || itemImagePlaceholder} className="round-border"/>
             <p><b>{item.name}</b></p>
             <p>{item.part_number || "N/A"}</p>
-            <p>{`Added by:  ${item.user.username}`}</p>
-            <p>{item.description}</p>
-        </div>
+        </button>
     )
 }

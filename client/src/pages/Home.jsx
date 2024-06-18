@@ -1,8 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import StyledTitle from "../components/StyledTitle";
 import "../styles/Home.css";
 import { ItemContext, UserContext } from "../SuperContext";
-import BigText from "../components/BigText";
 import ItemList from "../components/items/ItemList";
 
 export default function Home() {

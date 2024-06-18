@@ -1,5 +1,8 @@
 #no-items {
-    margin: 20px 0;
+    display: flex !important;
+    margin: 0 auto !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 div#item-search {
@@ -24,17 +27,46 @@ div#item-search input[type="text"] {
     border-radius: var(--default-font-size);
 }
 
-div#item-list-container {
-    background-color: green;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: grid;
-    grid-template-columns: auto auto auto;
+#item-list-container {
+    border-style: double;
+    border-color: skyblue;
+    border-width: 10px;
+    width: fit-content;
+    margin-top: 10px;
 }
 
-div#item-list-container li {
-    background-color: olive;
-    margin: 10px;
-    padding: 10px;
-    grid-column: 1 / 4;
+#item-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 300px 300px 300px 300px;
+    
+    width: fit-content;
+    height: 500px;
+    background: linear-gradient(to right bottom, #020, darkgreen, green, olive, yellow, lime);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* #item-list li {
+    margin: 25px;
+    background-color: darkslateblue;
+    width: 200px;
+    height: 200px;
+} */
+
+#item-list button {
+    background-color: darkslateblue;
+    width: 200px;
+    height: 200px;
+}
+
+#item-list li {
+    width: fit-content;
+    margin: 25px;
+}
+
+#item-list :is(li, button):hover {
+    background-color: none;
+    background: linear-gradient(to bottom right, indigo, blue, skyblue, aquamarine, cyan);
+    color: black;
 }

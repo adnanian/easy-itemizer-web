@@ -1,7 +1,18 @@
-div.item-card img {
+.item-card {
+    text-align: center;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.item-card :not(img) {
+    padding-top: 5px;
+}
+
+.item-card img {
     width: 100px;
     height: 100px;
     border-style: solid;
     border-width: 2px;
     border-color: darkblue;
 }
+

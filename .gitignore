@@ -59,3 +59,4 @@ queries
 #Ignore other test files
 testtext.txt
 client/testModule.js
+client/discard
