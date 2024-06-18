@@ -252,6 +252,7 @@ tr {
 
 td, th {
   display: table-cell;
+  padding: 3px 10px;
 }
 
 table, tr, th, td {

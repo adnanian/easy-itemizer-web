@@ -1,10 +1,7 @@
-import { useContext } from "react";
-import { UserContext } from "../../SuperContext";
 import ItemCard from "./ItemCard";
 import BigText from "../BigText";
 
-export default function ItemList({items, filters, onSelectItem}) {
-    const {currentUser, setCurrentUser} = useContext(UserContext);
+export default function ItemList({user, items, filters, onSelectItem}) {
 
     console.log(filters);
 
@@ -15,7 +12,7 @@ export default function ItemList({items, filters, onSelectItem}) {
             return items.filter((item) => {
                 return (
                     (filters.text === "" ? true : item.name.toLowerCase().includes(filters.text.toLowerCase())) 
-                    && (!filters.userItemsOnly ? true : item.user_id === currentUser.id)
+                    && (!filters.userItemsOnly ? true : item.user_id === user.id)
                 );
             });
         }

@@ -1,14 +1,28 @@
 #detailed-item-card {
     margin: 0 auto;
     display: auto;
+    background-color: darkslategray;
+    height: max-content;
 }
 
 #detailed-item-card * {
     align-items: center;
     justify-content: center;
+    margin: 0 5px;
+}
+
+#detail-wrapper {
+    display: inline-flex;
+    padding: 10px 15px;
 }
 
 #detailed-item-card img {
-    width: 250px;
-    height: 250px;
+    width: 300px;
+    height: 500px;
+    border-style: solid;
+    border-color: black;
+}
+
+#detail-block * {
+    margin: 10px auto;
 }

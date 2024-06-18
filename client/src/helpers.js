@@ -9,6 +9,13 @@ const routePrefix = "/api";
 // Placeholder image for items if there is not a valid URL provided.
 const itemImagePlaceholder = '/images/placeholder-item-image.jpg';
 
+// TODO
+const quickInlineStyles = {
+    centerText: {textAlign: "center"},
+    biggerFont: {fontSize: "150%"},
+    rectangularPad: {padding: "8px"}
+};
+
 /**
  * Adds the correct route prefix to a given route and returns it.
  * This is meant to be used during fetched requests.
@@ -22,4 +29,4 @@ function correctRoute(route) {
     return correctedRoute;
 }
 
-export { correctRoute, itemImagePlaceholder };
+export { correctRoute, itemImagePlaceholder, quickInlineStyles };

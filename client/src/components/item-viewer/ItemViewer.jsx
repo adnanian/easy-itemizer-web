@@ -32,11 +32,11 @@ export default function ItemViewer({ user, items }) {
     return (
         <>
             <div id="item-card-container">
+                <ItemCardDetail user={user} item={selectedItem}/>
                 <div>
                     <ItemFilter filters={filters} onChange={handleChange}/>
-                    <ItemList items={items} filters={filters} onSelectItem={setSelctedItem}/>
+                    <ItemList user={user} items={items} filters={filters} onSelectItem={setSelctedItem}/>
                 </div>
-                <ItemCardDetail item={selectedItem}/>
             </div>
         </>
     );

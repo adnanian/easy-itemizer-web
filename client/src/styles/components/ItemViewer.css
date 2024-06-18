@@ -15,7 +15,7 @@ div#item-search {
     border-right: var(--div-border-right);
     border-bottom: var(--div-border-bottom);
     border-left: var(--div-border-left);
-    margin: 0 auto;
+    margin: 10px auto 0;
 }
 
 div#item-search * {
@@ -35,6 +35,7 @@ div#item-search input[type="text"] {
     width: fit-content;
     height: fit-content;
     margin-top: 10px;
+    margin-right: 35px;
     background-color: #333;
 }
 
@@ -58,6 +59,7 @@ div#item-search input[type="text"] {
 
 #item-list li {
     width: fit-content;
+    height: fit-content;
     margin: 25px;
 }
 
