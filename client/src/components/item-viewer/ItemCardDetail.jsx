@@ -1,4 +1,4 @@
-import { itemImagePlaceholder, quickInlineStyles } from "../../helpers";
+import { placeholderImages, quickInlineStyles } from "../../helpers";
 import "../../styles/components/ItemCardDetail.css";
 import BigText from "../BigText";
 
@@ -16,7 +16,7 @@ export default function ItemCardDetail({user, item}) {
         <div id="detailed-item-card" className="three-d-round-border">
             <h1>{item.name}</h1>
             <div id="detail-wrapper">
-                <img src={item?.image_url || itemImagePlaceholder} className="round-border"/>
+                <img src={item?.image_url || placeholderImages.item} className="round-border"/>
                 <div id="detail-block">
                     <h2 style={quickInlineStyles.centerText}>Details</h2>
                     <table>

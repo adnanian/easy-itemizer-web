@@ -1,0 +1,64 @@
+#about-org-page {
+    display: flex;
+    margin: 0 auto;
+}
+
+#about-org-page h2 {
+    font-size: 18px;
+}
+
+#new-org-button {
+    font-size: 20px;
+    display: flex;
+    margin: 9px auto 0;
+}
+
+#membership-list-container {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+#membership-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 400px 400px 400px 400px;
+    width: fit-content;
+    height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: linear-gradient(to right bottom, #020, darkgreen, green, olive, yellow, lime);
+    padding-right: 50px;
+}
+
+#membership-list li {
+    width: fit-content;
+    height: fit-content;
+    margin: 25px;
+}
+
+.membership-container {
+    width: 375px;
+    height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: linear-gradient(to right bottom, darkslateblue, darkslategray, teal);
+    text-align: center;
+    padding-top: 7px;
+}
+
+.membership-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}
+
+.org-link:hover {
+    color: white;
+}
+
+.membership-container:hover {
+    background: linear-gradient(to bottom left, blue, blueviolet, violet, indigo, violet, blueviolet, blue)
+}

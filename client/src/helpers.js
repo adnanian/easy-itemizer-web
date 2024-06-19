@@ -6,8 +6,15 @@
  */
 const routePrefix = "/api";
 
-// Placeholder image for items if there is not a valid URL provided.
-const itemImagePlaceholder = '/images/placeholder-item-image.jpg';
+/**
+ * Placeholder images for items, users, and organizations, in the event that valid URL's are not provided.
+ */
+const placeholderImages = {
+    item: "/images/placeholder-item-image.jpg",
+    userProfile: "/images/placeholder-profile-picture.png",
+    orgLogo: "/images/placeholder-org-logo.jpg",
+    orgBanner: "/images/placeholder-org-banner.jpg"
+};
 
 // TODO
 const quickInlineStyles = {
@@ -29,4 +36,4 @@ function correctRoute(route) {
     return correctedRoute;
 }
 
-export { correctRoute, itemImagePlaceholder, quickInlineStyles };
+export { correctRoute, placeholderImages, quickInlineStyles };
