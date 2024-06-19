@@ -259,6 +259,11 @@ table, tr, th, td {
   border-style: solid;
 }
 
+.button-group {
+  display: flex;
+  margin: 0 auto;
+}
+
 @media screen and (max-width: 1366px) {
 
   h1 {

@@ -48,12 +48,35 @@ export default function ItemCardDetail({user, item}) {
                     </h3>
                     <textarea
                         readOnly
-                        rows="10"
+                        rows="6"
                         cols="40"
                         value={item.description}
                         style={quickInlineStyles.rectangularPad}
                     >
                     </textarea>
+                    <div className="button-group">
+                        {item.user_id === user.id ? (
+                            <>
+                                <button
+                                    title="Edit item information."
+                                >
+                                    &#128393;
+                                    Edit
+                                </button>
+                                <button
+                                    title="Delete the item from the system."
+                                >
+                                    &#128465;
+                                    Delete
+                                </button>
+                            </>
+                        ) : <button
+                                title="Report this item for inappropriate content."
+                            >
+                                &#127988;
+                                Report
+                            </button>}
+                    </div>
                 </div>
             </div>
         </div>
