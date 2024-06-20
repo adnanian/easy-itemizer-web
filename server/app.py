@@ -13,7 +13,7 @@ from flask import (
 )
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
-#import os
+import os
 
 # Local imports
 from models.models import *
@@ -185,6 +185,7 @@ class CheckSession(Resource):
 
 class Index(Resource):
     def get(self):
+        print(f"The CWD at index call is: {os.getcwd()}", flush=True)
         return send_from_directory("../client/dist", "index.html")
 
 api.add_resource(Index, "/")
