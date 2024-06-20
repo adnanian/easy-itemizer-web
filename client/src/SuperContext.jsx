@@ -40,9 +40,13 @@ const SuperProvider = ({ children }) => {
     const login = (user) => setCurrentUser(user);
 
     const logout = () => {
-        fetch(correctRoute("/logout"))
+        // console.log("Logging out.");
+        fetch(correctRoute("/logout"), {
+            method: "DELETE"
+        })
         .then((response) => {
             if (response.ok) {
+                // console.log("Logged out.");
                 setCurrentUser(null);
             } else {
                 throw new Error("Logout failed.");

@@ -160,9 +160,9 @@ class Logout(Resource):
         Returns:
             _type_: _description_
         """
-        print("About to log out.")
+        # print("About to log out.")
         session["user_id"] = None
-        print("Logging out")
+        # print("Logging out")
         return {}, 204
 
 
