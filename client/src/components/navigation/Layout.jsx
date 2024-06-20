@@ -13,7 +13,7 @@ export default function Layout() {
                 </Link>
                 <NavBar/>
             </header>
-            <Outlet/>
+            <main><Outlet/></main>
             <footer><b>&#169; 2024 #EASY_ITEMIZER</b></footer>
         </>
     )

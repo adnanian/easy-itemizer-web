@@ -32,7 +32,7 @@ export default function UserMemberships() {
     });
 
     return (
-        <main>
+        <>
             <StyledTitle text="Your Organizations"/>
             <BigText id="about-org-page">
                 <h2>Below are the organizations that you currently belong to!</h2>
@@ -48,6 +48,6 @@ export default function UserMemberships() {
                     {membershipCards}
                 </ul>
             </div>
-        </main>
+        </>
     )
 }

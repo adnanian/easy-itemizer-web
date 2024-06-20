@@ -74,45 +74,43 @@ export default function Login() {
     }
 
     return (
-        <main>
-            <div id="login-div" className="form-div">
-                <h1>Login</h1>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="username-or-email">Username or Email</label>
-                    <input
-                        id="usernameOrEmail"
-                        name="usernameOrEmail"
-                        type="text"
-                        placeholder="Enter your username or email."
-                        value={formData.usernameOrEmail}
-                        onChange={handleChange}
-                    />
-                    <label htmlFor="password">Password</label>
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="Enter your password."
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                    <button type="submit">Log In</button>
-                </form>
-                <Link
-                    id="forgot-password"
-                    className="link-button"
-                    to="/forgot-password"
-                >
-                    Forgot Password?
-                </Link>
-                <Link 
-                    id="signup-instead" 
-                    className="link-button" 
-                    to="/signup"
-                >
-                    Don't have an account? Click here to signup!
-                </Link>
-            </div>
-        </main>
+        <div id="login-div" className="form-div">
+            <h1>Login</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="username-or-email">Username or Email</label>
+                <input
+                    id="usernameOrEmail"
+                    name="usernameOrEmail"
+                    type="text"
+                    placeholder="Enter your username or email."
+                    value={formData.usernameOrEmail}
+                    onChange={handleChange}
+                />
+                <label htmlFor="password">Password</label>
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="Enter your password."
+                    value={formData.password}
+                    onChange={handleChange}
+                />
+                <button type="submit">Log In</button>
+            </form>
+            <Link
+                id="forgot-password"
+                className="link-button"
+                to="/forgot-password"
+            >
+                Forgot Password?
+            </Link>
+            <Link 
+                id="signup-instead" 
+                className="link-button" 
+                to="/signup"
+            >
+                Don't have an account? Click here to signup!
+            </Link>
+        </div>
     )
 }

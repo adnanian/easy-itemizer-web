@@ -79,77 +79,75 @@ export default function Signup() {
     }
 
     return (
-        <main id="signup" className="formik">
-            <div id="signup-div" className="form-div">
-                <h1>Signup</h1>
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={formSchema}
-                    onSubmit={handleSubmit}
-                >
-                    {(props) => (
-                        <Form>
-                            <Input
-                                label="First Name"
-                                id="firstName"
-                                name="firstName"
-                                type="text"
-                                placeholder="Enter your first name."
-                            />
-                            <Input
-                                label="Last Name"
-                                id="lastName"
-                                name="lastName"
-                                type="text"
-                                placeholder="Enter your last name."
-                            />
-                            <Input
-                                label="Username"
-                                id="username"
-                                name="username"
-                                type="text"
-                                placeholder="Enter your username."
-                            />
-                            <Input
-                                label="Email"
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="Enter your email address."
-                            />
-                            <Input
-                                label="Password"
-                                id="password"
-                                name="password"
-                                type="password"
-                                placeholder="Create a password."
-                            />
-                            <Input
-                                label="Confirm Password"
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                type="password"
-                                placeholder="Enter your password again."
-                            />
-                            <Input
-                                label="I agree to the terms and conditions."
-                                id="iAgree"
-                                name="iAgree"
-                                type="checkbox"
-                            />
-                            <button disabled={props.isSubmitting || !props.values.iAgree} type="submit">Signup</button>
-                        </Form>
-                    )}
-                </Formik>
-                <Link
-                    id="login-instead"
-                    className="link-button"
-                    to="/login"
-                >
-                    Already have an account? Click here to login!
-                </Link>
-            </div>
-        </main>
+        <div id="signup-div" className="form-div">
+            <h1>Signup</h1>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={formSchema}
+                onSubmit={handleSubmit}
+            >
+                {(props) => (
+                    <Form>
+                        <Input
+                            label="First Name"
+                            id="firstName"
+                            name="firstName"
+                            type="text"
+                            placeholder="Enter your first name."
+                        />
+                        <Input
+                            label="Last Name"
+                            id="lastName"
+                            name="lastName"
+                            type="text"
+                            placeholder="Enter your last name."
+                        />
+                        <Input
+                            label="Username"
+                            id="username"
+                            name="username"
+                            type="text"
+                            placeholder="Enter your username."
+                        />
+                        <Input
+                            label="Email"
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="Enter your email address."
+                        />
+                        <Input
+                            label="Password"
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Create a password."
+                        />
+                        <Input
+                            label="Confirm Password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            type="password"
+                            placeholder="Enter your password again."
+                        />
+                        <Input
+                            label="I agree to the terms and conditions."
+                            id="iAgree"
+                            name="iAgree"
+                            type="checkbox"
+                        />
+                        <button disabled={props.isSubmitting || !props.values.iAgree} type="submit">Signup</button>
+                    </Form>
+                )}
+            </Formik>
+            <Link
+                id="login-instead"
+                className="link-button"
+                to="/login"
+            >
+                Already have an account? Click here to login!
+            </Link>
+        </div>
     )
 
 }

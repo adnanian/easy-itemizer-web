@@ -38,8 +38,6 @@ export default function Organization() {
     }
 
     return (
-        <main>
-            <p>Add stuff here...</p>
-        </main>
+        <p>Add stuff here...</p>
     )
 }

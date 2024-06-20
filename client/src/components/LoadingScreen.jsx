@@ -7,8 +7,6 @@ import StyledTitle from "./StyledTitle";
  */
 export default function LoadingScreen() {
     return (
-        <main>
-            <StyledTitle text="Loading..."/>
-        </main>
+        <StyledTitle text="Loading..."/>
     )
 }

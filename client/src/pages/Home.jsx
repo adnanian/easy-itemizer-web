@@ -13,11 +13,11 @@ export default function Home() {
     
 
     return (
-        <main id="home-page">
+        <div id="home-page">
             <StyledTitle text={welcomeTitle} />
             {currentUser ? (
                 <ItemViewer user={currentUser} items={items}/>
             ) : <h1>Log in to manage items and organizations!</h1>}
-        </main>
+        </div>
     )
 }

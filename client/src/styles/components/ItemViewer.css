@@ -44,7 +44,7 @@ div#item-search input[type="text"] {
     display: grid;
     grid-template-columns: 300px 300px 300px;
     width: fit-content;
-    height: 520px;
+    height: 530px;
     background: linear-gradient(to right bottom, #020, darkgreen, green, olive, yellow, lime);
     overflow-y: auto;
     overflow-x: hidden;

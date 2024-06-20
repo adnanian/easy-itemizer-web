@@ -8,7 +8,7 @@ import '../styles/About.css';
  */
 export default function About() {
     return (
-        <main>
+        <>
             <StyledTitle text="About Easy Itemizer"/>
             <article>
                 
@@ -95,6 +95,6 @@ export default function About() {
                     </p>
                 </section>
             </article>
-        </main>
+        </>
     )
 }
