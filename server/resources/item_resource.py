@@ -57,5 +57,5 @@ class ItemById(DRYResource):
         super().__init__(Item)
 
 
-api.add_resource(ItemResource, "/items")
+api.add_resource(ItemResource, "/items", endpoint="items")
 api.add_resource(ItemById, "/items/<int:id>", endpoint="item_by_id")
