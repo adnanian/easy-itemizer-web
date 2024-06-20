@@ -1,15 +1,26 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import {UserContext} from "../SuperContext";
 import StyledTitle from "../components/StyledTitle";
 import BigText from "../components/BigText";
 import MembershipCard from "../components/MembershipCard";
 import "../styles/UserMemberships.css";
+import { useNavigate } from "react-router-dom";
+import LoadingScreen from "../components/LoadingScreen";
+import { loadingTimeLimit } from "../helpers";
 
 export default function UserMemberships() {
     const {currentUser, setCurrentUser} = useContext(UserContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!currentUser) {
+            const timer = setTimeout(() => navigate("/unauthorized"), loadingTimeLimit);
+            return () => clearTimeout(timer);
+        }
+    }, [currentUser?.id])
 
     if (!currentUser) {
-        return <StyledTitle text="Loading..."/>
+        return <LoadingScreen/>
     }
 
     const membershipCards = currentUser.memberships.map((membership) => {

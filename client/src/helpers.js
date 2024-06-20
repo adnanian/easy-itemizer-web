@@ -32,8 +32,13 @@ const quickInlineStyles = {
  */
 function correctRoute(route) {
     const correctedRoute = `${routePrefix}${route}`;
-    console.log(correctedRoute);
+    // console.log(correctedRoute);
     return correctedRoute;
 }
 
-export { correctRoute, placeholderImages, quickInlineStyles };
+/** Maximum amount of time to load an application.
+ * TODO add more..
+ */
+const loadingTimeLimit = 2000;
+
+export {correctRoute, placeholderImages, quickInlineStyles, loadingTimeLimit };

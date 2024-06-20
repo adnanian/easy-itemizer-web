@@ -10,7 +10,7 @@ export default function Login() {
         password: ""
     });
     
-    const {currentUser, setCurrentUser} = useContext(UserContext);
+    const {currentUser, login} = useContext(UserContext);
     const navigate = useNavigate();
 
     /**
@@ -47,7 +47,7 @@ export default function Login() {
                 if (response.ok) {
                     return response.json().then((user) => {
                         alert(`Logged In! Welcome, ${user.first_name}!`);
-                        setCurrentUser(user);
+                        login(user);
                         navigate("/");
                     });
                 } else {

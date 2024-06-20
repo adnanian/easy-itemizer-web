@@ -15,7 +15,8 @@ import { UserContext } from "../../SuperContext";
 export default function NavBar() {
     const navLinkClassName = 'nav-link';
 
-    const {currentUser, setCurrentUser} = useContext(UserContext);
+    const {currentUser, logout} = useContext(UserContext);
+    console.log(currentUser);
 
     return (
         <nav className="navigation">
@@ -43,7 +44,7 @@ export default function NavBar() {
                         <NavLink
                             to="/login"
                             className={navLinkClassName}
-                            onClick={() => setCurrentUser(null)}
+                            onClick={logout}
                         >
                             Logout
                         </NavLink>

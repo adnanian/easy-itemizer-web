@@ -15,6 +15,7 @@ const ItemContext = createContext();
  * @returns 
  */
 const SuperProvider = ({ children }) => {
+
     const [currentUser, setCurrentUser] = useState(null);
     const [items, setItems] = useState(null);
 
@@ -34,10 +35,23 @@ const SuperProvider = ({ children }) => {
                 return response.json().then((items) => setItems(items));
             }
         })
-    }, [currentUser])
+    }, [currentUser]);
+
+    const login = (user) => setCurrentUser(user);
+
+    const logout = () => {
+        fetch(correctRoute("/logout"))
+        .then((response) => {
+            if (response.ok) {
+                setCurrentUser(null);
+            } else {
+                throw new Error("Logout failed.");
+            }
+        });
+    };
 
     return (
-        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+        <UserContext.Provider value={{ currentUser, login, logout }}>
             <ItemContext.Provider value={{items, setItems}}>
                 {children}
             </ItemContext.Provider>

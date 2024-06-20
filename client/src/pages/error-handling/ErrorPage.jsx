@@ -18,14 +18,16 @@ export default function ErrorPage() {
     const location = useLocation();
     console.error("Ree! Invalid route: ", location.pathname);
     return (
-        <div className="error-page">
-            <StyledTitle text="Invalid Route!"/>
-            <p>
-                The page that you have navigated to does
-                not exist.<br/>Please click on the link below to
-                navigate back to the home page.
-            </p>
-            <Link to="/" className="link-button">Back to home page!</Link>
-        </div>
+        <main>
+            <div className="error-page">
+                <StyledTitle text="Invalid Route!"/>
+                <p>
+                    The page that you have navigated to does
+                    not exist.<br/>Please click on the link below to
+                    navigate back to the home page.
+                </p>
+                <Link to="/" className="link-button">Back to home page!</Link>
+            </div>
+        </main>
     )
 }

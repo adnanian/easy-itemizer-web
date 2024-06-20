@@ -5,7 +5,7 @@ import { ItemContext, UserContext } from "../SuperContext";
 import ItemViewer from "../components/item-viewer/ItemViewer";
 
 export default function Home() {
-    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const { currentUser } = useContext(UserContext);
     const { items, setItems } = useContext(ItemContext);
     
 
