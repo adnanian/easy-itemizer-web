@@ -15,3 +15,106 @@
 #org-controls button {
     margin: 0 7px;
 }
+
+#org-body {
+    height: fit-content;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#org-body #assigned-item-list {
+    margin-top: 0;
+    margin-bottom: 33px;
+}
+
+#assigned-item-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 400px 400px 400px 400px;
+    height: 500px;
+    /* background: linear-gradient(to right bottom, #020, darkgreen, green, olive, yellow, lime); */
+    align-items: center;
+    justify-content: center;
+    padding: 13px;
+}
+
+#assigned-item-list li {
+    width: fit-content;
+    height: fit-content;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#assigned-item-list * {
+    margin: 0 auto;
+}
+
+#assigned-item-list .button-group {
+    margin-bottom: 8px;
+}
+
+.button-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-status-good {
+    background-color: green;
+}
+
+.quantity-status-low {
+    background-color: orange;
+    color: black;
+}
+
+.quantity-status-out {
+    background-color: maroon;
+}
+
+.assigned-item {
+    padding: 0 12px;
+}
+
+.assigned-item img {
+    width: 200px;
+    height: 100px;
+}
+
+.assignment-name {
+    font-size: 30px;
+}
+
+.assignment-part {
+    font-size: 13px;
+}
+
+.quantity-changer {
+    color: black;
+    font-weight: bolder;
+    font-size: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0 10px !important;
+}
+
+.minus-button {
+    background-color: red;
+}
+
+.minus-button:disabled:hover {
+    background: inherit;
+    background-color: red;
+}
+
+.plus-button {
+    background-color: lime;
+}
+
+.plus-button:hover {
+    background: linear-gradient(#0f0, cyan);
+}
+
+.minus-button:hover {
+    background: linear-gradient(red, yellow);
+}
+

@@ -6,6 +6,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import { useLoadingTimer } from "../helperHooks";
 import StyledTitle from "../components/StyledTitle";
 import "../styles/Organization.css";
+import AssignedItemCard from "../components/AssignedItemCard";
 
 export default function Organization() {
     const { orgId } = useParams();
@@ -56,7 +57,6 @@ export default function Organization() {
 
     const banner = organization.banner || placeholderImages.orgBanner;
     const logoImage = organization.image_url || placeholderImages.orgLogo;
-    console.log(banner);
 
     const orgHeaderStyling = {
         background: `linear-gradient(to right bottom, rgba(47, 79, 79, 0.5), rgba(192, 192, 192, 0.5)), url(${banner}) no-repeat center center`,
@@ -65,8 +65,16 @@ export default function Organization() {
 
     const orgBodyStyling = {
         background: `linear-gradient(to right bottom, rgba(192, 192, 192, 0.5), rgba(47, 79, 79, 0.5)), url(${logoImage}) no-repeat center center`,
-        backgroundSize: "cover"
+        backgroundSize: "100% 100%"
     }
+
+    const assignedItemCards = organization.assignments?.map((assignment) => {
+        return (
+            <li key={assignment.id}>
+                <AssignedItemCard assignment={assignment}/>
+            </li>
+        )
+    });
 
     function handleOrgControlClick(e) {
         
@@ -180,7 +188,9 @@ export default function Organization() {
                 </span>
             </div>
             <div id="org-body" style={orgBodyStyling}>
-
+                <ul id="assigned-item-list">
+                    {assignedItemCards}
+                </ul>
             </div>
         </React.Fragment>
     )
