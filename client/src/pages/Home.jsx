@@ -11,7 +11,6 @@ export default function Home() {
 
     const welcomeTitle = currentUser ? "Browse Items" : "Welcome to Easy Itemizer";
     
-
     return (
         <div id="home-page">
             <StyledTitle text={welcomeTitle} />

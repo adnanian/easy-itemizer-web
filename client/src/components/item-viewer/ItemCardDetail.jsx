@@ -10,7 +10,7 @@ export default function ItemCardDetail({user, item}) {
     }
 
     const username = item.user_id === user.id ? "You" : item.user.username;
-    const isPublic = item.is_public ? "Public" : "Private"
+    const isPublic = item.is_public ? "Public" : "Private";
 
     return (
         <div id="detailed-item-card" className="three-d-round-border">

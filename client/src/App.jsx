@@ -13,6 +13,11 @@ import UserMemberships from "./pages/UserMemberships";
 import UserSettings from "./pages/UserSettings";
 import Organization from "./pages/Organization";
 
+/**
+ * TODO 
+ * 
+ * @returns 
+ */
 export default function App() {
   return (
     <BrowserRouter>

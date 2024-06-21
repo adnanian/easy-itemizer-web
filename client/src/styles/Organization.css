@@ -1,0 +1,17 @@
+#org-header {
+    padding: 10px;
+}
+
+#org-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    background-color: lime;
+    width: fit-content;
+    padding: 15px;
+}
+
+#org-controls button {
+    margin: 0 7px;
+}

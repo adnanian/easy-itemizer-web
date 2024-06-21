@@ -16,7 +16,7 @@ export default function NavBar() {
     const navLinkClassName = 'nav-link';
 
     const {currentUser, logout} = useContext(UserContext);
-    console.log(currentUser);
+    // console.log(currentUser);
 
     return (
         <nav className="navigation">

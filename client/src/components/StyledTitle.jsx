@@ -7,6 +7,6 @@
  */
 export default function StyledTitle( {text} ) {
     return (
-        <h1 className="page-title"><span className="title-text">{text}</span></h1>
+        <h1 className="page-title"><span className="title-text three-d-round-border">{text}</span></h1>
     )
 }

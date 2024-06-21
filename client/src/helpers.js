@@ -4,7 +4,7 @@
  * WARNING: THIS IS AUTOMATICALLY SET BY configureClient.cjs!
  * PLEASE DO NOT ALTER THE DECLARED VARIABLE MANUALLY!
  */
-const routePrefix = "";
+const routePrefix = "/api";
 
 /**
  * Placeholder images for items, users, and organizations, in the event that valid URL's are not provided.
@@ -13,7 +13,7 @@ const placeholderImages = {
     item: "/images/placeholder-item-image.jpg",
     userProfile: "/images/placeholder-profile-picture.png",
     orgLogo: "/images/placeholder-org-logo.jpg",
-    orgBanner: "/images/placeholder-org-banner.jpg"
+    orgBanner: "/images/placeholder-org-banner.png"
 };
 
 // TODO
@@ -36,9 +36,13 @@ function correctRoute(route) {
     return correctedRoute;
 }
 
-/** Maximum amount of time to load an application.
- * TODO add more..
+/**
+ * 
  */
-const loadingTimeLimit = 2000;
+const MemberRole = Object.freeze({
+    REGULAR: "REGULAR",
+    ADMIN: "ADMIN",
+    OWNER: "OWNER"
+})
 
-export {correctRoute, placeholderImages, quickInlineStyles, loadingTimeLimit };
+export {correctRoute, placeholderImages, quickInlineStyles, MemberRole};

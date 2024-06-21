@@ -6,7 +6,7 @@ import MembershipCard from "../components/MembershipCard";
 import "../styles/UserMemberships.css";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen";
-import { loadingTimeLimit } from "../helpers";
+import { useLoadingTimer } from "../helperHooks";
 
 export default function UserMemberships() {
     const {currentUser, setCurrentUser} = useContext(UserContext);
@@ -14,8 +14,7 @@ export default function UserMemberships() {
 
     useEffect(() => {
         if (!currentUser) {
-            const timer = setTimeout(() => navigate("/unauthorized"), loadingTimeLimit);
-            return () => clearTimeout(timer);
+            return useLoadingTimer(navigate, "/unauthorized", 2000);
         }
     }, [currentUser?.id])
 
