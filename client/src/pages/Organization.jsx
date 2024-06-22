@@ -83,7 +83,7 @@ export default function Organization() {
     const assignedItemCards = organization.assignments?.sort(sortByName).map((assignment) => {
         return (
             <li key={assignment.id}>
-                <AssignedItemCard assignment={assignment}/>
+                <AssignedItemCard assignment={assignment} currentUserRegular={userMember.role === MemberRole.REGULAR}/>
             </li>
         )
     });

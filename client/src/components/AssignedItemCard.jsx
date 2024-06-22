@@ -1,6 +1,6 @@
 import { placeholderImages } from "../helpers";
 
-export default function AssignedItemCard({assignment}) {
+export default function AssignedItemCard({assignment, currentUserRegular}) {
     
     class QuantityStatus {
         constructor(name, className) {
@@ -66,12 +66,25 @@ export default function AssignedItemCard({assignment}) {
                         className={"quantity-changer minus-button"}
                         onClick={handleClick}
                         disabled={assignment.current_quantity === 0}
+                        title="Enter how many of this item you used up."
                     >
                         -
                     </button>
+                    {
+                        currentUserRegular ? null : (
+                            <button
+                                className={"quantity-changer edit-q-button"}
+                                onClick={handleClick}
+                                title="Edit the enough threshold for this item."
+                            >
+                                &#128393;
+                            </button>
+                        )
+                    }
                     <button 
                         className={"quantity-changer plus-button"} 
                         onClick={handleClick}
+                        title="Enter how many of this item you newly received into your inventory."
                     >
                         +
                     </button>

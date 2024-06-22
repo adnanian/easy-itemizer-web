@@ -116,9 +116,22 @@
     background-color: red;
 }
 
+.minus-button:hover {
+    background: linear-gradient(red, yellow);
+}
+
 .minus-button:disabled:hover {
     background: inherit;
     background-color: red;
+}
+
+.edit-q-button {
+    background-color: blue;
+    color: white;
+}
+
+.edit-q-button:hover {
+    background: linear-gradient(blue, magenta);
 }
 
 .plus-button {
@@ -129,7 +142,5 @@
     background: linear-gradient(#0f0, cyan);
 }
 
-.minus-button:hover {
-    background: linear-gradient(red, yellow);
-}
+
 

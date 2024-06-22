@@ -1,6 +1,5 @@
 import ItemCard from "./ItemCard";
 import BigText from "../BigText";
-import { sortByName } from "../../helpers";
 
 export default function ItemList({user, items, filters, onSelectItem}) {
 
