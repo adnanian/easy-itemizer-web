@@ -56,8 +56,8 @@ export default function AssignedItemCard({assignment}) {
                 </table>
                 <textarea
                     readOnly
-                    rows="5"
-                    cols="20"
+                    rows="4"
+                    cols="30"
                     value={assignment.item.description}
                 >
                 </textarea>
@@ -65,7 +65,7 @@ export default function AssignedItemCard({assignment}) {
                     <button
                         className={"quantity-changer minus-button"}
                         onClick={handleClick}
-                        disabled={assignment.item.current_quantity === 0}
+                        disabled={assignment.current_quantity === 0}
                     >
                         -
                     </button>

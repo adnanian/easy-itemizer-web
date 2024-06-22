@@ -11,7 +11,7 @@ import AssignedItemCard from "../components/AssignedItemCard";
 export default function Organization() {
     const { orgId } = useParams();
     const navigate = useNavigate();
-    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const { currentUser } = useContext(UserContext);
     const { items, setItems } = useContext(ItemContext);
     const [userMember, setUserMember] = useState(null);
     const [organization, setOrganization] = useState(null);
@@ -68,7 +68,19 @@ export default function Organization() {
         backgroundSize: "100% 100%"
     }
 
-    const assignedItemCards = organization.assignments?.map((assignment) => {
+    /**
+     * 
+     * @param {*} a 
+     * @param {*} b 
+     * @returns 
+     */
+    const sortByName = (a, b) => {
+        if (a.item.name < b.item.name) return -1;
+        if (a.item.name > b.item.name) return 1;
+        return 0;
+    };
+
+    const assignedItemCards = organization.assignments?.sort(sortByName).map((assignment) => {
         return (
             <li key={assignment.id}>
                 <AssignedItemCard assignment={assignment}/>

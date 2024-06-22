@@ -1,10 +1,15 @@
 import ItemCard from "./ItemCard";
 import BigText from "../BigText";
+import { sortByName } from "../../helpers";
 
 export default function ItemList({user, items, filters, onSelectItem}) {
 
     console.log(filters);
 
+    /**
+     * 
+     * @returns 
+     */
     const filteredItems = () => {
         if (filters.text === "" && !filters.userItemsOnly) {
             return items;
@@ -18,12 +23,22 @@ export default function ItemList({user, items, filters, onSelectItem}) {
         }
     };
 
+    /**
+     * TODO
+     * 
+     * @param {*} itemA 
+     * @param {*} itemB 
+     * @returns 
+     */
     const sortByName = (itemA, itemB) => {
         if (itemA.name < itemB.name) return -1;
         if (itemA.name > itemB.name) return 1;
         return 0;
     }
 
+    /**
+     * 
+     */
     const itemCards = filteredItems()?.sort(sortByName).map((item) => {
         return (
             <li key={item.id} className="three-d-round-border">

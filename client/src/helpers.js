@@ -37,12 +37,14 @@ function correctRoute(route) {
 }
 
 /**
- * 
+ * TODO
  */
 const MemberRole = Object.freeze({
     REGULAR: "REGULAR",
     ADMIN: "ADMIN",
     OWNER: "OWNER"
-})
+});
+
+
 
 export {correctRoute, placeholderImages, quickInlineStyles, MemberRole};
