@@ -3,7 +3,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from config import db
 from models.assignment import Assignment
-from helpers import is_non_empty_string
+from helpers import is_non_empty_string, get_model_invoker
 
 class Item(db.Model, SerializerMixin):
     """
@@ -80,5 +80,6 @@ class Item(db.Model, SerializerMixin):
         if not is_non_empty_string(name):
             raise ValueError(f"{key.title()} must be a non-empty string.")
         if Item.query.filter_by(name=name).first():
-            raise ValueError(f"An item with name, {name}, already exists.")
+            if (get_model_invoker() != 'patch'):
+                raise ValueError(f"An item with name, {name}, already exists.")
         return name

@@ -6,7 +6,7 @@ import ItemViewer from "../components/item-viewer/ItemViewer";
 
 export default function Home() {
     const { currentUser } = useContext(UserContext);
-    const { items, setItems } = useContext(ItemContext);
+    
     
 
     const welcomeTitle = currentUser ? "Browse Items" : "Welcome to Easy Itemizer";
@@ -15,7 +15,7 @@ export default function Home() {
         <div id="home-page">
             <StyledTitle text={welcomeTitle} />
             {currentUser ? (
-                <ItemViewer user={currentUser} items={items}/>
+                <ItemViewer user={currentUser} />
             ) : <h1>Log in to manage items and organizations!</h1>}
         </div>
     )

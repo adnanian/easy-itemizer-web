@@ -106,12 +106,6 @@
     margin: 0 10px !important;
 }
 
-.button-group {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .minus-button {
     background-color: red;
 }

@@ -1,16 +1,44 @@
 import { placeholderImages, quickInlineStyles } from "../../helpers";
 import "../../styles/components/ItemCardDetail.css";
 import BigText from "../BigText";
+import Modal from "../Modal";
+import {useModal} from "../../helperHooks";
+import EditItemForm from "../../modal-children/EditItemForm";
+import { useState } from "react";
 
-export default function ItemCardDetail({user, item}) {
-    console.log(item);
+export default function ItemCardDetail({user, item, onUpdate}) {
+    // console.log(item);
 
     if (!item) {
         return <BigText><p>Click on an item to view more details!</p></BigText>
     }
 
+    const [modalActive, toggle] = useModal();
+    const [modalKey, setModalKey] = useState("");
     const username = item.user_id === user.id ? "You" : item.user.username;
     const isPublic = item.is_public ? "Public" : "Private";
+
+    const ButtonId = Object.freeze({
+        EDIT_ITEM: "edit-item-button",
+        DELETE_ITEM: "delete-item-button",
+        REPORT: "report-button"
+    });
+
+    const modalOpeners = {
+        [ButtonId.EDIT_ITEM]: <EditItemForm item={item} onUpdate={handleUpdate} onClose={toggle}/>,
+        [ButtonId.DELETE_ITEM]: null,
+        [ButtonId.REPORT]: null
+    }
+
+    function handleClick(e) {
+        setModalKey(e.target.id);
+        toggle();
+    }
+
+    function handleUpdate(itemToUpdate) {
+        setModalKey("");
+        onUpdate(itemToUpdate);
+    }
 
     return (
         <div id="detailed-item-card" className="three-d-round-border">
@@ -58,20 +86,26 @@ export default function ItemCardDetail({user, item}) {
                         {item.user_id === user.id ? (
                             <>
                                 <button
+                                    id={ButtonId.EDIT_ITEM}
                                     title="Edit item information."
+                                    onClick={handleClick}
                                 >
                                     &#128393;
                                     Edit
                                 </button>
                                 <button
+                                    id={ButtonId.DELETE_ITEM}
                                     title="Delete the item from the system."
+                                    onClick={handleClick}
                                 >
                                     &#128465;
                                     Delete
                                 </button>
                             </>
                         ) : <button
+                                id={ButtonId.REPORT}
                                 title="Report this item for inappropriate content."
+                                onClick={handleClick}
                             >
                                 &#127988;
                                 Report
@@ -79,6 +113,9 @@ export default function ItemCardDetail({user, item}) {
                     </div>
                 </div>
             </div>
+            <Modal openModal={modalActive} closeModal={toggle}>
+                {modalOpeners[modalKey]}
+            </Modal>
         </div>
     )
 }

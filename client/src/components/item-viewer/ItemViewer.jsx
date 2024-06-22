@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "../../styles/components/ItemViewer.css";
 import ItemCardDetail from "./ItemCardDetail";
 import ItemList from "./ItemList";
 import ItemFilter from "./ItemFilter";
+import { ItemContext } from "../../SuperContext";
 
-export default function ItemViewer({ user, items }) {
+export default function ItemViewer({ user }) {
+    const { items, setItems } = useContext(ItemContext);
     const [selectedItem, setSelctedItem] = useState(null);
     const [filters, setFilters] = useState({
         text: "",
@@ -27,12 +29,19 @@ export default function ItemViewer({ user, items }) {
         }
     }
 
+    function updateItem(itemToUpdate) {
+        setItems(items.map((item) => {
+            return item.id === itemToUpdate.id ? itemToUpdate : item;
+        }));
+        setSelctedItem(itemToUpdate);
+    }
+
     //console.log(filters);
 
     return (
         <>
             <div id="item-card-container">
-                <ItemCardDetail user={user} item={selectedItem}/>
+                <ItemCardDetail user={user} item={selectedItem} onUpdate={updateItem}/>
                 <div>
                     <ItemFilter filters={filters} onChange={handleChange}/>
                     <ItemList user={user} items={items} filters={filters} onSelectItem={setSelctedItem}/>

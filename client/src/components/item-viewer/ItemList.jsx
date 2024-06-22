@@ -3,7 +3,7 @@ import BigText from "../BigText";
 
 export default function ItemList({user, items, filters, onSelectItem}) {
 
-    console.log(filters);
+    // console.log(filters);
 
     /**
      * 

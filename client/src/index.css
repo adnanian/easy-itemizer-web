@@ -262,6 +262,29 @@ table, tr, th, td {
 .button-group {
   display: flex;
   margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+dialog {
+  position: absolute;
+  translate: 80% 5%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  text-align: center;
+  background: linear-gradient(to bottom right, black, #1a1a1a, navy, #1a1a1a, black)
+}
+
+dialog * {
+  margin: 4px auto !important;
+}
+
+dialog > button {
+  background-color: red;
+}
+
+dialog button:hover {
+  background: linear-gradient(cyan, blue);
 }
 
 @media screen and (max-width: 1366px) {

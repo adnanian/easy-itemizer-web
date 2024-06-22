@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 /**
  * Reference: https://betterprogramming.pub/create-a-custom-usemodal-react-hook-449b5909cc09
  * Custom hook for managing the use of dialogs and modals in React components.
