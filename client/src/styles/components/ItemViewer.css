@@ -15,7 +15,7 @@ div#item-search {
     border-right: var(--div-border-right);
     border-bottom: var(--div-border-bottom);
     border-left: var(--div-border-left);
-    margin: 10px auto 0;
+    /* margin: 10px auto 0; */
 }
 
 div#item-search * {
@@ -34,8 +34,8 @@ div#item-search input[type="text"] {
     border-width: 10px;
     width: fit-content;
     height: fit-content;
-    margin-top: 10px;
-    margin-right: 35px;
+    /* margin-top: 10px;
+    margin-right: 35px; */
     background-color: #333;
 }
 
@@ -44,7 +44,7 @@ div#item-search input[type="text"] {
     display: grid;
     grid-template-columns: 300px 300px 300px;
     width: fit-content;
-    height: 530px;
+    /* height: 530px; */
     background: linear-gradient(to right bottom, #020, darkgreen, green, olive, yellow, lime);
     overflow-y: auto;
     overflow-x: hidden;
@@ -52,15 +52,15 @@ div#item-search input[type="text"] {
 
 #item-list button {
     background-color: darkslateblue;
-    width: 230px;
-    height: 230px;
+    /* width: 230px;
+    height: 230px; */
     margin: auto;
 }
 
 #item-list li {
     width: fit-content;
     height: fit-content;
-    margin: 25px;
+    /* margin: 25px; */
 }
 
 #item-list :is(li, button):hover {
@@ -73,3 +73,50 @@ div#item-search input[type="text"] {
     display: flex;
     flex-direction: row;
 }
+
+/* @media screen {
+    div#item-search {
+        margin: 7px auto 0;
+    }
+
+    div#item-search * {
+        margin: 0 7px;
+        padding: 7px;
+        font-size: calc(var(--default-font-size) * var(--scale));
+    }
+
+    div#item-search input[type="text"] {
+        border-radius: calc(var(--default-font-size) * var(--scale));
+    }
+
+    #item-list-container {
+        width: fit-content;
+        height: fit-content;
+        margin-top: 7px;
+        margin-right: 25px;
+    }
+
+    #item-list {
+        list-style: none;
+        display: grid;
+        grid-template-columns: 213px 213px 213px;
+        width: fit-content;
+        height: 376px;
+        background: linear-gradient(to right bottom, #020, darkgreen, green, olive, yellow, lime);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #item-list button {
+        background-color: darkslateblue;
+        width: 163px;
+        height: 163px;
+        margin: auto;
+    }
+
+    #item-list li {
+        width: fit-content;
+        height: fit-content;
+        margin: 17px;
+    }
+} */

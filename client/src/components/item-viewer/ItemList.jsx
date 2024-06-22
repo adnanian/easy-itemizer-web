@@ -1,9 +1,29 @@
 import ItemCard from "./ItemCard";
 import BigText from "../BigText";
+import {useScreenSize} from "../../helperHooks";
 
 export default function ItemList({user, items, filters, onSelectItem}) {
 
     // console.log(filters);
+
+    const {scaleByWidth, scaleByHeight, scaleByAverage} = useScreenSize();
+
+    const itemListContainerSizing = {
+        marginTop: scaleByHeight(10, 'px'),
+        marginRight: scaleByWidth(35, 'px')
+    }
+
+    const itemListSizing = () => {
+        const gridTempalteColumnSize = scaleByWidth(300, 'px');
+        return {
+            gridTemplateColumns: `${gridTempalteColumnSize} ${gridTempalteColumnSize} ${gridTempalteColumnSize}`,
+            height: scaleByHeight(530, 'px')
+        };
+    }
+
+    const liSizing = {
+        margin: `${scaleByWidth(25, 'px')} ${scaleByHeight(25, 'px')}`
+    };
 
     /**
      * 
@@ -40,15 +60,27 @@ export default function ItemList({user, items, filters, onSelectItem}) {
      */
     const itemCards = filteredItems()?.sort(sortByName).map((item) => {
         return (
-            <li key={item.id} className="three-d-round-border">
+            <li 
+                key={item.id} 
+                className="three-d-round-border"
+                style={liSizing}
+            >
                 <ItemCard item={item} onSelectItem={onSelectItem}/>
             </li>
         )
     });
 
     return (
-        <div id="item-list-container" className="round-border">
-            <ul id="item-list" className="three-d-round-border">
+        <div 
+            id="item-list-container" 
+            className="round-border"
+            style={itemListContainerSizing}
+        >
+            <ul 
+                id="item-list" 
+                className="three-d-round-border"
+                style={itemListSizing()}
+            >
                 {itemCards ? itemCards : (
                     <BigText id="no-items">
                         <p>No items found.</p>

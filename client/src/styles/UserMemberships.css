@@ -62,3 +62,19 @@
 .membership-container:hover {
     background: linear-gradient(to bottom left, blue, blueviolet, violet, indigo, violet, blueviolet, blue)
 }
+
+@media screen and (max-width: 1366px) {
+    #membership-list {
+        grid-template-columns: 284px 284px 284px;
+    }
+
+    .membership-container {
+        width: 266px;
+        height: 284px;
+    }
+    .membership-container img {
+        width: 71;
+        height: 71px;
+        border-radius: 50px;
+    }
+}

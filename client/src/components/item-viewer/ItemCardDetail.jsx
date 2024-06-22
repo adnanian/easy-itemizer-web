@@ -2,7 +2,7 @@ import { placeholderImages, quickInlineStyles } from "../../helpers";
 import "../../styles/components/ItemCardDetail.css";
 import BigText from "../BigText";
 import Modal from "../Modal";
-import {useModal} from "../../helperHooks";
+import {useModal, useScreenSize} from "../../helperHooks";
 import EditItemForm from "../../modal-children/EditItemForm";
 import { useState } from "react";
 
@@ -40,11 +40,30 @@ export default function ItemCardDetail({user, item, onUpdate}) {
         onUpdate(itemToUpdate);
     }
 
+    const {scaleByWidth, scaleByHeight, scaleByAverage} = useScreenSize();
+
+    const detailWrapperSizing = {
+        padding: `${scaleByHeight(10, 'px')} ${scaleByWidth(15, 'px')}`
+    };
+
+    const imageSizing = {
+        width: scaleByWidth(300, 'px'),
+        height: scaleByHeight(500, 'px')
+    }
+
     return (
-        <div id="detailed-item-card" className="three-d-round-border">
+        <div 
+            id="detailed-item-card" 
+            className="three-d-round-border"
+            style={detailWrapperSizing}
+        >
             <h1>{item.name}</h1>
             <div id="detail-wrapper">
-                <img src={item?.image_url || placeholderImages.item} className="round-border"/>
+                <img 
+                    src={item?.image_url || placeholderImages.item} 
+                    className="round-border"
+                    style={imageSizing}
+                />
                 <div id="detail-block">
                     <h2 style={quickInlineStyles.centerText}>Details</h2>
                     <table>
