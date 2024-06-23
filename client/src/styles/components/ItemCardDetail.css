@@ -1,7 +1,8 @@
 #detailed-item-card {
     margin: 0 auto;
     display: auto;
-    background-color: darkslategray;
+    background-color: darkgray;
+    color: white;
     height: max-content;
 }
 
@@ -31,5 +32,13 @@
 
     #detail-block {
         margin: 7px auto;
+    }
+
+    #detail-wrapper * {
+        margin: 1px auto;
+    }
+
+    textarea {
+        margin-left: 8px !important;
     }
 }

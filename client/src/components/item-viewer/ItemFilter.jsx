@@ -1,6 +1,14 @@
+import { useScreenSize } from "../../helperHooks";
+
 export default function ItemFilter({filters, onChange}) {
+    const {scaleByHeight} = useScreenSize();
+
+    const itemSearchSizing = {
+        margin: `${scaleByHeight(10, 'px')} auto 0`
+    };
+
     return (
-        <div id="item-search">
+        <div id="item-search" style={itemSearchSizing}>
             <label htmlFor="showUserItemsOnly">Show My Items Only</label>
             <input
                 id="showUserItemsOnly"

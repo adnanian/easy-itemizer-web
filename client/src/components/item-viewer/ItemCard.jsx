@@ -3,7 +3,7 @@ import { correctRoute, placeholderImages } from "../../helpers";
 import "../../styles/components/ItemCard.css";
 
 export default function ItemCard({item, onSelectItem}) {
-    const {scaleByWidth, scaleByHeight, scaleByAverage} = useScreenSize();
+    const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
 
     const itemButtonSizing = {
         width: scaleByWidth(230, 'px'),

@@ -6,7 +6,7 @@ export default function ItemList({user, items, filters, onSelectItem}) {
 
     // console.log(filters);
 
-    const {scaleByWidth, scaleByHeight, scaleByAverage} = useScreenSize();
+    const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
 
     const itemListContainerSizing = {
         marginTop: scaleByHeight(10, 'px'),

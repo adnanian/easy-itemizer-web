@@ -20,5 +20,9 @@
     .item-card * {
         margin: 0;
     }
+
+    .item-card :not(img) {
+        padding-top: 3.28759604px;
+    }
 }
 

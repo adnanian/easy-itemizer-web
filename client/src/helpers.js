@@ -19,7 +19,7 @@ const placeholderImages = {
 // TODO
 const quickInlineStyles = {
     centerText: {textAlign: "center"},
-    biggerFont: {fontSize: "150%"},
+    biggerFont: {fontSize: "125%"},
     rectangularPad: {padding: "8px"}
 };
 

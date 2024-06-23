@@ -40,7 +40,7 @@ export default function ItemCardDetail({user, item, onUpdate}) {
         onUpdate(itemToUpdate);
     }
 
-    const {scaleByWidth, scaleByHeight, scaleByAverage} = useScreenSize();
+    const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
 
     const detailWrapperSizing = {
         padding: `${scaleByHeight(10, 'px')} ${scaleByWidth(15, 'px')}`
@@ -51,13 +51,18 @@ export default function ItemCardDetail({user, item, onUpdate}) {
         height: scaleByHeight(500, 'px')
     }
 
+    const smallHSizing = {
+        textAlign: "center",
+        fontSize: scaleByWidth(125, '%')
+    };
+
     return (
         <div 
             id="detailed-item-card" 
             className="three-d-round-border"
             style={detailWrapperSizing}
         >
-            <h1>{item.name}</h1>
+            <h1 style={{fontSize: scaleByRatio(3.2, 'em')}}>{item.name}</h1>
             <div id="detail-wrapper">
                 <img 
                     src={item?.image_url || placeholderImages.item} 
@@ -65,7 +70,7 @@ export default function ItemCardDetail({user, item, onUpdate}) {
                     style={imageSizing}
                 />
                 <div id="detail-block">
-                    <h2 style={quickInlineStyles.centerText}>Details</h2>
+                    <h2 style={smallHSizing}>Details</h2>
                     <table>
                         <tbody>
                             <tr>
@@ -90,12 +95,12 @@ export default function ItemCardDetail({user, item, onUpdate}) {
                             </tr>
                         </tbody>
                     </table>
-                    <h3 style={{...quickInlineStyles.centerText, ...quickInlineStyles.biggerFont}}>
+                    <h3 style={smallHSizing}>
                         Description
                     </h3>
                     <textarea
                         readOnly
-                        rows="6"
+                        rows="4"
                         cols="40"
                         value={item.description}
                         style={quickInlineStyles.rectangularPad}

@@ -290,7 +290,7 @@ dialog button:hover {
 @media screen and (max-width: 1366px) {
 
   h1 {
-    font-size: 2.27em;
+    font-size: 1.49em;
   }
 
   .form-div :is(label, input, button, .link-button) {
@@ -303,6 +303,10 @@ dialog button:hover {
 
   #signup-div {
     margin-bottom: 20px;
+  }
+
+  dialog {
+    translate: 50% 5%;
   }
 
 }

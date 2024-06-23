@@ -39,7 +39,7 @@ export const useScreenSize = () => {
      */
     const MainScreenSize = Object.freeze({
         WIDTH: 1920,
-        HEIGHT: 842
+        HEIGHT: 911
     });
 
     useEffect(() => {
@@ -75,11 +75,16 @@ export const useScreenSize = () => {
         return scaledValue;
     }
 
-    const scaleByAverage = (originalSize, unit) => {
-        const scaledValue = `${currentScreenSizeAverage() * originalSize / mainScreenSizeAverage}${unit}`;
+    const scaleByRatio = (originalSize, unit) => {
+        const originalX = Math.sqrt(MainScreenSize.WIDTH * originalSize / MainScreenSize.HEIGHT);
+        const originalY = originalSize / originalX;
+
+        const x = screenSize.width * originalX / MainScreenSize.WIDTH;
+        const y = screenSize.height * originalY / MainScreenSize.HEIGHT;
+        const scaledValue = `${x * y}${unit}`;
         // console.log(scaledValue);
         return scaledValue;
-    }
+    }   
 
-    return {scaleByWidth, scaleByHeight, scaleByAverage};
+    return {scaleByWidth, scaleByHeight, scaleByRatio};
 }
