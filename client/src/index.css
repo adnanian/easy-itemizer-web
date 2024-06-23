@@ -268,7 +268,7 @@ table, tr, th, td {
 
 dialog {
   position: absolute;
-  translate: 80% 5%;
+  /* translate: 80% 5%; */
   overflow-y: auto;
   overflow-x: hidden;
   text-align: center;

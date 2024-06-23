@@ -2,9 +2,8 @@ import { placeholderImages, quickInlineStyles } from "../../helpers";
 import "../../styles/components/ItemCardDetail.css";
 import BigText from "../BigText";
 import Modal from "../Modal";
-import {useModal, useScreenSize} from "../../helperHooks";
+import {useModalManager, useScreenSize} from "../../helperHooks";
 import EditItemForm from "../../modal-children/EditItemForm";
-import { useState } from "react";
 
 export default function ItemCardDetail({user, item, onUpdate}) {
     // console.log(item);
@@ -13,8 +12,7 @@ export default function ItemCardDetail({user, item, onUpdate}) {
         return <BigText><p>Click on an item to view more details!</p></BigText>
     }
 
-    const [modalActive, toggle] = useModal();
-    const [modalKey, setModalKey] = useState("");
+    const modalManager = useModalManager();
     const username = item.user_id === user.id ? "You" : item.user.username;
     const isPublic = item.is_public ? "Public" : "Private";
 
@@ -25,14 +23,13 @@ export default function ItemCardDetail({user, item, onUpdate}) {
     });
 
     const modalOpeners = {
-        [ButtonId.EDIT_ITEM]: <EditItemForm item={item} onUpdate={handleUpdate} onClose={toggle}/>,
+        [ButtonId.EDIT_ITEM]: <EditItemForm item={item} onUpdate={handleUpdate} onClose={modalManager.clearView}/>,
         [ButtonId.DELETE_ITEM]: null,
         [ButtonId.REPORT]: null
     }
 
     function handleClick(e) {
-        setModalKey(e.target.id);
-        toggle();
+        modalManager.showView(modalOpeners[e.target.id]);
     }
 
     function handleUpdate(itemToUpdate) {
@@ -137,8 +134,8 @@ export default function ItemCardDetail({user, item, onUpdate}) {
                     </div>
                 </div>
             </div>
-            <Modal openModal={modalActive} closeModal={toggle}>
-                {modalOpeners[modalKey]}
+            <Modal openModal={modalManager.modalActive} closeModal={modalManager.clearView}>
+                {modalManager.view}
             </Modal>
         </div>
     )

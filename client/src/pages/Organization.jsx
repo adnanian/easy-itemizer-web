@@ -41,6 +41,21 @@ export default function Organization() {
         return <LoadingScreen />
     }
 
+    /**
+     * Updates an assignment's information on the frontend.
+     * 
+     * @param {Object} updatedItemAssignment the assignment to update.
+     */
+    function updateAssignment(updatedItemAssignment) {
+        setOrganization({
+            ...organization,
+            assignments: organization.assignments.map((assignment) => {
+                return assignment.id !== updatedItemAssignment.id ? assignment : updatedItemAssignment;
+            })
+        });
+    }
+
+
     const ButtonId = Object.freeze({
         BACK: "back-button",
         LEAVE: "leave-button",
@@ -83,13 +98,21 @@ export default function Organization() {
     const assignedItemCards = organization.assignments?.sort(sortByName).map((assignment) => {
         return (
             <li key={assignment.id}>
-                <AssignedItemCard assignment={assignment} currentUserRegular={userMember.role === MemberRole.REGULAR}/>
+                <AssignedItemCard 
+                    assignment={assignment} 
+                    currentUserRegular={userMember.role === MemberRole.REGULAR}
+                    onUpdate={updateAssignment}
+                />
             </li>
         )
     });
 
     function handleOrgControlClick(e) {
-        
+        switch (e.target.id) {
+            case ButtonId.BACK:
+                navigate(-1);
+                break;
+        }
     }
 
     return (

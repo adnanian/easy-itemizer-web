@@ -1,6 +1,10 @@
+import { useModalManager } from "../helperHooks";
 import { placeholderImages } from "../helpers";
+import AdjustQuantityForm from "../modal-children/edit-assignment/AdjustQuantityForm";
+import Modal from "./Modal";
 
-export default function AssignedItemCard({assignment, currentUserRegular}) {
+export default function AssignedItemCard({assignment, currentUserRegular, onUpdate}) {
+    const modalManager = useModalManager();
     
     class QuantityStatus {
         constructor(name, className) {
@@ -24,7 +28,23 @@ export default function AssignedItemCard({assignment, currentUserRegular}) {
     const quantityStatus = generateQuantityStatus();
 
     function handleClick(e) {
-
+        const subClass = e.target.className.substring("quantity-changer ".length);
+        const operation = subClass.substring(0,subClass.indexOf('-'));
+        // console.log(subClass.substring(0,subClass.indexOf('-')));
+        switch (operation) {
+            case "plus":
+            case "minus":
+                modalManager.showView(
+                    <AdjustQuantityForm
+                        operation={operation}
+                        currentQuantity={assignment.current_quantity}
+                        assignmentId={assignment.id}
+                        onUpdate={onUpdate}
+                        onClose={modalManager.clearView}
+                    />
+                );
+                break;
+        }
     }
 
     return (
@@ -90,6 +110,9 @@ export default function AssignedItemCard({assignment, currentUserRegular}) {
                     </button>
                 </div>
             </div>
+            <Modal openModal={modalManager.modalActive} closeModal={modalManager.clearView}>
+                {modalManager.view}
+            </Modal>
         </>
     )
 }

@@ -4,12 +4,39 @@ import { useEffect, useState } from "react";
  * Reference: https://betterprogramming.pub/create-a-custom-usemodal-react-hook-449b5909cc09
  * Custom hook for managing the use of dialogs and modals in React components.
  * 
+ * DELETE THIS HOOK AND USE MODALMANAGER INSTEAD!
+ * 
  * @returns a destructured array of a boolean representing whether a modal is open, and a function to open/close the modal.
  */
 export const useModal = () => {
     const [modalActive, setModalActive] = useState(false);
     const toggle = () => setModalActive(!modalActive);
     return [modalActive, toggle];
+}
+
+/**
+ * Custom hook for managing the use of dialogs and modals in React components.
+ * 
+ * @returns 
+ */
+export const useModalManager = () => {
+    const [modalActive, setModalActive] = useState(false);
+    const [modalChild, setModalChild] = useState(null);
+
+    const modalManager = Object.freeze({
+        modalActive: modalActive,
+        view: modalChild,
+        showView: (component) => {
+            setModalChild(component);
+            setModalActive(true);
+        },
+        clearView: () => {
+            setModalActive(false);
+            setModalChild(null);
+        }
+    });
+
+    return modalManager;
 }
 
 /**
@@ -88,3 +115,31 @@ export const useScreenSize = () => {
 
     return {scaleByWidth, scaleByHeight, scaleByRatio};
 }
+
+/**
+ * TODO
+ * 
+ * @param {*} operation the mathematical operation; must be "PLUS" or "MINUS" case-insensitive, or an error will occur.
+ * @returns 
+ */
+export const useQuantityAdjuster = (operation) => {
+    const [targetOperation, setTargetOperation] = useState(operation.toUpperCase());
+
+    const quantityAdjusters = Object.freeze({
+        PLUS: (initialValue, addend) => (initialValue + addend),
+        MINUS: (initialValue, subtrahend) => (initialValue - subtrahend)
+    });
+
+    const quantityAdjuster = {
+        adjustQuantity: (initialValue, adjuster) => quantityAdjusters[targetOperation](initialValue, adjuster),
+        targetOperation: targetOperation,
+        setTargetOperation: (operation) => setTargetOperation(operation.toUpperCase())
+    }
+
+    return quantityAdjuster;
+}
+
+// export const useQuantityAdjuster = Object.freeze({
+//     PLUS: (initialValue, addend) => (initialValue + addend),
+//     MINUS: (initialValue, subtrahend) => (initialValue, subtrahend)
+// });
