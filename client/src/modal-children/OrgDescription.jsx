@@ -1,3 +1,3 @@
-export default function OrgDescription() {
-    return null;
+export default function OrgDescription({description}) {
+    return <p>{description}</p>
 }

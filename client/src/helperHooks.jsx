@@ -16,8 +16,9 @@ export const useModal = () => {
 
 /**
  * Custom hook for managing the use of dialogs and modals in React components.
+ * Reference: https://betterprogramming.pub/create-a-custom-usemodal-react-hook-449b5909cc09
  * 
- * @returns 
+ * @returns an object for managing modal settings.
  */
 export const useModalManager = () => {
     const [modalActive, setModalActive] = useState(false);
@@ -103,14 +104,15 @@ export const useScreenSize = () => {
     }
 
     const scaleByRatio = (originalSize, unit) => {
-        const originalX = Math.sqrt(MainScreenSize.WIDTH * originalSize / MainScreenSize.HEIGHT);
-        const originalY = originalSize / originalX;
+        // const originalX = Math.sqrt(MainScreenSize.WIDTH * originalSize / MainScreenSize.HEIGHT);
+        // const originalY = originalSize / originalX;
 
-        const x = screenSize.width * originalX / MainScreenSize.WIDTH;
-        const y = screenSize.height * originalY / MainScreenSize.HEIGHT;
-        const scaledValue = `${x * y}${unit}`;
-        // console.log(scaledValue);
-        return scaledValue;
+        // const x = screenSize.width * originalX / MainScreenSize.WIDTH;
+        // const y = screenSize.height * originalY / MainScreenSize.HEIGHT;
+        // const scaledValue = `${x * y}${unit}`;
+        // // console.log(scaledValue);
+        // return scaledValue;
+        return `${(screenSize.width * screenSize.height * originalSize)/(MainScreenSize.WIDTH * MainScreenSize.HEIGHT)}${unit}`;
     }   
 
     return {scaleByWidth, scaleByHeight, scaleByRatio};
