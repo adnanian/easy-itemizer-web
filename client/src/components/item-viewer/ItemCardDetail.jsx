@@ -33,7 +33,6 @@ export default function ItemCardDetail({user, item, onUpdate}) {
     }
 
     function handleUpdate(itemToUpdate) {
-        setModalKey("");
         onUpdate(itemToUpdate);
     }
 
