@@ -3,10 +3,11 @@ import { useNavigate, useParams } from "react-router-dom"
 import { ItemContext, UserContext } from "../SuperContext";
 import { MemberRole, correctRoute, placeholderImages } from "../helpers";
 import LoadingScreen from "../components/LoadingScreen";
-import { useLoadingTimer } from "../helperHooks";
+import { useLoadingTimer, useModalManager } from "../helperHooks";
 import StyledTitle from "../components/StyledTitle";
 import "../styles/Organization.css";
 import AssignedItemCard from "../components/AssignedItemCard";
+import MembershipsTable from "../modal-children/MembershipsTable";
 
 export default function Organization() {
     const { orgId } = useParams();
@@ -15,6 +16,7 @@ export default function Organization() {
     const { items, setItems } = useContext(ItemContext);
     const [userMember, setUserMember] = useState(null);
     const [organization, setOrganization] = useState(null);
+    const modalManager = useModalManager();
     const orgControlsClassName = "org-controls";
 
     // console.log(currentUser);
@@ -70,6 +72,17 @@ export default function Organization() {
         DELETE: "delete-button" // for owners to delete the entire organization.
     });
 
+    const ModalOpeners = Object.freeze({
+        [ButtonId.VIEW_MEMBERS]: (
+            <MembershipsTable
+                members={organization.memberships}
+                userMember={userMember}
+                onUpdate={null}
+                onDelete={null}
+            />
+        )
+    });
+
     const banner = organization.banner || placeholderImages.orgBanner;
     const logoImage = organization.image_url || placeholderImages.orgLogo;
 
@@ -111,6 +124,12 @@ export default function Organization() {
         switch (e.target.id) {
             case ButtonId.BACK:
                 navigate(-1);
+                break;
+            case ButtonId.SEND_UPDATE:
+                //TODO
+                break;
+            default:
+                modalManager.showView(ModalOpeners[e.target.id]);
                 break;
         }
     }
@@ -227,6 +246,7 @@ export default function Organization() {
                     {assignedItemCards}
                 </ul>
             </div>
+            {modalManager.modal}
         </React.Fragment>
     )
 }

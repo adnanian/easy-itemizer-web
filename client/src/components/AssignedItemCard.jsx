@@ -2,7 +2,6 @@ import { useModalManager } from "../helperHooks";
 import { placeholderImages } from "../helpers";
 import AdjustQuantityForm from "../modal-children/edit-assignment/AdjustQuantityForm";
 import AdjustThresholdForm from "../modal-children/edit-assignment/AdjustThresholdForm";
-import Modal from "./Modal";
 
 export default function AssignedItemCard({assignment, currentUserRegular, onUpdate}) {
     const modalManager = useModalManager();
@@ -122,9 +121,7 @@ export default function AssignedItemCard({assignment, currentUserRegular, onUpda
                     </button>
                 </div>
             </div>
-            <Modal openModal={modalManager.modalActive} closeModal={modalManager.clearView}>
-                {modalManager.view}
-            </Modal>
+            {modalManager.modal}
         </>
     )
 }

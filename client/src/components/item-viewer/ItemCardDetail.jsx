@@ -1,7 +1,6 @@
 import { placeholderImages, quickInlineStyles } from "../../helpers";
 import "../../styles/components/ItemCardDetail.css";
 import BigText from "../BigText";
-import Modal from "../Modal";
 import {useModalManager, useScreenSize} from "../../helperHooks";
 import EditItemForm from "../../modal-children/EditItemForm";
 
@@ -133,9 +132,7 @@ export default function ItemCardDetail({user, item, onUpdate}) {
                     </div>
                 </div>
             </div>
-            <Modal openModal={modalManager.modalActive} closeModal={modalManager.clearView}>
-                {modalManager.view}
-            </Modal>
+            {modalManager.modal}
         </div>
     )
 }
