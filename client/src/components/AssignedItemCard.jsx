@@ -62,7 +62,7 @@ export default function AssignedItemCard({assignment, currentUserRegular, onUpda
         <>
             <div className={`assigned-item  three-d-round-border ${quantityStatus.className}`}>
                 <p><b>{quantityStatus.name}</b></p>
-                <img src={assignment.item.image_url || placeholderImages}/>
+                <img src={assignment.item.image_url || placeholderImages.item}/>
                 <h4 className="assignment-name">{assignment.item.name}</h4>
                 <h5 className="assignment-part">{assignment.item.part_number}</h5>
                 <table>

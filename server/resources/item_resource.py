@@ -3,7 +3,7 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from resources.dry_resource import DRYResource
 from config import db, api
-from models.models import Item
+from models.models import Item, Assignment
 
 
 class ItemResource(Resource):
@@ -23,11 +23,12 @@ class ItemResource(Resource):
         ]
         return items, 200
 
+class AddItemAndAssignment(Resource):
     def post(self):
-        """Creates a new instance of Item.
-
+        """Creates a new instance of Item and an Assignment with that Item.
+        
         Returns:
-            dict: a JSONified dictionary of the created Item and its attributes, if creation successful, otherwise an error message.
+    #         dict: a JSONified dictionary of the created Item and its attributes, if creation successful, otherwise an error message.
         """
         try:
             new_item = Item(
@@ -36,15 +37,22 @@ class ItemResource(Resource):
                 image_url=request.get_json().get("image_url"),
                 part_number=request.get_json().get("part_number"),
                 is_public=request.get_json().get("is_public"),
-                user_id=request.get_json().get("user_id"),
+                user_id=session["user_id"]
             )
             db.session.add(new_item)
             db.session.commit()
-            return new_item.to_dict(), 201
-        except (ValueError, IntegrityError) as e:
-            print(e)
+            new_assignment = Assignment(
+                item_id=new_item.id,
+                organization_id=request.get_json().get("organization_id"),
+                current_quantity=request.get_json().get("current_quantity"),
+                enough_threshold=request.get_json().get("enough_threshold")
+            )
+            db.session.add(new_assignment)
+            db.session.commit()
+            return {"item": new_item.to_dict(), "assignment": new_assignment.to_dict()}, 201
+        except Exception as e:
+            print(e, flush=True)
             return {"message": str(e)}, 422
-
 
 class ItemById(DRYResource):
     """Resource tied to the Item model. Handles fetch requests for single Item instances.
@@ -58,4 +66,5 @@ class ItemById(DRYResource):
 
 
 api.add_resource(ItemResource, "/items", endpoint="items")
+api.add_resource(AddItemAndAssignment, "/add_new_item")
 api.add_resource(ItemById, "/items/<int:id>", endpoint="item_by_id")

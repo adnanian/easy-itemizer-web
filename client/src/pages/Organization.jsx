@@ -8,6 +8,7 @@ import StyledTitle from "../components/StyledTitle";
 import "../styles/Organization.css";
 import AssignedItemCard from "../components/AssignedItemCard";
 import MembershipsTable from "../modal-children/MembershipsTable";
+import ItemFormContainer from "../modal-children/add-item/ItemFormContainer";
 
 export default function Organization() {
     const { orgId } = useParams();
@@ -43,6 +44,18 @@ export default function Organization() {
         return <LoadingScreen />
     }
 
+    function addAssignment(data) {
+        const item = data["item"]
+        const assignmentToAdd = data["assignment"]
+        if (item) {
+            setItems([...items, item]);
+        }
+        setOrganization({
+            ...organization,
+            assignments: [...organization.assignments, assignmentToAdd]
+        })
+    }
+
     /**
      * Updates an assignment's information on the frontend.
      * 
@@ -56,7 +69,6 @@ export default function Organization() {
             })
         });
     }
-
 
     const ButtonId = Object.freeze({
         BACK: "back-button",
@@ -79,6 +91,14 @@ export default function Organization() {
                 userMember={userMember}
                 onUpdate={null}
                 onDelete={null}
+            />
+        ),
+        [ButtonId.ADD]: (
+            <ItemFormContainer
+                orgId={orgId}
+                item={items}
+                onAdd={addAssignment}
+                onClose={modalManager.clearView}
             />
         )
     });

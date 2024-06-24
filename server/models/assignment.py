@@ -1,7 +1,7 @@
 from sqlalchemy_serializer import SerializerMixin
 from config import db
 from sqlalchemy.orm import validates
-
+from helpers import get_model_invoker
 
 class Assignment(db.Model, SerializerMixin):
     """
@@ -83,3 +83,13 @@ class Assignment(db.Model, SerializerMixin):
                 f"{key} - Minimum threshold for inventory to be considered enough must be a positive integer."
             )
         return enough_threshold
+    
+    @validates("organization_id")
+    def validate_organization_id(self, key, organization_id):
+        if assignment := Assignment.query.filter(Assignment.item_id == self.item_id, Assignment.organization_id == organization_id).first():
+            print(assignment, flush=True)
+            if (get_model_invoker() != 'patch'):
+                raise ValueError(f"Item with id {self.item_id} already exists for {key} {organization_id}")
+        return organization_id
+    
+
