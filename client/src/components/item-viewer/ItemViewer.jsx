@@ -3,11 +3,11 @@ import "../../styles/components/ItemViewer.css";
 import ItemCardDetail from "./ItemCardDetail";
 import ItemList from "./ItemList";
 import ItemFilter from "./ItemFilter";
-import { ItemContext } from "../../SuperContext";
+import { ItemContext, SelectedItemContext } from "../../SuperContext";
 
-export default function ItemViewer({ user }) {
+export default function ItemViewer({ user, allowEdits=false }) {
     const { items, setItems } = useContext(ItemContext);
-    const [selectedItem, setSelctedItem] = useState(null);
+    const {selectedItem, setSelectedItem} = useContext(SelectedItemContext);
     const [filters, setFilters] = useState({
         text: "",
         userItemsOnly: false
@@ -33,7 +33,7 @@ export default function ItemViewer({ user }) {
         setItems(items.map((item) => {
             return item.id === itemToUpdate.id ? itemToUpdate : item;
         }));
-        setSelctedItem(itemToUpdate);
+        setSelectedItem(itemToUpdate);
     }
 
     //console.log(filters);
@@ -41,10 +41,10 @@ export default function ItemViewer({ user }) {
     return (
         <>
             <div id="item-card-container">
-                <ItemCardDetail user={user} item={selectedItem} onUpdate={updateItem}/>
+                <ItemCardDetail user={user} item={selectedItem} onUpdate={allowEdits ? updateItem : null}/>
                 <div>
                     <ItemFilter filters={filters} onChange={handleChange}/>
-                    <ItemList user={user} items={items} filters={filters} onSelectItem={setSelctedItem}/>
+                    <ItemList user={user} items={items} filters={filters} onSelectItem={setSelectedItem}/>
                 </div>
             </div>
         </>

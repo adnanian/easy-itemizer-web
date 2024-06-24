@@ -1,10 +1,10 @@
 import { placeholderImages, quickInlineStyles } from "../../helpers";
 import "../../styles/components/ItemCardDetail.css";
 import BigText from "../BigText";
-import {useModalManager, useScreenSize} from "../../helperHooks";
+import { useModalManager, useScreenSize } from "../../helperHooks";
 import EditItemForm from "../../modal-children/EditItemForm";
 
-export default function ItemCardDetail({user, item, onUpdate}) {
+export default function ItemCardDetail({ user, item, onUpdate }) {
     // console.log(item);
 
     if (!item) {
@@ -22,7 +22,7 @@ export default function ItemCardDetail({user, item, onUpdate}) {
     });
 
     const modalOpeners = {
-        [ButtonId.EDIT_ITEM]: <EditItemForm item={item} onUpdate={handleUpdate} onClose={modalManager.clearView}/>,
+        [ButtonId.EDIT_ITEM]: <EditItemForm item={item} onUpdate={handleUpdate} onClose={modalManager.clearView} />,
         [ButtonId.DELETE_ITEM]: null,
         [ButtonId.REPORT]: null
     }
@@ -35,7 +35,7 @@ export default function ItemCardDetail({user, item, onUpdate}) {
         onUpdate(itemToUpdate);
     }
 
-    const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
+    const { scaleByWidth, scaleByHeight, scaleByRatio } = useScreenSize();
 
     const detailWrapperSizing = {
         padding: `${scaleByHeight(10, 'px')} ${scaleByWidth(15, 'px')}`
@@ -52,15 +52,15 @@ export default function ItemCardDetail({user, item, onUpdate}) {
     };
 
     return (
-        <div 
-            id="detailed-item-card" 
+        <div
+            id="detailed-item-card"
             className="three-d-round-border"
             style={detailWrapperSizing}
         >
-            <h1 style={{fontSize: scaleByRatio(3.2, 'em')}}>{item.name}</h1>
+            <h1 style={{ fontSize: scaleByRatio(3.2, 'em') }}>{item.name}</h1>
             <div id="detail-wrapper">
-                <img 
-                    src={item?.image_url || placeholderImages.item} 
+                <img
+                    src={item?.image_url || placeholderImages.item}
                     className="round-border"
                     style={imageSizing}
                 />
@@ -101,35 +101,38 @@ export default function ItemCardDetail({user, item, onUpdate}) {
                         style={quickInlineStyles.rectangularPad}
                     >
                     </textarea>
-                    <div className="button-group">
-                        {item.user_id === user.id ? (
-                            <>
-                                <button
-                                    id={ButtonId.EDIT_ITEM}
-                                    title="Edit item information."
-                                    onClick={handleClick}
-                                >
-                                    &#128393;
-                                    Edit
-                                </button>
-                                <button
-                                    id={ButtonId.DELETE_ITEM}
-                                    title="Delete the item from the system."
-                                    onClick={handleClick}
-                                >
-                                    &#128465;
-                                    Delete
-                                </button>
-                            </>
-                        ) : <button
+                    {!onUpdate ? null : (
+                        <div className="button-group">
+                            {item.user_id === user.id ? (
+                                <>
+                                    <button
+                                        id={ButtonId.EDIT_ITEM}
+                                        title="Edit item information."
+                                        onClick={handleClick}
+                                    >
+                                        &#128393;
+                                        Edit
+                                    </button>
+                                    <button
+                                        id={ButtonId.DELETE_ITEM}
+                                        title="Delete the item from the system."
+                                        onClick={handleClick}
+                                    >
+                                        &#128465;
+                                        Delete
+                                    </button>
+                                </>
+                            ) : <button
                                 id={ButtonId.REPORT}
                                 title="Report this item for inappropriate content."
                                 onClick={handleClick}
                             >
                                 &#127988;
                                 Report
-                            </button>}
-                    </div>
+                            </button>
+                            }
+                        </div>
+                    )}
                 </div>
             </div>
             {modalManager.modal}

@@ -3,6 +3,7 @@ import { correctRoute } from "./helpers";
 
 const UserContext = createContext();
 const ItemContext = createContext();
+const SelectedItemContext = createContext();
 
 /**
  * Articles of reference: 
@@ -18,6 +19,7 @@ const SuperProvider = ({ children }) => {
 
     const [currentUser, setCurrentUser] = useState(null);
     const [items, setItems] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     useEffect(() => {
         fetch(correctRoute("/check_session"))
@@ -57,10 +59,12 @@ const SuperProvider = ({ children }) => {
     return (
         <UserContext.Provider value={{ currentUser, login, logout }}>
             <ItemContext.Provider value={{items, setItems}}>
-                {children}
+                <SelectedItemContext.Provider value={{selectedItem, setSelectedItem}}>
+                    {children}
+                </SelectedItemContext.Provider>
             </ItemContext.Provider>
         </UserContext.Provider>
     )
 };
 
-export { UserContext, ItemContext, SuperProvider };
+export { UserContext, ItemContext, SelectedItemContext, SuperProvider };

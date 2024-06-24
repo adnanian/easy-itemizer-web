@@ -191,3 +191,18 @@
     border-color: cyan;
     border-width: 2px;
 }
+
+.org-radio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.radio-div  * {
+    margin: 5px !important;
+}
+
+#existing-item-form input {
+    width: 50%;
+}

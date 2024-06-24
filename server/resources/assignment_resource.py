@@ -20,7 +20,7 @@ class AssignmentResource(Resource):
             )
             db.session.add(new_assignment)
             db.session.commit()
-            return new_assignment.to_dict(), 201
+            return {"assignment": new_assignment.to_dict()}, 201
         except ValueError as e:
             print(e)
             return {"message": "422 Unprocessable Entity"}, 422

@@ -47,6 +47,8 @@ export default function Organization() {
     function addAssignment(data) {
         const item = data["item"]
         const assignmentToAdd = data["assignment"]
+        console.log(item);
+        console.log(assignmentToAdd);
         if (item) {
             setItems([...items, item]);
         }

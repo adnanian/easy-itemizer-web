@@ -58,25 +58,29 @@ export default function ItemFormContainer({orgId, user, onAdd, onClose}) {
     
     return (
         <>
-            <div>
-                <input
-                    id="new-item"
-                    name="new-item"
-                    type="radio"
-                    value={formRadioValues.new}
-                    onChange={handleChange}
-                    checked={form===formRadioValues.new}
-                />
-                <span>Create a New Item</span>
-                <input
-                    id="existing-item"
-                    name="existing-item"
-                    type="radio"
-                    value={formRadioValues.existing}
-                    onChange={handleChange}
-                    checked={form===formRadioValues.existing}
-                />
-                <span>Add an Existing Item</span>
+            <div className="org-radio">
+                <div className="radio-div">
+                    <input
+                        id="new-item"
+                        name="new-item"
+                        type="radio"
+                        value={formRadioValues.new}
+                        onChange={handleChange}
+                        checked={form===formRadioValues.new}
+                    />
+                    <span>Create a New Item</span>
+                </div>
+                <div className="radio-div">
+                    <input
+                        id="existing-item"
+                        name="existing-item"
+                        type="radio"
+                        value={formRadioValues.existing}
+                        onChange={handleChange}
+                        checked={form===formRadioValues.existing}
+                    />
+                    <span>Add an Existing Item</span>
+                </div>
             </div>
             {formRadio[form]}
         </>
