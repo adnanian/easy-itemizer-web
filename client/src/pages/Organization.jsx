@@ -78,7 +78,6 @@ export default function Organization() {
         VIEW_MEMBERS: "member-list-button",
         SEND_UPDATE: "update-button",
         ADD: "add-button",
-        REMOVE: "remove-button", // for admins to remove managed items from the organization.
         VIEW_REQUESTS: "view-requests-button",
         VIEW_LOGS: "view-logs-button",
         ABOUT: "about-button", // View organization description
@@ -204,14 +203,6 @@ export default function Organization() {
                     {
                         userMember.role === MemberRole.REGULAR ? null : (
                             <>
-                                <button
-                                    id={ButtonId.REMOVE}
-                                    className={orgControlsClassName}
-                                    onClick={handleOrgControlClick}
-                                    title=""
-                                >
-                                    Remove Item
-                                </button>
                                 <button
                                     id={ButtonId.VIEW_REQUESTS}
                                     className={orgControlsClassName}

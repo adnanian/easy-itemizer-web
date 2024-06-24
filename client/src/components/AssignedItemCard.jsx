@@ -103,13 +103,22 @@ export default function AssignedItemCard({assignment, currentUserRegular, onUpda
                     </button>
                     {
                         currentUserRegular ? null : (
-                            <button
-                                className={"quantity-changer edit-q-button"}
-                                onClick={handleClick}
-                                title="Edit the enough threshold for this item."
-                            >
-                                &#128393;
-                            </button>
+                            <>
+                                <button
+                                    className={"quantity-changer edit-q-button"}
+                                    onClick={handleClick}
+                                    title="Edit the enough threshold for this item."
+                                >
+                                    &#128393;
+                                </button>
+                                <button
+                                    className={"quantity-changer trash-button"}
+                                    onClick={handleClick}
+                                    title="Remove this item from your organization."
+                                >
+                                    &#128465;
+                                </button>
+                            </>
                         )
                     }
                     <button 

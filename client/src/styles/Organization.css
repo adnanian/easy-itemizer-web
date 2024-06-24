@@ -101,9 +101,9 @@
 .quantity-changer {
     color: black;
     font-weight: bolder;
-    font-size: 30px;
+    font-size: 25px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0 10px !important;
+    margin: 0 3px !important;
 }
 
 .minus-button {
@@ -126,6 +126,15 @@
 
 .edit-q-button:hover {
     background: linear-gradient(blue, magenta);
+}
+
+.trash-button {
+    background-color: yellow;
+}
+
+.trash-button:hover {
+    background: linear-gradient(black, white);
+    color: yellow;
 }
 
 .plus-button {
