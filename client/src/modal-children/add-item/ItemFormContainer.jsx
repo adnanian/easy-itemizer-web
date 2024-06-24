@@ -1,5 +1,6 @@
 import { useState } from "react";
 import NewItemForm from "./NewItemForm";
+import ExistingItemForm from "./ExistingItemForm";
 
 /**
  * Creates a modal form allowing users to add new items to the screen.
@@ -14,7 +15,7 @@ import NewItemForm from "./NewItemForm";
  * @param {Function} props.onClose the callback function to execute when closing the modal form.
  * @returns a modal child that allows the user to switch between @function NewItemForm and @function ExistingItemForm.
  */
-export default function ItemFormContainer({orgId, items, onAdd, onClose}) {
+export default function ItemFormContainer({orgId, user, onAdd, onClose}) {
 
     const addAndClose = (data) => {
         if (data) {
@@ -35,7 +36,13 @@ export default function ItemFormContainer({orgId, items, onAdd, onClose}) {
                 onAdd={addAndClose}
             />
         ),
-        [formRadioValues.existing]: null
+        [formRadioValues.existing]: (
+            <ExistingItemForm
+                orgId={orgId}
+                user={user}
+                onAdd={addAndClose}
+            />
+        )
     }
 
     const [form, setForm] = useState(formRadioValues.new);

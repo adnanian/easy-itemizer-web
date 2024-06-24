@@ -96,7 +96,7 @@ export default function Organization() {
         [ButtonId.ADD]: (
             <ItemFormContainer
                 orgId={orgId}
-                item={items}
+                user={currentUser}
                 onAdd={addAssignment}
                 onClose={modalManager.clearView}
             />
