@@ -16,7 +16,7 @@ export default function Home() {
             <StyledTitle text={welcomeTitle} />
             {currentUser ? (
                 <ItemViewer user={currentUser} />
-            ) : <h1>Log in to manage items and organizations!</h1>}
+            ) : <h1 id="login-prompt">Log in to manage items and organizations!</h1>}
         </div>
     )
 }

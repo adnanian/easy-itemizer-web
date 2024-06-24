@@ -28,6 +28,13 @@
     margin: 10px auto;
 }
 
+@media (prefers-color-scheme: light) {
+    #detailed-item-card {
+        background-color: darkgray;
+        color: black;
+    }
+}
+
 @media screen and (max-width: 1366px) {
 
     #detail-block {

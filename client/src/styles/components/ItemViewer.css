@@ -75,3 +75,13 @@ div#item-search input[type="text"] {
     display: flex;
     flex-direction: row;
 }
+
+@media (prefers-color-scheme: light) {
+    div#item-search {
+        background: radial-gradient(#fff, #eee, #ddd, #ccc, #bbb);
+    }
+
+    #item-list button {
+        background-color: #b7c274;
+    }
+}

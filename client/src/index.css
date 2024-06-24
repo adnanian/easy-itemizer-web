@@ -121,22 +121,6 @@ input.input-error, select.input-error {
   padding: 0 10px;
 }
 
-
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
-
 /* StyledTitle */
 .page-title {
   align-self: flex-start;
@@ -285,6 +269,27 @@ dialog > button {
 
 dialog button:hover {
   background: linear-gradient(cyan, blue);
+}
+
+.circle {
+  border-radius: 50px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+
+  dialog {
+    background: linear-gradient(to bottom right, white, #f9f9f9, cyan, #f9f9f9, white)
+  }
 }
 
 @media screen and (max-width: 1366px) {

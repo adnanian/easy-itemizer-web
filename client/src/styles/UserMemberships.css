@@ -52,7 +52,7 @@
 .membership-container img {
     width: 100px;
     height: 100px;
-    border-radius: 50px;
+    /* border-radius: 50px; */
 }
 
 .org-link:hover {
@@ -61,6 +61,18 @@
 
 .membership-container:hover {
     background: linear-gradient(to bottom left, blue, blueviolet, violet, indigo, violet, blueviolet, blue)
+}
+
+@media (prefers-color-scheme: light) {
+    .membership-container {
+        background: linear-gradient(to right bottom, #b7c274, #d0b0b0, #ff7f7f);
+        color: #020;
+    }
+
+    .membership-container:hover {
+        background: linear-gradient(to bottom left, blue, blueviolet, violet, indigo, violet, blueviolet, blue);
+        color: white;
+    }
 }
 
 @media screen and (max-width: 1366px) {

@@ -142,5 +142,52 @@
     text-align: center;
 }
 
+.table-container {
+    width: fit-content;
+    height: fit-content;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 5px;
+}
 
+.you {
+    background-color: lime;
+    color: black;
+    font-weight: bold;
+}
 
+.owner {
+    background-color: yellow;
+    color: black;
+    font-weight: bolder;
+}
+
+.youre-the-owner {
+    background: linear-gradient(to right bottom, yellow, lime);
+    color: black;
+    font-weight: bolder;
+}
+
+.admin {
+    background-color: red;
+    font-weight: bolder;
+}
+
+.youre-an-admin {
+    background: linear-gradient(to right bottom, red, green);
+    font-weight: bolder;
+}
+
+.button-block-grid {
+    display: grid;
+    grid-template-rows: 37px 37px;
+}
+
+.button-block-grid button {
+    width: 100%;
+    margin: 1px !important;
+    padding: 0 !important;
+    border-style: double;
+    border-color: cyan;
+    border-width: 2px;
+}

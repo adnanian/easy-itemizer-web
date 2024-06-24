@@ -19,14 +19,13 @@ class Organization(db.Model, SerializerMixin):
     """
     
     serialize_rules = (
-        '-memberships.user',
         '-memberships.organization',
-        '-users.memberships',
-        '-users.organizations',
+        '-users',
         '-assignments.organization',
         '-assignments.item_id',
         '-assignments.organization_id'
         '-items',
+        '-requests.user.items',
         '-requests.organization',
         '-organization_logs.organization'
     )
