@@ -14,7 +14,7 @@ class OrganizationLog(db.Model, SerializerMixin):
 
     __tablename__ = 'organization_logs'
     id = db.Column(db.Integer, primary_key=True)
-    contents = db.Column(db.String, nullable=False)
+    contents = db.Column(db.ARRAY(db.String))
     occurrence = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     # Foreign Key
     organization_id = db.Column(db.Integer, db.ForeignKey('organizations.id'), nullable=False)

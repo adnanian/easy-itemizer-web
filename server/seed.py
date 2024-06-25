@@ -185,8 +185,10 @@ def clear_tables():
     Assignment.query.delete()
     Membership.query.delete()
     Item.query.delete()
+    OrganizationLog.query.delete()
     Organization.query.delete()
     User.query.delete()
+    db.session.commit()
     
     print("Old data deletion complete.")
 
@@ -313,6 +315,7 @@ def seed_relational_models():
     users = User.query.filter_by(is_banned=False).all()
     items = Item.query.all()
     orgs = Organization.query.all()
+    logs = []
     println_starting_seed("memberships")
     println_starting_seed("assignments")
     println_starting_seed("requests")
@@ -347,6 +350,17 @@ def seed_relational_models():
                 role=role
             )
             db.session.add(membership)
+            if (n == 0):
+                log = OrganizationLog(
+                    contents = [f"{user.username} created a new organization: \'{org.name}\'!"],
+                    organization_id = org.id
+                )
+            else:
+                log = OrganizationLog(
+                    contents = [f"{user.username} has joined \'{org.name}\'!"],
+                    organization_id = org.id
+                )
+            logs.append(log)
             print_progress(True, "M")
 
         for n in range(assignment_size):
@@ -361,6 +375,16 @@ def seed_relational_models():
                 enough_threshold=enough_threshold
             )
             db.session.add(assignment)
+            logs.append(
+                OrganizationLog(
+                    contents=[
+                        "An item has been assigned by the seed to this organization",
+                        f"Name: {item.name}",
+                        f"Part #: {item.part_number}"
+                    ],
+                    organization_id=org.id
+                )
+            )
             print_progress(n < assignment_size - 1 or request_size > 0, "A")
 
         for n in range(request_size):
@@ -372,12 +396,24 @@ def seed_relational_models():
                 reason_to_join=fake.sentence()
             )
             db.session.add(request)
+            logs.append(
+                OrganizationLog(
+                    contents=[
+                        f"User, {user.username}, has requested to join this organization."
+                    ],
+                    organization_id=org.id
+                )
+            )
             print_progress(n < request_size - 1, "R")
 
+    db.session.add_all(logs)
     db.session.commit()
     print_ending_seed("memberships")
     print_ending_seed("assignments")
     print_ending_seed("requests")
+    print("\n")
+    for log in logs:
+        print(log)
 
 if __name__ == "__main__":
     with app.app_context():
