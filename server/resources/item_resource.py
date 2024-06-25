@@ -1,9 +1,9 @@
-from flask import request, session, render_template_string
+from flask import request, session, render_template_string, g
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from resources.dry_resource import DRYResource
 from config import db, api, send_email
-from models.models import Item, Assignment, User
+from models.models import Item, Assignment, User, OrganizationLog
 
 
 class ItemResource(Resource):
@@ -63,6 +63,29 @@ class ItemById(DRYResource):
 
     def __init__(self):
         super().__init__(Item)
+        
+    def delete(self, id):
+        record = g.record
+        assignments = Assignment.query.filter_by(item_id = record.id).all()
+        db.session.delete(record)
+        db.session.commit()
+        logs = []
+        for assignment in assignments:
+            print(assignment.id, flush=True)
+            log = OrganizationLog(
+                contents = f"""
+                    Owner of item \'{assignment.item.name}\' has been removed.\n
+                    Part Number: {assignment.item.part_number};\n
+                    Current Quantity: {assignment.current_quantity};\n
+                    Enough Threshold: {assignment.enough_threshold}
+                """,
+                organization_id = assignment.organization_id
+            )
+            logs.append(log)
+        if (len(logs)):
+            db.session.add_all(logs)
+            db.session.commit()
+        return {'message': f'{self.model.__name__} successfully deleted.'}, 204
         
 class ReportItem(Resource):
     def post(self):

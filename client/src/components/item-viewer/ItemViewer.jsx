@@ -36,12 +36,19 @@ export default function ItemViewer({ user, allowEdits=false }) {
         setSelectedItem(itemToUpdate);
     }
 
+    function deleteItem(itemToDelete) {
+        setItems(items.filter((item) => {
+            return item.id !== itemToDelete.id
+        }));
+        setSelectedItem(null);
+    }
+
     //console.log(filters);
 
     return (
         <>
             <div id="item-card-container">
-                <ItemCardDetail user={user} item={selectedItem} onUpdate={allowEdits ? updateItem : null}/>
+                <ItemCardDetail user={user} item={selectedItem} onUpdate={allowEdits ? updateItem : null} onDelete={deleteItem}/>
                 <div>
                     <ItemFilter filters={filters} onChange={handleChange}/>
                     <ItemList user={user} items={items} filters={filters} onSelectItem={setSelectedItem}/>

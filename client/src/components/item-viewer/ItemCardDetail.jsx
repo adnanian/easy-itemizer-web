@@ -4,8 +4,9 @@ import BigText from "../BigText";
 import { useModalManager, useScreenSize } from "../../helperHooks";
 import EditItemForm from "../../modal-children/EditItemForm";
 import ReportForm from "../../modal-children/ReportForm";
+import ItemRemover from "../../modal-children/confirm-deletion/ItemRemover";
 
-export default function ItemCardDetail({ user, item, onUpdate }) {
+export default function ItemCardDetail({ user, item, onUpdate, onDelete }) {
     // console.log(item);
 
     if (!item) {
@@ -24,7 +25,7 @@ export default function ItemCardDetail({ user, item, onUpdate }) {
 
     const modalOpeners = {
         [ButtonId.EDIT_ITEM]: <EditItemForm item={item} onUpdate={handleUpdate} onClose={modalManager.clearView} />,
-        [ButtonId.DELETE_ITEM]: null,
+        [ButtonId.DELETE_ITEM]: <ItemRemover item={item} onDelete={onDelete} onClose={modalManager.clearView}/>,
         [ButtonId.REPORT]: <ReportForm item={item} onClose={modalManager.clearView}/>
     }
 
