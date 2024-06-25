@@ -72,6 +72,20 @@ export default function Organization() {
         });
     }
 
+    /**
+     * Removes an assignment from the organization's assignments array.
+     * 
+     * @param {Object} assignmentToDelete the assignment to delete.
+     */
+    function deleteAssignment(assignmentToDelete) {
+        setOrganization({
+            ...organization,
+            assignments: organization.assignments.filter((assignment) => {
+                return assignment.id !== assignmentToDelete.id;
+            })
+        });
+    }
+
     const ButtonId = Object.freeze({
         BACK: "back-button",
         LEAVE: "leave-button",
@@ -79,6 +93,7 @@ export default function Organization() {
         SEND_UPDATE: "update-button",
         ADD: "add-button",
         VIEW_REQUESTS: "view-requests-button",
+        INVITE: "invite-button",
         VIEW_LOGS: "view-logs-button",
         ABOUT: "about-button", // View organization description
         EDIT: "edit-button",
@@ -136,6 +151,7 @@ export default function Organization() {
                     assignment={assignment} 
                     currentUserRegular={userMember.role === MemberRole.REGULAR}
                     onUpdate={updateAssignment}
+                    onDelete={deleteAssignment}
                 />
             </li>
         )
@@ -210,6 +226,14 @@ export default function Organization() {
                                     title=""
                                 >
                                     View Requests
+                                </button>
+                                <button
+                                    id={ButtonId.INVITE}
+                                    className={orgControlsClassName}
+                                    onClick={handleOrgControlClick}
+                                    title=""
+                                >
+                                    Invite Others
                                 </button>
                                 <button
                                     id={ButtonId.VIEW_LOGS}

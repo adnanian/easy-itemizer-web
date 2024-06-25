@@ -63,6 +63,15 @@ class ItemById(DRYResource):
 
     def __init__(self):
         super().__init__(Item)
+        
+class ReportItem(Resource):
+    def post(self):
+        pass
+        item_in_question = Item.query.filter_by(id=id).first()
+        if (item_in_question):
+            pass
+        else:
+            return {"message": "404 Not Found"}, 404
 
 
 api.add_resource(ItemResource, "/items", endpoint="items")

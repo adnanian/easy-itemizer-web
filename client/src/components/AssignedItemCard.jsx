@@ -1,9 +1,10 @@
 import { useModalManager } from "../helperHooks";
 import { placeholderImages } from "../helpers";
+import AssignmentRemover from "../modal-children/confirm-deletion/AssignmentRemover";
 import AdjustQuantityForm from "../modal-children/edit-assignment/AdjustQuantityForm";
 import AdjustThresholdForm from "../modal-children/edit-assignment/AdjustThresholdForm";
 
-export default function AssignedItemCard({assignment, currentUserRegular, onUpdate}) {
+export default function AssignedItemCard({assignment, currentUserRegular, onUpdate, onDelete}) {
     const modalManager = useModalManager();
     
     class QuantityStatus {
@@ -30,7 +31,7 @@ export default function AssignedItemCard({assignment, currentUserRegular, onUpda
     function handleClick(e) {
         const subClass = e.target.className.substring("quantity-changer ".length);
         const operation = subClass.substring(0,subClass.indexOf('-'));
-        // console.log(subClass.substring(0,subClass.indexOf('-')));
+        console.log(subClass.substring(0,subClass.indexOf('-')));
         switch (operation) {
             case "plus":
             case "minus":
@@ -44,7 +45,7 @@ export default function AssignedItemCard({assignment, currentUserRegular, onUpda
                     />
                 );
                 break;
-            default:
+            case "edit":
                 modalManager.showView(
                     <AdjustThresholdForm
                         assignmentId={assignment.id}
@@ -55,6 +56,17 @@ export default function AssignedItemCard({assignment, currentUserRegular, onUpda
                     />
                 );
                 break;
+            case "trash":
+                modalManager.showView(
+                    <AssignmentRemover
+                        assignment={assignment}
+                        onDelete={onDelete}
+                        onClose={modalManager.clearView}
+                    />
+                )
+                break;
+            default:
+                throw new Error("Wrong button class associated with this event.");
         }
     }
 
