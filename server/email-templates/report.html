@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <style>
+            table, tr, td {
+                border-style: solid;
+                padding: 0 3px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>An Item Has Been Reported as Suspicious</h1>
+        <p>A user has reported an item that he/she may believes to be
+            inappropriate and violates the terms and services of Easy Itemizer.
+            Please review the information below:
+        </p>
+        <br/>
+        <table>
+            <h2>User Info:</h2>
+            <tbody>
+                <tr>
+                    <td>First Name</td>
+                    <td>{{first_name}}</td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td>{{last_name}}</td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td>{{username}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{email}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <table>
+            <h2>Reported Item:</h2>
+            <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td>{{item_name}}</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{description}}</td>
+                </tr>
+                <tr>
+                    <td>Part Number</td>
+                    <td>{{part_number}}</td>
+                </tr>
+                <tr>
+                    <td>Visibility</td>
+                    <td>{{visibility}}</td>
+                </tr>
+                <tr>
+                    <td>Added By</td>
+                    <td>{{item_adder}}</td>
+                </tr>
+            </tbody>
+            <h3>Image below:</h3>
+            <img src="{{item_image}}" alt="Image of reported item."/>
+        </table>
+        <br/>
+        <h2>Reason for reporting item: </h2>
+        <p>
+            {{report_reason}}
+        </p>
+    </body>
+</html>

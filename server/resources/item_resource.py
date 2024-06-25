@@ -1,9 +1,9 @@
-from flask import request, session
+from flask import request, session, render_template_string
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from resources.dry_resource import DRYResource
-from config import db, api
-from models.models import Item, Assignment
+from config import db, api, send_email
+from models.models import Item, Assignment, User
 
 
 class ItemResource(Resource):
@@ -67,9 +67,32 @@ class ItemById(DRYResource):
 class ReportItem(Resource):
     def post(self):
         pass
-        item_in_question = Item.query.filter_by(id=id).first()
+        item_in_question = Item.query.filter_by(id=request.get_json().get("item_id")).first()
         if (item_in_question):
-            pass
+            user = User.query.filter_by(id=session["user_id"]).first()
+            with open("./email-templates/report.html", "r") as file:
+                template_content = file.read()
+            html = render_template_string(
+                template_content,
+                first_name = user.first_name,
+                last_name = user.last_name,
+                username = user.username,
+                email = user.email,
+                item_name = item_in_question.name,
+                description = item_in_question.description,
+                part_number = item_in_question.part_number,
+                visibility = "Public" if item_in_question.is_public else "Private",
+                item_adder = item_in_question.user.username,
+                item_image = item_in_question.image_url,
+                report_reason = request.get_json().get("submission_text")
+            )
+            subject = f"Item {item_in_question.id} Reported as Suspicious; Please Review"
+            send_email(
+                subject,
+                ["support@easyitemizer.com"],
+                html
+            )
+            return {"message": "Item reported!"}, 201
         else:
             return {"message": "404 Not Found"}, 404
 
@@ -77,3 +100,4 @@ class ReportItem(Resource):
 api.add_resource(ItemResource, "/items", endpoint="items")
 api.add_resource(AddItemAndAssignment, "/add_new_item")
 api.add_resource(ItemById, "/items/<int:id>", endpoint="item_by_id")
+api.add_resource(ReportItem, "/report_item")

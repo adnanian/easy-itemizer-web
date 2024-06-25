@@ -3,6 +3,7 @@ import "../../styles/components/ItemCardDetail.css";
 import BigText from "../BigText";
 import { useModalManager, useScreenSize } from "../../helperHooks";
 import EditItemForm from "../../modal-children/EditItemForm";
+import ReportForm from "../../modal-children/ReportForm";
 
 export default function ItemCardDetail({ user, item, onUpdate }) {
     // console.log(item);
@@ -24,7 +25,7 @@ export default function ItemCardDetail({ user, item, onUpdate }) {
     const modalOpeners = {
         [ButtonId.EDIT_ITEM]: <EditItemForm item={item} onUpdate={handleUpdate} onClose={modalManager.clearView} />,
         [ButtonId.DELETE_ITEM]: null,
-        [ButtonId.REPORT]: null
+        [ButtonId.REPORT]: <ReportForm item={item} onClose={modalManager.clearView}/>
     }
 
     function handleClick(e) {
