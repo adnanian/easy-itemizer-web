@@ -58,7 +58,7 @@ export default function ItemList({user, items, filters, onSelectItem}) {
     /**
      * 
      */
-    const itemCards = filteredItems()?.sort(sortByName).map((item) => {
+    const itemCards = filteredItems()?.toSorted(sortByName).map((item) => {
         return (
             <li 
                 key={item.id} 

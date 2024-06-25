@@ -1,5 +1,5 @@
-import { useScreenSize } from "../helperHooks";
-import { MemberRole, placeholderImages } from "../helpers";
+import { useScreenSize } from "../../helperHooks";
+import { MemberRole, placeholderImages } from "../../helpers";
 
 export default function MembershipsTable({members, userMember, onUpdate, onDelete}) {
 
@@ -40,7 +40,7 @@ export default function MembershipsTable({members, userMember, onUpdate, onDelet
         if (b.role === MemberRole.ADMIN) return 1;
     }
 
-    const memberRows = members.sort(sortByNameAndRole).map((member, memberIndex) => {
+    const memberRows = members.toSorted(sortByNameAndRole).map((member, memberIndex) => {
         // console.log(member.user);
         let rowClass;
         if (userMember.role !== MemberRole.REGULAR && member.user_id === userMember.user_id) {

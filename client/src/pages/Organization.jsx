@@ -7,8 +7,9 @@ import { useLoadingTimer, useModalManager } from "../helperHooks";
 import StyledTitle from "../components/StyledTitle";
 import "../styles/Organization.css";
 import AssignedItemCard from "../components/AssignedItemCard";
-import MembershipsTable from "../modal-children/MembershipsTable";
+import MembershipsTable from "../modal-children/tables/MembershipsTable";
 import ItemFormContainer from "../modal-children/add-item/ItemFormContainer";
+import LogsTable from "../modal-children/tables/LogsTable";
 
 export default function Organization() {
     const { orgId } = useParams();
@@ -116,6 +117,9 @@ export default function Organization() {
                 onAdd={addAssignment}
                 onClose={modalManager.clearView}
             />
+        ),
+        [ButtonId.VIEW_LOGS]: (
+            <LogsTable logs={organization.organization_logs}/>
         )
     });
 
@@ -144,7 +148,7 @@ export default function Organization() {
         return 0;
     };
 
-    const assignedItemCards = organization.assignments?.sort(sortByName).map((assignment) => {
+    const assignedItemCards = organization.assignments?.toSorted(sortByName).map((assignment) => {
         return (
             <li key={assignment.id}>
                 <AssignedItemCard 
