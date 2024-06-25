@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuantityAdjuster } from "../../helperHooks";
+import { correctRoute } from "../../helpers";
 
 /**
  * TODO
@@ -7,7 +8,7 @@ import { useQuantityAdjuster } from "../../helperHooks";
  * @param {*} param0 
  * @returns 
  */
-export default function AdjustQuantityForm({operation, currentQuantity, assignmentId, onUpdate, onClose}) {
+export default function AdjustQuantityForm({ operation, currentQuantity, assignmentId, onUpdate, onClose }) {
     const quantityAdjuster = useQuantityAdjuster(operation);
     const [adjustment, setAdjustment] = useState(1);
     const maxAdjustment = quantityAdjuster.targetOperation === "MINUS" ? currentQuantity : (Number.MAX_SAFE_INTEGER - currentQuantity);
@@ -16,21 +17,21 @@ export default function AdjustQuantityForm({operation, currentQuantity, assignme
     function handleSubmit(e) {
         e.preventDefault();
         const newQuantity = quantityAdjuster.adjustQuantity(currentQuantity, adjustment);
-        fetch(`/api/assignments/${assignmentId}`, {
+        fetch(correctRoute(`/assignments/${assignmentId}`), {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 current_quantity: newQuantity
             })
         })
-        .then((response) => response.json())
-        .then((data) => {
-            onUpdate(data);
-        })
-        .finally(() => {
-            setAdjustment(1);
-            onClose();
-        });
+            .then((response) => response.json())
+            .then((data) => {
+                onUpdate(data);
+            })
+            .finally(() => {
+                setAdjustment(1);
+                onClose();
+            });
     }
 
     return (
