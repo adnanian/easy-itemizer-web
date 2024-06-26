@@ -13,6 +13,7 @@ from sqlalchemy import MetaData
 import secrets
 from itsdangerous import URLSafeTimedSerializer
 from dotenv import load_dotenv
+from apscheduler.schedulers.background import BackgroundScheduler
 
 load_dotenv()
 
@@ -58,6 +59,7 @@ app.config["MAIL_USE_SSL"] = False
 app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_DEFAULT_SENDER")
 app.config["SECURITY_PASSWORD_SALT"] = os.getenv("SECURITY_PASSWORD_SALT")
 mail = Mail(app)
+scheduler = BackgroundScheduler()
 
 
 # Define metadata, instantiate db

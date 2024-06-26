@@ -14,11 +14,22 @@ from flask import (
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 import os
+import datetime
+import pytz
 
 # Local imports
 from models.models import *
 from resources.resources import *
-from config import app, db, api, generate_confirmation_token, confirm_token, send_email
+from config import app, db, api, generate_confirmation_token, confirm_token, send_email, scheduler
+
+LOG_DURATION_LIMIT = 7
+""" The maximum number of days that a log remains in the organization.
+    This should be more than enough time for admins to read through all
+    their logs.
+"""
+
+SCHEDULER_INTERVAL = 86400
+""" The standard interval, in seconds, to execute a background job. """
 
 @app.before_request
 def check_if_logged_in():
@@ -148,8 +159,6 @@ class Login(Resource):
             print(f"{str(e)}")
             return {"message": "401 Unauthorized"}, 401
 
-        
-        
 
 class Logout(Resource):
     """Logs user out of the webiste."""
@@ -188,6 +197,24 @@ class Index(Resource):
         print(f"The CWD at index call is: {os.getcwd()}", flush=True)
         return send_from_directory("../client/dist", "index.html")
 
+
+def delete_old_logs():
+    """
+    TODO
+
+    Articles of Reference:
+    https://www.geeksforgeeks.org/how-to-make-a-timezone-aware-datetime-object-in-python/
+    https://stackoverflow.com/questions/21214270/how-to-schedule-a-function-to-run-every-hour-on-flask
+    https://apscheduler.readthedocs.io/en/3.x/userguide.html
+    https://stackoverflow.com/questions/63693872/flask-how-can-i-delete-data-ranging-back-x-days
+    """
+    with app.app_context():
+        cutoff = datetime.datetime.now(pytz.utc) - datetime.timedelta(days = LOG_DURATION_LIMIT)
+        OrganizationLog.query.filter(OrganizationLog.occurrence <= cutoff).delete()
+        db.session.commit()
+        print("Old logs have been cleared.", flush=True)
+
+
 api.add_resource(Index, "/")
 api.add_resource(Signup, "/signup")
 api.add_resource(Confirm, "/confirm/<string:token>")
@@ -195,6 +222,8 @@ api.add_resource(Login, "/login")
 api.add_resource(Logout, "/logout")
 api.add_resource(CheckSession, "/check_session")
 
+scheduler.add_job(delete_old_logs, "interval", seconds=SCHEDULER_INTERVAL)
+scheduler.start()
 
 # With /api
 # api.add_resource(Signup, "/api/signup")
