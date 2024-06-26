@@ -31,6 +31,7 @@ class AddItemAndAssignment(Resource):
     #         dict: a JSONified dictionary of the created Item and its attributes, if creation successful, otherwise an error message.
         """
         try:
+            # Create item.
             new_item = Item(
                 name=request.get_json().get("name"),
                 description=request.get_json().get("description"),
@@ -41,6 +42,7 @@ class AddItemAndAssignment(Resource):
             )
             db.session.add(new_item)
             db.session.commit()
+            # Create assignment to item.
             new_assignment = Assignment(
                 item_id=new_item.id,
                 organization_id=request.get_json().get("organization_id"),
@@ -48,6 +50,17 @@ class AddItemAndAssignment(Resource):
                 enough_threshold=request.get_json().get("enough_threshold")
             )
             db.session.add(new_assignment)
+            db.session.commit()
+            # Create log.
+            log = OrganizationLog(
+                    contents=[
+                        "An item has been assigned by the seed to this organization",
+                        f"Name: {new_item.name}",
+                        f"Part #: {new_item.part_number}"
+                    ],
+                    organization_id=new_assignment.organization_id
+                )
+            db.session.add(log)
             db.session.commit()
             return {"item": new_item.to_dict(), "assignment": new_assignment.to_dict()}, 201
         except Exception as e:

@@ -56,9 +56,6 @@ class OrganizationById(DRYResource):
     
     def __init__(self):
         super().__init__(Organization)
-        
-    def get(self, id):
-        return super().get(id)
 
 api.add_resource(OrganizationCreator, "/organizations")
 api.add_resource(OrganizationById, "/organizations/<int:id>", endpoint="organization_by_id")

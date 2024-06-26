@@ -21,6 +21,7 @@ import pytz
 from models.models import *
 from resources.resources import *
 from config import app, db, api, generate_confirmation_token, confirm_token, send_email, scheduler
+from helpers import ModelLogMap
 
 LOG_DURATION_LIMIT = 7
 """ The maximum number of days that a log remains in the organization.
@@ -39,10 +40,10 @@ def check_if_logged_in():
         JSON: if a user is not logged in, then an "Unauthorized" message will be returned.
     """
     # breakpoint()
-    print(f"Current endpoint: {request.endpoint}", flush=True)
+    # print(f"Current endpoint: {request.endpoint}", flush=True)
     endpoint_whitelist = ["signup", "login", "checksession", "confirm", "index", "static"]
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
-        print("Returning unauthorized message", flush=True)
+        # print("Returning unauthorized message", flush=True)
         return {"error": "Unauthorized! You must be logged in ree"}, 401
 
 
@@ -70,7 +71,12 @@ def get_record_by_id():
             return {
                 "error": f"{model.__name__} record of id, {id}, does not exist. Please try again later."
             }, 404
-    # print(request.endpoint)
+    # # print(request.endpoint)
+    
+@app.after_request
+def create_log(response):
+    print(request.method)
+    return response
 
 
 class Signup(Resource):
@@ -83,7 +89,7 @@ class Signup(Resource):
             dict: a JSONified dictionary of the created User and its attributes, if creation successful, otherwise an error message.
         """
         # Retrieve form inputs
-        print("Creating a new user. Standby...", flush=True)
+        # print("Creating a new user. Standby...", flush=True)
         try:
             new_user = User(
                 first_name=request.get_json().get("first_name"),
@@ -91,16 +97,16 @@ class Signup(Resource):
                 username=request.get_json().get("username"),
                 email=request.get_json().get("email"),
             )
-            print("Check 1 ", flush=True)
+            # print("Check 1 ", flush=True)
             new_user.password_hash = request.get_json().get("password")
-            print("Check 2", flush=True)
+            # print("Check 2", flush=True)
             db.session.add(new_user)
             db.session.commit()
-            print("User creation successful!", flush=True)
+            # print("User creation successful!", flush=True)
             # Send a confirmation token.
             token = generate_confirmation_token(new_user.email)
             confirm_url = url_for("confirm", token=token, _external=True)
-            #print(os.getcwd(), flush=True)
+            ## print(os.getcwd(), flush=True)
             #breakpoint()
             path_to_template = "./email-templates/activate.html"
             with open(path_to_template, "r") as file:
@@ -108,12 +114,12 @@ class Signup(Resource):
             html = render_template_string(template_content, confirm_url=confirm_url)
             #html = html = render_template_string(open("activate.html").read(), confirm_url=confirm_url)
             subject = "Please Verify Your Email"
-            print("About to send email", flush=True)
+            # print("About to send email", flush=True)
             send_email(subject, [new_user.email], html)
             return {"message": "A confirmation email has been sent via email."}, 201
         except (IntegrityError, ValueError) as e:
-            print(e)
-            print("BOO YOU STINK!")
+            # print(e)
+            # print("BOO YOU STINK!")
             return {"message": str(e)}, 422
 
 
@@ -144,7 +150,7 @@ class Login(Resource):
             JSON: the JSONified user object, if entered password is correct; an "Unauthorized" message otherwise.
         """
         login_name = request.get_json().get("username_or_email")
-        print(login_name, flush=True)
+        # print(login_name, flush=True)
         try:
             if login_name:
                 user = (
@@ -152,11 +158,11 @@ class Login(Resource):
                     or User.query.filter_by(email=login_name).first()
                 )
                 if user and user.authenticate(request.get_json().get("password")):
-                    print(user, flush=True)
+                    # print(user, flush=True)
                     session["user_id"] = user.id
                     return user.to_dict(), 200
         except Exception as e:
-            print(f"{str(e)}")
+            # print(f"{str(e)}")
             return {"message": "401 Unauthorized"}, 401
 
 
@@ -169,9 +175,9 @@ class Logout(Resource):
         Returns:
             _type_: _description_
         """
-        # print("About to log out.")
+        # # print("About to log out.")
         session["user_id"] = None
-        # print("Logging out")
+        # # print("Logging out")
         return {}, 204
 
 
@@ -188,13 +194,13 @@ class CheckSession(Resource):
         """
         if user := User.query.filter_by(id=session.get("user_id")).first():
             return user.to_dict(), 200
-        print("SUPERDUPERDAB", flush=True)
+        # print("SUPERDUPERDAB", flush=True)
         return {"message": "401 Unauthorized"}, 401
 
 
 class Index(Resource):
     def get(self):
-        print(f"The CWD at index call is: {os.getcwd()}", flush=True)
+        # print(f"The CWD at index call is: {os.getcwd()}", flush=True)
         return send_from_directory("../client/dist", "index.html")
 
 
@@ -212,7 +218,7 @@ def delete_old_logs():
         cutoff = datetime.datetime.now(pytz.utc) - datetime.timedelta(days = LOG_DURATION_LIMIT)
         OrganizationLog.query.filter(OrganizationLog.occurrence <= cutoff).delete()
         db.session.commit()
-        print("Old logs have been cleared.", flush=True)
+        # print("Old logs have been cleared.", flush=True)
 
 
 api.add_resource(Index, "/")
@@ -224,26 +230,6 @@ api.add_resource(CheckSession, "/check_session")
 
 scheduler.add_job(delete_old_logs, "interval", seconds=SCHEDULER_INTERVAL)
 scheduler.start()
-
-# With /api
-# api.add_resource(Signup, "/api/signup")
-# api.add_resource(Confirm, "/api/confirm/<string:token>")
-# api.add_resource(Login, "/api/login")
-# api.add_resource(Logout, "/api/logout")
-# api.add_resource(CheckSession, "/api/check_session")
-# api.add_resource(UserById, "/api/users/<int:id>")
-
-# With /api + endpoint
-# api.add_resource(Signup, "/signup")
-# api.add_resource(Confirm, "/confirm/<string:token>")
-# api.add_resource(Login, "/login")
-# api.add_resource(Logout, "/logout")
-# api.add_resource(CheckSession, "/check_session")
-# api.add_resource(UserById, "/users/<int:id>")
-
-# @app.route('/')
-# def index():
-#     return '<h1>Phase 5 Project ... In Progress</h1>'
 
 # Views go here! use either route!
 # @app.errorhandler(404)
