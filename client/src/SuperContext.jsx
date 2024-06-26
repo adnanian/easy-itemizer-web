@@ -57,7 +57,7 @@ const SuperProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ currentUser, login, logout }}>
+        <UserContext.Provider value={{ currentUser, setCurrentUser, login, logout }}>
             <ItemContext.Provider value={{items, setItems}}>
                 <SelectedItemContext.Provider value={{selectedItem, setSelectedItem}}>
                     {children}

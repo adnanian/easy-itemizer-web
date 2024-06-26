@@ -8,7 +8,13 @@ export default function LogsTable({logs}) {
         height: scaleByHeight(500, 'px')
     };
 
-    const logRows = logs.toReversed().map((log, logIndex) => {
+    const sortByTime = (logA, logB) => {
+        if (logA.occurrence < logB.occurrence) return -1;
+        if (logA.occurrence > logB.occurrence) return 1;
+        return 0;
+    }
+
+    const logRows = logs.toSorted(sortByTime).toReversed().map((log, logIndex) => {
 
         /**
          * In this case, it's justified to use the index

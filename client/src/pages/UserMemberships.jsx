@@ -6,10 +6,12 @@ import MembershipCard from "../components/MembershipCard";
 import "../styles/UserMemberships.css";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen";
-import { useLoadingTimer } from "../helperHooks";
+import { useLoadingTimer, useModalManager } from "../helperHooks";
+import NewOrgForm from "../modal-children/NewOrgForm";
 
 export default function UserMemberships() {
     const {currentUser, setCurrentUser} = useContext(UserContext);
+    const modalManager = useModalManager();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,13 +24,39 @@ export default function UserMemberships() {
         return <LoadingScreen/>
     }
 
-    const membershipCards = currentUser.memberships.map((membership) => {
+    /**
+     * TODO
+     * 
+     * @param {*} membershipA 
+     * @param {*} membershipB 
+     * @returns 
+     */
+    const sortByName = (membershipA, membershipB) => {
+        if (membershipA.organization.name < membershipB.organization.name) return -1;
+        if (membershipA.organization.name > membershipB.organization.name) return 1;
+        return 0;
+    }
+
+    const membershipCards = currentUser.memberships?.toSorted(sortByName).map((membership) => {
         return (
             <li key={membership.id} className="three-d-round-border">
                 <MembershipCard membership={membership}/>
             </li>
         )
     });
+
+    function addNewMembership(membershipToAdd) {
+        setCurrentUser({
+            ...currentUser,
+            memberships: [...currentUser.memberships, membershipToAdd]
+        });
+    }
+
+    function openModal() {
+        modalManager.showView(
+            <NewOrgForm userId={currentUser.id} onAdd={addNewMembership} onClose={modalManager.clearView}/>
+        )
+    }
 
     return (
         <>
@@ -39,6 +67,7 @@ export default function UserMemberships() {
             <button 
                 id="new-org-button"
                 title="Opens up a modal form for you to fill out the details of the organization you wish to create."
+                onClick={openModal}
             >
                 Create a new organization!
             </button>
@@ -47,6 +76,7 @@ export default function UserMemberships() {
                     {membershipCards}
                 </ul>
             </div>
+            {modalManager.modal}
         </>
     )
 }

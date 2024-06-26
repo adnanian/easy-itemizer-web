@@ -123,12 +123,12 @@ export default function Organization() {
         )
     });
 
-    const banner = organization.banner || placeholderImages.orgBanner;
+    const banner = organization.banner_url || placeholderImages.orgBanner;
     const logoImage = organization.image_url || placeholderImages.orgLogo;
 
     const orgHeaderStyling = {
         background: `linear-gradient(to right bottom, rgba(47, 79, 79, 0.5), rgba(192, 192, 192, 0.5)), url(${banner}) no-repeat center center`,
-        backgroundSize: "cover"
+        backgroundSize: "100% 100%"
     };
 
     const orgBodyStyling = {

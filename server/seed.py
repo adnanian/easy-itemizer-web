@@ -360,6 +360,8 @@ def seed_relational_models():
                     contents = [f"{user.username} has joined \'{org.name}\'!"],
                     organization_id = org.id
                 )
+            db.session.add(log)
+            db.session.commit()
             logs.append(log)
             print_progress(True, "M")
 
@@ -375,8 +377,7 @@ def seed_relational_models():
                 enough_threshold=enough_threshold
             )
             db.session.add(assignment)
-            logs.append(
-                OrganizationLog(
+            log = OrganizationLog(
                     contents=[
                         "An item has been assigned by the seed to this organization",
                         f"Name: {item.name}",
@@ -384,7 +385,9 @@ def seed_relational_models():
                     ],
                     organization_id=org.id
                 )
-            )
+            db.session.add(log)
+            db.session.commit()
+            logs.append(log)
             print_progress(n < assignment_size - 1 or request_size > 0, "A")
 
         for n in range(request_size):
@@ -396,18 +399,17 @@ def seed_relational_models():
                 reason_to_join=fake.sentence()
             )
             db.session.add(request)
-            logs.append(
-                OrganizationLog(
+            log = OrganizationLog(
                     contents=[
                         f"User, {user.username}, has requested to join this organization."
                     ],
                     organization_id=org.id
                 )
-            )
+            db.session.add(log)
+            db.session.commit()
+            logs.append(log)
             print_progress(n < request_size - 1, "R")
 
-    db.session.add_all(logs)
-    db.session.commit()
     print_ending_seed("memberships")
     print_ending_seed("assignments")
     print_ending_seed("requests")
