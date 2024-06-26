@@ -73,12 +73,13 @@ class ItemById(DRYResource):
         for assignment in assignments:
             print(assignment.id, flush=True)
             log = OrganizationLog(
-                contents = f"""
-                    Owner of item \'{assignment.item.name}\' has been removed.\n
-                    Part Number: {assignment.item.part_number};\n
-                    Current Quantity: {assignment.current_quantity};\n
-                    Enough Threshold: {assignment.enough_threshold}
-                """,
+                contents = [
+                    f"The owner of an item this organization uses has removed it from the system",
+                    f"Name: {assignment.item.name}",
+                    f"Part Number: {assignment.item.part_number}",
+                    f"Current Quantity: {assignment.current_quantity}",
+                    f"Enough Threshold: {assignment.enough_threshold}"
+                ],
                 organization_id = assignment.organization_id
             )
             logs.append(log)
