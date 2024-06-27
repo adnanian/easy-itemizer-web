@@ -77,6 +77,16 @@ def get_record_by_id():
 
 @app.after_request
 def create_log(response):
+    """_summary_
+
+    Article of Reference: https://stackoverflow.com/questions/2612610/how-to-access-get-or-set-object-attribute-given-string-corresponding-to-name-o
+
+    Args:
+        response (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     endpoint_blacklist = [
         "signup",
         "login",
