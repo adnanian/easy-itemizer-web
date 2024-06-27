@@ -90,6 +90,7 @@ def create_log(response):
     endpoint_blacklist = [
         "signup",
         "login",
+        "logout"
         "checksession",
         "confirm",
         "index",
@@ -251,6 +252,16 @@ class CheckSession(Resource):
 
 
 class Index(Resource):
+    
+    @app.route("/")
+    @app.route("/about")
+    @app.route("/settings")
+    @app.route("/organizations")
+    @app.route("/organizations/<string:orgId>")
+    @app.route("/login")
+    @app.route("/signup")
+    @app.route("/forgot-password")
+    @app.route("/unauthorized")
     def get(self):
         # print(f"The CWD at index call is: {os.getcwd()}", flush=True)
         return send_from_directory("../client/dist", "index.html")

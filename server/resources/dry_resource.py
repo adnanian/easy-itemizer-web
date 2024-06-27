@@ -74,7 +74,7 @@ class DRYResource(Resource):
         db.session.commit()
         if (self.key_name):
             return_dict = {}
-            print(record, flush=True)
+            # print(record, flush=True)
             return_dict[self.key_name] = serialized_record
             return return_dict, 204
         return {'message': f'{self.model.__name__} successfully deleted.'}, 204
