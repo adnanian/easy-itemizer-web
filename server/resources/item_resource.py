@@ -51,17 +51,6 @@ class AddItemAndAssignment(Resource):
             )
             db.session.add(new_assignment)
             db.session.commit()
-            # Create log.
-            # log = OrganizationLog(
-            #         contents=[
-            #             "An item has been assigned by the seed to this organization",
-            #             f"Name: {new_item.name}",
-            #             f"Part #: {new_item.part_number}"
-            #         ],
-            #         organization_id=new_assignment.organization_id
-            #     )
-            # db.session.add(log)
-            # db.session.commit()
             return {
                 "item_l": {
                     "item": new_item.to_dict(),

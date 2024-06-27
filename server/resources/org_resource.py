@@ -32,15 +32,6 @@ class OrganizationCreator(Resource):
             )
             db.session.add(new_membership)
             db.session.commit()
-            # Create log
-            # log = OrganizationLog(
-            #     contents=[
-            #         f"{new_membership.user.username} created a new organization: '{new_org.name}'!"
-            #     ],
-            #     organization_id=new_org.id,
-            # )
-            db.session.add(log)
-            db.session.commit()
             return {"membership_l": new_membership.to_dict()}, 201
         except ValueError as e:
             print(e)
