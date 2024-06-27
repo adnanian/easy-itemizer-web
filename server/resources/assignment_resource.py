@@ -20,7 +20,11 @@ class AssignmentResource(Resource):
             )
             db.session.add(new_assignment)
             db.session.commit()
-            return {"assignment": new_assignment.to_dict()}, 201
+            return {
+                "assignment_l": {
+                    "assignment": new_assignment.to_dict()
+                }
+            }, 201
         except ValueError as e:
             print(e)
             return {"message": "422 Unprocessable Entity"}, 422
@@ -34,7 +38,7 @@ class AssignmentById(DRYResource):
     """
     
     def __init__(self):
-        super().__init__(Assignment)
+        super().__init__(Assignment, "assignment_l")
         
 api.add_resource(AssignmentResource, "/assignments")
 api.add_resource(AssignmentById, "/assignments/<int:id>", endpoint="assignment_by_id")

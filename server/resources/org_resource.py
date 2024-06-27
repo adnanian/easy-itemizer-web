@@ -33,16 +33,15 @@ class OrganizationCreator(Resource):
             db.session.add(new_membership)
             db.session.commit()
             # Create log
-            log = OrganizationLog(
-                contents=[
-                    f"{new_membership.user.username} created a new organization: '{new_org.name}'!"
-                ],
-                organization_id=new_org.id,
-            )
+            # log = OrganizationLog(
+            #     contents=[
+            #         f"{new_membership.user.username} created a new organization: '{new_org.name}'!"
+            #     ],
+            #     organization_id=new_org.id,
+            # )
             db.session.add(log)
             db.session.commit()
-            
-            return new_membership.to_dict(), 201
+            return {"membership_l": new_membership.to_dict()}, 201
         except ValueError as e:
             print(e)
             return {"message": str(e)}, 422
@@ -55,7 +54,7 @@ class OrganizationById(DRYResource):
     """
     
     def __init__(self):
-        super().__init__(Organization)
+        super().__init__(Organization, "organization_l")
 
 api.add_resource(OrganizationCreator, "/organizations")
 api.add_resource(OrganizationById, "/organizations/<int:id>", endpoint="organization_by_id")

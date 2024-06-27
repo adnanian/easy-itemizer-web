@@ -12,13 +12,14 @@ import ItemFormContainer from "../modal-children/add-item/ItemFormContainer";
 import LogsTable from "../modal-children/tables/LogsTable";
 
 export default function Organization() {
+    const modalManager = useModalManager();
     const { orgId } = useParams();
     const navigate = useNavigate();
     const { currentUser } = useContext(UserContext);
     const { items, setItems } = useContext(ItemContext);
     const [userMember, setUserMember] = useState(null);
     const [organization, setOrganization] = useState(null);
-    const modalManager = useModalManager();
+    
     const orgControlsClassName = "org-controls";
 
     // console.log(currentUser);

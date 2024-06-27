@@ -3,6 +3,8 @@ import { MemberRole, placeholderImages } from "../../helpers";
 
 export default function MembershipsTable({members, userMember, onUpdate, onDelete}) {
 
+    const {scaleByWidth, scaleByHeight} = useScreenSize();
+
     function handleExpel(id) {
         //TODO
     }
@@ -12,7 +14,7 @@ export default function MembershipsTable({members, userMember, onUpdate, onDelet
     }
 
 
-    const {scaleByWidth, scaleByHeight} = useScreenSize();
+    
 
     const profilePicSizing = {
         width: scaleByWidth(50, 'px'),

@@ -81,7 +81,7 @@ db.init_app(app)
 api = Api(app)
 
 # Instantiate CORS
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 
 bcrypt = Bcrypt(app)
@@ -121,28 +121,3 @@ def send_email(subject, recipients, template, sender=app.config["MAIL_DEFAULT_SE
     )
     print(message, flush=True)
     mail.send(message)
-
-class ModelLogMap:
-    """_summary_
-    """
-    mappings = {}
-    
-    def __init__(self, model_key, post = None, patch = None, delete = None):
-        """_summary_
-
-        Args:
-            model_key (_type_): _description_
-            post (_type_, optional): _description_. Defaults to None.
-            patch (_type_, optional): _description_. Defaults to None.
-            delete (_type_, optional): _description_. Defaults to None.
-        """
-        self.post = post
-        self.patch = patch
-        self.delete = delete
-        
-        type(self).mappings[model_key] = self
-        
-membership_log_map = ModelLogMap(
-    model_key = "membership",
-    # post = (lambda username, : [f"{username} created a new organization: \'{org.name}\'!"])
-)

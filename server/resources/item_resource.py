@@ -52,17 +52,22 @@ class AddItemAndAssignment(Resource):
             db.session.add(new_assignment)
             db.session.commit()
             # Create log.
-            log = OrganizationLog(
-                    contents=[
-                        "An item has been assigned by the seed to this organization",
-                        f"Name: {new_item.name}",
-                        f"Part #: {new_item.part_number}"
-                    ],
-                    organization_id=new_assignment.organization_id
-                )
-            db.session.add(log)
-            db.session.commit()
-            return {"item": new_item.to_dict(), "assignment": new_assignment.to_dict()}, 201
+            # log = OrganizationLog(
+            #         contents=[
+            #             "An item has been assigned by the seed to this organization",
+            #             f"Name: {new_item.name}",
+            #             f"Part #: {new_item.part_number}"
+            #         ],
+            #         organization_id=new_assignment.organization_id
+            #     )
+            # db.session.add(log)
+            # db.session.commit()
+            return {
+                "item_l": {
+                    "item": new_item.to_dict(),
+                    "assignment": new_assignment.to_dict()
+                }
+            }, 201
         except Exception as e:
             print(e, flush=True)
             return {"message": str(e)}, 422
@@ -84,7 +89,7 @@ class ItemById(DRYResource):
         db.session.commit()
         logs = []
         for assignment in assignments:
-            print(assignment.id, flush=True)
+            # print(assignment.id, flush=True)
             log = OrganizationLog(
                 contents = [
                     f"The owner of an item this organization uses has removed it from the system",

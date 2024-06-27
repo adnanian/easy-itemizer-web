@@ -10,8 +10,9 @@ import { useLoadingTimer, useModalManager } from "../helperHooks";
 import NewOrgForm from "../modal-children/NewOrgForm";
 
 export default function UserMemberships() {
-    const {currentUser, setCurrentUser} = useContext(UserContext);
     const modalManager = useModalManager();
+    const {currentUser, setCurrentUser} = useContext(UserContext);
+    
     const navigate = useNavigate();
 
     useEffect(() => {

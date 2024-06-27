@@ -7,13 +7,15 @@ class DRYResource(Resource):
     Template for RESTful CRUD methods.
     """
     
-    def __init__(self, model):
+    def __init__(self, model, key_name = None):
         """Creates a new instance of RestResourceTemplate.
 
         Args:
             model (db.Model): the model to tie the resource to.
+            key_name (str): the key name to use to create a dict inside a dict. (For logging POST, PATCH, and DELETE requests).
         """
         self.model = model
+        self.key_name = key_name
         
     
     def get(self, id = None):
@@ -47,6 +49,10 @@ class DRYResource(Resource):
                 setattr(record, attr, json.get(attr))
             db.session.add(record)
             db.session.commit()
+            if (self.key_name):
+                return_dict = {}
+                return_dict[self.key_name] = record.to_dict()
+                return return_dict, 200
             return record.to_dict(), 200
         except ValueError as e:
             print(e)
@@ -64,4 +70,8 @@ class DRYResource(Resource):
         record = g.record
         db.session.delete(record)
         db.session.commit()
+        if (self.key_name):
+            return_dict = {}
+            return_dict[self.key_name] = record.to_dict()
+            return return_dict, 204
         return {'message': f'{self.model.__name__} successfully deleted.'}, 204

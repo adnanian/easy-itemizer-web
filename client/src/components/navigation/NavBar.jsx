@@ -16,8 +16,9 @@ import { useScreenSize } from "../../helperHooks";
 export default function NavBar() {
     const navLinkClassName = 'nav-link';
 
-    const {currentUser, logout} = useContext(UserContext);
     const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
+    const {currentUser, logout} = useContext(UserContext);
+    
     // console.log(currentUser);
 
     const navigationStyling = {

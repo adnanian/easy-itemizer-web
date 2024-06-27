@@ -9,11 +9,13 @@ import ItemRemover from "../../modal-children/confirm-deletion/ItemRemover";
 export default function ItemCardDetail({ user, item, onUpdate, onDelete }) {
     // console.log(item);
 
+    const modalManager = useModalManager();
+    const { scaleByWidth, scaleByHeight, scaleByRatio } = useScreenSize();
+
     if (!item) {
         return <BigText><p>Click on an item to view more details!</p></BigText>
     }
 
-    const modalManager = useModalManager();
     const username = item.user_id === user.id ? "You" : item.user.username;
     const isPublic = item.is_public ? "Public" : "Private";
 
@@ -37,7 +39,7 @@ export default function ItemCardDetail({ user, item, onUpdate, onDelete }) {
         onUpdate(itemToUpdate);
     }
 
-    const { scaleByWidth, scaleByHeight, scaleByRatio } = useScreenSize();
+    
 
     const detailWrapperSizing = {
         padding: `${scaleByHeight(10, 'px')} ${scaleByWidth(15, 'px')}`
@@ -52,6 +54,8 @@ export default function ItemCardDetail({ user, item, onUpdate, onDelete }) {
         textAlign: "center",
         fontSize: scaleByWidth(125, '%')
     };
+
+    
 
     return (
         <div
