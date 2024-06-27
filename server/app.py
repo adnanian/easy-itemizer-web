@@ -42,7 +42,7 @@ def check_if_logged_in():
     """
     # breakpoint()
     print(f"Current endpoint: {request.endpoint}", flush=True)
-    endpoint_whitelist = ["signup", "login", "checksession", "confirm", "index", "static"]
+    endpoint_whitelist = ["signup", "login", "checksession", "confirm", "index", "static", "get"]
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
         # print("Returning unauthorized message", flush=True)
         return {"error": "Unauthorized! You must be logged in ree"}, 401
@@ -284,7 +284,7 @@ def delete_old_logs():
         # print("Old logs have been cleared.", flush=True)
 
 
-api.add_resource(Index, "/", endpoint = "index")
+api.add_resource(Index, "/")
 api.add_resource(Signup, "/signup")
 api.add_resource(Confirm, "/confirm/<string:token>")
 api.add_resource(Login, "/login")
