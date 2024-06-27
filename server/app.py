@@ -41,7 +41,7 @@ def check_if_logged_in():
         JSON: if a user is not logged in, then an "Unauthorized" message will be returned.
     """
     # breakpoint()
-    # print(f"Current endpoint: {request.endpoint}", flush=True)
+    print(f"Current endpoint: {request.endpoint}", flush=True)
     endpoint_whitelist = ["signup", "login", "checksession", "confirm", "index", "static"]
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
         # print("Returning unauthorized message", flush=True)
