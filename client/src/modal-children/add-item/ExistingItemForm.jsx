@@ -105,7 +105,7 @@ export default function ExistingItemForm({orgId, user, onAdd}) {
                                     min="0"
                                     placeholder="How many of this item do you have?"
                                 />
-                                <button disabled={props.isSubmitting} type="submit">Submit</button>
+                                <button disabled={props.isSubmitting || !selectedItem} type="submit">Submit</button>
                             </Form>
                         )
                     }}

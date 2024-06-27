@@ -68,10 +68,13 @@ class DRYResource(Resource):
             dict: no content or a message saying that the record was deleted.
         """
         record = g.record
+        if (self.key_name):
+            serialized_record = record.to_dict()
         db.session.delete(record)
         db.session.commit()
         if (self.key_name):
             return_dict = {}
-            return_dict[self.key_name] = record.to_dict()
+            print(record, flush=True)
+            return_dict[self.key_name] = serialized_record
             return return_dict, 204
         return {'message': f'{self.model.__name__} successfully deleted.'}, 204
