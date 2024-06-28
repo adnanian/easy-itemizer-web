@@ -7,9 +7,10 @@ import { useLoadingTimer, useModalManager } from "../helperHooks";
 import StyledTitle from "../components/StyledTitle";
 import "../styles/Organization.css";
 import AssignedItemCard from "../components/AssignedItemCard";
-import MembershipsTable from "../modal-children/tables/MembershipsTable";
+import MembershipsTable from "../modal-children/info/MembershipsTable";
 import ItemFormContainer from "../modal-children/add-item/ItemFormContainer";
-import LogsTable from "../modal-children/tables/LogsTable";
+import LogsTable from "../modal-children/info/LogsTable";
+import OrgDescription from "../modal-children/info/OrgDescription";
 
 export default function Organization() {
     const modalManager = useModalManager();
@@ -121,6 +122,9 @@ export default function Organization() {
         ),
         [ButtonId.VIEW_LOGS]: (
             <LogsTable logs={organization.organization_logs}/>
+        ),
+        [ButtonId.ABOUT]: (
+            <OrgDescription name={organization.name} description={organization.description}/>
         )
     });
 
