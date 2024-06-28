@@ -276,7 +276,7 @@ def delete_old_logs():
         # print("Old logs have been cleared.", flush=True)
 
 
-api.add_resource(Index, "/", "/about", "/settings", "/organizations", "/organizations/<string:orgId>", "/login", "/signup", "/forgot-password", "/unauthorized", endpoint='index')
+api.add_resource(Index, "/", "/about", "/settings", "/my-organizations", "/organizations/<string:orgId>", "/login", "/signup", "/forgot-password", "/unauthorized", endpoint='index')
 api.add_resource(Signup, "/signup")
 api.add_resource(Confirm, "/confirm/<string:token>")
 api.add_resource(Login, "/login")
@@ -292,10 +292,10 @@ scheduler.start()
 #     return render_template("index.html")
 
 
-# @app.route("/", defaults={"path": ""})
-# @app.route("/<path:path>")
-# def catch_all(path):
-#     return render_template("index.html")
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def catch_all(path):
+    return send_from_directory("index.html")
 
 
 if __name__ == "__main__":

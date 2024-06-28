@@ -44,7 +44,7 @@ export default function NavBar() {
                 currentUser ? (
                     <>
                         <NavLink
-                            to={"/organizations"}
+                            to={"/my-organizations"}
                             className={navLinkClassName}
                             style={linkStyling}
                         >

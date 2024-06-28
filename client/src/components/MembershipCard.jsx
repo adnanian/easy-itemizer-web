@@ -3,7 +3,7 @@ import { placeholderImages } from "../helpers";
 
 export default function MembershipCard({membership}) {
     return (
-        <Link to={`/organizations/${membership.organization_id}`} className="org-link">
+        <Link to={`/my-organizations/${membership.organization_id}`} className="org-link">
             <div className="membership-container round-border">
                 <img 
                     src={membership.organization.image_url || placeholderImages.orgLogo}

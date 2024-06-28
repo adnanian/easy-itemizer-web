@@ -26,8 +26,8 @@ export default function App() {
           <Route path="/" element={<Layout/>}>
             <Route index element={<Home/>}/>
             <Route path="about" element={<About />} />
-            <Route path="organizations" element={<UserMemberships/>}/>
-            <Route path="organizations/:orgId" element={<Organization/>}/>
+            <Route path="my-organizations" element={<UserMemberships/>}/>
+            <Route path="my-organizations/:orgId" element={<Organization/>}/>
             <Route path="settings" element={<UserSettings/>}/>
             <Route path="login" element={<Login/>}/>
             <Route path="forgot-password" element={<ForgotPassword/>}/>
