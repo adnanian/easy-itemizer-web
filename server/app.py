@@ -254,15 +254,6 @@ class CheckSession(Resource):
 
 class Index(Resource):
     
-    @app.route("/")
-    @app.route("/about")
-    @app.route("/settings")
-    @app.route("/organizations")
-    @app.route("/organizations/<string:orgId>")
-    @app.route("/login")
-    @app.route("/signup")
-    @app.route("/forgot-password")
-    @app.route("/unauthorized")
     def get(self):
         # print(f"The CWD at index call is: {os.getcwd()}", flush=True)
         return send_from_directory("../client/dist", "index.html")
@@ -285,7 +276,7 @@ def delete_old_logs():
         # print("Old logs have been cleared.", flush=True)
 
 
-api.add_resource(Index, "/")
+api.add_resource(Index, "/", "/about", "/settings", "/organizations", "/organizations/<string:orgId>", "/login", "/signup", "/forgot-password", "/unauthorized", endpoint='index')
 api.add_resource(Signup, "/signup")
 api.add_resource(Confirm, "/confirm/<string:token>")
 api.add_resource(Login, "/login")
