@@ -90,7 +90,7 @@ def create_log(response):
     endpoint_blacklist = [
         "signup",
         "login",
-        "logout"
+        "logout",
         "checksession",
         "confirm",
         "index",
@@ -100,6 +100,7 @@ def create_log(response):
     response_loggable = request.method != "GET"
     status_ok = 200 <= response.status_code < 300
     is_dict = type(body := response.get_json()) is dict
+    # print(f"AFTER REQUEST ENDPOINT: {request.endpoint}", flush=True)
     if (
         (request.endpoint not in endpoint_blacklist)
         and response_loggable
@@ -276,7 +277,7 @@ def delete_old_logs():
         # print("Old logs have been cleared.", flush=True)
 
 
-api.add_resource(Index, "/", "/about", "/settings", "/my-organizations", "/organizations/<string:orgId>", "/login", "/signup", "/forgot-password", "/unauthorized", endpoint='index')
+api.add_resource(Index, "/", "/about", "/settings", "/my-organizations", "/my-organizations/<string:orgId>", "/login", "/signup", "/forgot-password", "/unauthorized", endpoint='index')
 api.add_resource(Signup, "/signup")
 api.add_resource(Confirm, "/confirm/<string:token>")
 api.add_resource(Login, "/login")
