@@ -11,6 +11,7 @@ import MembershipsTable from "../modal-children/info/MembershipsTable";
 import ItemFormContainer from "../modal-children/add-item/ItemFormContainer";
 import LogsTable from "../modal-children/info/LogsTable";
 import OrgDescription from "../modal-children/info/OrgDescription";
+import RequestsTable from "../modal-children/info/RequestsTable";
 
 export default function Organization() {
     const modalManager = useModalManager();
@@ -119,6 +120,9 @@ export default function Organization() {
                 onAdd={addAssignment}
                 onClose={modalManager.clearView}
             />
+        ),
+        [ButtonId.VIEW_REQUESTS]: (
+            <RequestsTable requests={organization.requests} orgName={organization.name} onUpdate={null}/>
         ),
         [ButtonId.VIEW_LOGS]: (
             <LogsTable logs={organization.organization_logs}/>
