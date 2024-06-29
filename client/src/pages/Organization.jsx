@@ -15,13 +15,15 @@ import RequestsTable from "../modal-children/info/RequestsTable";
 
 export default function Organization() {
     const modalManager = useModalManager();
-    const { orgId } = useParams();
-    const navigate = useNavigate();
-    const { currentUser } = useContext(UserContext);
-    const { items, setItems } = useContext(ItemContext);
     const [userMember, setUserMember] = useState(null);
     const [organization, setOrganization] = useState(null);
+    const { currentUser } = useContext(UserContext);
+    const { items, setItems } = useContext(ItemContext);
+    const { orgId } = useParams();
+    const navigate = useNavigate();
     
+    
+
     const orgControlsClassName = "org-controls";
 
     // console.log(currentUser);
@@ -48,6 +50,14 @@ export default function Organization() {
         return <LoadingScreen />
     }
 
+    /**
+     * Adds an assignment to the current organization's array of assignments.
+     * Also adds a new item to the system if the assigned item isn't for an
+     * already existing item.
+     * 
+     * @param {Object} assignment the assignment to add. 
+     * @param {Object} item the item to add.
+     */
     function addAssignment(data) {
         const item = data["item"]
         const assignmentToAdd = data["assignment"]
@@ -90,6 +100,26 @@ export default function Organization() {
         });
     }
 
+    /**
+     * TODO
+     * 
+     * @param {*} requestToDelete 
+     * @param {*} membershipToAdd 
+     */
+    function processRequest(requestToDelete, membershipToAdd = null) {
+        console.log("Deleting request:", requestToDelete);
+        setOrganization((oldOrgData) => {
+            const newOrgData = {...oldOrgData};
+            if (membershipToAdd) {
+                newOrgData.memberships = [...newOrgData.memberships, membershipToAdd];
+            }
+            newOrgData.requests = newOrgData.requests.filter((request) => request.id !== requestToDelete.id);
+            return newOrgData;
+        })
+    
+        console.log("Updated organization state:", organization.requests.find((request) => request.id === requestToDelete.id));
+    }
+
     const ButtonId = Object.freeze({
         BACK: "back-button",
         LEAVE: "leave-button",
@@ -122,13 +152,13 @@ export default function Organization() {
             />
         ),
         [ButtonId.VIEW_REQUESTS]: (
-            <RequestsTable requests={organization.requests} orgName={organization.name} onUpdate={null}/>
+            <RequestsTable requests={organization.requests} onProcessRequest={processRequest} />
         ),
         [ButtonId.VIEW_LOGS]: (
-            <LogsTable logs={organization.organization_logs}/>
+            <LogsTable logs={organization.organization_logs} />
         ),
         [ButtonId.ABOUT]: (
-            <OrgDescription name={organization.name} description={organization.description}/>
+            <OrgDescription name={organization.name} description={organization.description} />
         )
     });
 
@@ -160,8 +190,8 @@ export default function Organization() {
     const assignedItemCards = organization.assignments?.toSorted(sortByName).map((assignment) => {
         return (
             <li key={assignment.id}>
-                <AssignedItemCard 
-                    assignment={assignment} 
+                <AssignedItemCard
+                    assignment={assignment}
                     currentUserRegular={userMember.role === MemberRole.REGULAR}
                     onUpdate={updateAssignment}
                     onDelete={deleteAssignment}
