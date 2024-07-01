@@ -12,7 +12,7 @@ export default function EditProfileForm({user, onUpdate, onClose}) {
         profilePicture: user.profile_picture_url || "",
         password: "",
         newPassword: "",
-        confirmPassword: ""
+        confirmNewPassword: ""
     }
 
     const formSchema = yup.object().shape({
@@ -49,7 +49,29 @@ export default function EditProfileForm({user, onUpdate, onClose}) {
                 password: values.password,
                 new_password: values.newPassword
             })
-        });
+        })
+        .then((response) => response.json().then((data) => (
+            {data, status: response.status}
+        )))
+        .then(({data, status}) => {
+            if (status === 200) {
+                onUpdate(data);
+                alert("Your account has been successfully updated.");
+            } else {
+                // console.log("JUST F-ing print something");
+                // console.log(`Response data is: ${data}`);
+                throw new Error(data.message);
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            alert(error);
+        })
+        .finally(() => {
+            actions.resetForm();
+            onClose();
+            return false;
+        })
     }
 
     return (

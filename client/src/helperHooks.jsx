@@ -73,6 +73,10 @@ export const useModalManager = () => {
         setModalChild(null);
     }
 
+    const toggleTrigger = () => {
+        setModalTriggered(!modalTriggered);
+    }
+
     /**
      * 
      */

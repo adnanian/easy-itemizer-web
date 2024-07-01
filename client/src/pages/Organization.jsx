@@ -114,6 +114,7 @@ export default function Organization() {
                 newOrgData.memberships = [...newOrgData.memberships, membershipToAdd];
             }
             newOrgData.requests = newOrgData.requests.filter((request) => request.id !== requestToDelete.id);
+            modalManager.showView(<RequestsTable requests={newOrgData.requests} onProcessRequest={processRequest} />)
             return newOrgData;
         })
     
@@ -161,8 +162,6 @@ export default function Organization() {
             <OrgDescription name={organization.name} description={organization.description} />
         )
     };
-
-    console.log(organization.requests);
 
     const banner = organization.banner_url || placeholderImages.orgBanner;
     const logoImage = organization.image_url || placeholderImages.orgLogo;

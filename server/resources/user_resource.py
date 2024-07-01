@@ -1,4 +1,4 @@
-from flask import request, g, session
+from flask import request, g, session, make_response
 from flask_restful import Resource
 from config import db, api
 from models.models import User
@@ -48,21 +48,34 @@ class CurrentUser(Resource):
         user = User.query.filter_by(id = session["user_id"]).first()
         json = request.get_json()
         if (user.authenticate(json.get("password"))):
-            # print(type(json), flush=True)
-            password_related = {
-                key: value
-                for (key, value) in json.items()
-                if "password" in key.lower()
-            }
-            non_password_related = {
-                key: value
-                for (key, value) in json.items()
-                if "password" not in key.lower()
-            }
-            print(password_related, flush=True)
-            print(non_password_related, flush=True)
+            try:
+                new_password = json.get("new_password")
+                non_password_related = {
+                    key: value
+                    for (key, value) in json.items()
+                    if "password" not in key.lower()
+                }
+                for attr in non_password_related:
+                    value = non_password_related.get(attr)
+                    if (getattr(user, attr) != value):
+                        setattr(user, attr, value)
+                if bool(new_password):
+                    user.password_hash = new_password
+                db.session.add(user)
+                db.session.commit()
+                return user.to_dict(), 200
+            except Exception as e:
+                return make_response({"message": str(e)}, 304)
         else:
-            return {"message": "Incorrect password entered."}, 304
+            print("Nice try, hacker.", flush=True)
+            return make_response({"message": "Incorrect password entered."}, 403)
+        
+    def delete(self):
+        user = User.query.filter_by(id = session["user_id"]).first()
+        if (user.authenticate(request.get_json().get("password"))):
+            pass
+        else:
+            return make_response({"message": "Incorrect password entered."}, 403)
         
 api.add_resource(CurrentUser, "/current_user")
 # api.add_resource(UserById, "/users/<int:id>", endpoint="user_by_id")

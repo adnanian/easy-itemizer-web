@@ -40,7 +40,7 @@ export default function UserSettings() {
         [ButtonIds.edit]: (
             <EditProfileForm
                 user={currentUser}
-                onUpdate={null}
+                onUpdate={setCurrentUser}
                 onClose={modalManager.clearView}
             />
         ),
