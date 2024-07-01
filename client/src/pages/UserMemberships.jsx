@@ -12,14 +12,13 @@ import NewOrgForm from "../modal-children/NewOrgForm";
 export default function UserMemberships() {
     const modalManager = useModalManager();
     const {currentUser, setCurrentUser} = useContext(UserContext);
-    
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!currentUser) {
             return useLoadingTimer(navigate, "/unauthorized", 2000);
         }
-    }, [currentUser?.id])
+    }, [currentUser?.id]);
 
     if (!currentUser) {
         return <LoadingScreen/>

@@ -1,0 +1,34 @@
+#profile-container {
+    background: linear-gradient(to bottom right, darkslateblue, darkslategray, gray, silver, gray, darkslategray, darkslateblue);
+    width: fit-content;
+    margin: 0 auto;
+}
+
+#profile-info-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#profile-info-container > * {
+    margin: 25px;
+}
+
+#profile-info-container img {
+    border-style: double;
+    border-color: navy;
+    border-width: 15px;
+}
+
+#profile-controls * {
+    margin: 0 15px 20px;
+}
+
+#profile-table {
+    background-color: black;
+    color: white;
+}
+
+h3#profile-table-title {
+    text-align: center;
+}
