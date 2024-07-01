@@ -1,13 +1,15 @@
 import { useContext, useEffect } from "react";
-import { useLoadingTimer, useScreenSize } from "../helperHooks";
+import { useLoadingTimer, useModalManager, useScreenSize } from "../helperHooks";
 import {UserContext} from "../SuperContext";
 import StyledTitle from "../components/StyledTitle";
 import LoadingScreen from "../components/LoadingScreen";
 import { useNavigate } from "react-router-dom";
 import { placeholderImages } from "../helpers";
 import "../styles/Settings.css";
+import EditProfileForm from "../modal-children/EditProfileForm";
 
 export default function UserSettings() {
+    const modalManager = useModalManager();
     const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
     const {currentUser, setCurrentUser} = useContext(UserContext);
     const navigate = useNavigate();
@@ -28,6 +30,26 @@ export default function UserSettings() {
         width: scaleByWidth(300, 'px'),
         height: scaleByHeight(300, 'px')
     };
+
+    const ButtonIds = Object.freeze({
+        edit: "edit-button",
+        delete: "delete-button"
+    });
+
+    const ModalOpeners = Object.freeze({
+        [ButtonIds.edit]: (
+            <EditProfileForm
+                user={currentUser}
+                onUpdate={null}
+                onClose={modalManager.clearView}
+            />
+        ),
+        [ButtonIds.delete]: null
+    });
+
+    function handleClick(e) {
+        modalManager.showView(ModalOpeners[e.target.id]);
+    }
 
     return (
         <>
@@ -72,10 +94,23 @@ export default function UserSettings() {
                     </div>
                 </span>
                 <div id="profile-controls" className="button-group">
-                    <button>Edit</button>
-                    <button>Delete</button>
+                    <button
+                        id={ButtonIds.edit}
+                        title="Edit your profile information, including updating your photo and changing your password."
+                        onClick={handleClick}
+                    >
+                        Edit
+                    </button>
+                    <button
+                        id={ButtonIds.delete}
+                        title="Permanently delete your Easy Itemizer account!"
+                        onClick={handleClick}
+                    >
+                        Delete
+                    </button>
                 </div>
             </div>
+            {modalManager.modal}
         </>
     );
 }
