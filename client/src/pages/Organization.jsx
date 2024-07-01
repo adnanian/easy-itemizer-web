@@ -134,7 +134,7 @@ export default function Organization() {
         DELETE: "delete-button" // for owners to delete the entire organization.
     });
 
-    const ModalOpeners = Object.freeze({
+    const ModalOpeners = {
         [ButtonId.VIEW_MEMBERS]: (
             <MembershipsTable
                 members={organization.memberships}
@@ -160,7 +160,9 @@ export default function Organization() {
         [ButtonId.ABOUT]: (
             <OrgDescription name={organization.name} description={organization.description} />
         )
-    });
+    };
+
+    console.log(organization.requests);
 
     const banner = organization.banner_url || placeholderImages.orgBanner;
     const logoImage = organization.image_url || placeholderImages.orgLogo;
