@@ -163,7 +163,7 @@ class Signup(Resource):
             confirm_url = url_for("confirm", token=token, _external=True)
             ## print(os.getcwd(), flush=True)
             #breakpoint()
-            path_to_template = "./email-templates/activate.html"
+            path_to_template = "./html-templates/emails/activate.html"
             with open(path_to_template, "r") as file:
                 template_content = file.read()
             html = render_template_string(template_content, confirm_url=confirm_url)
@@ -288,15 +288,15 @@ scheduler.add_job(delete_old_logs, "interval", seconds=SCHEDULER_INTERVAL)
 scheduler.start()
 
 # Views go here! use either route!
-# @app.errorhandler(404)
-# def not_found(e):
-#     return render_template("index.html")
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
 
 
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
-def catch_all(path):
-    return render_template("index.html"), 404
+# @app.route("/", defaults={"path": ""})
+# @app.route("/<path:path>")
+# def catch_all(path):
+#     return render_template("index.html"), 404
 
 
 if __name__ == "__main__":

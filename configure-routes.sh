@@ -9,9 +9,17 @@
 #node client/configureClient.cjs
 cd ~/Development/code/projects/phase-5-project/easy-itemizer-web
 pwd
-pipenv requirements > requirements.txt
-npm run build --prefix client
-gid add .
-git commit -m [message]
-git push origin HEAD
-git push origin HEAD:main
+node client/configureRouteSettings.cjs
+CONFIGTYPE=$(<configType.txt)
+echo $CONFIGTYPE
+if [ $CONFIGTYPE = "Production" ];
+then
+    read -p "Enter the commit message: " MESSAGE
+    pipenv install
+    pipenv requirements > requirements.txt
+    npm run build --prefix client
+    git add .
+    git commit -m "$MESSAGE"
+    git push origin HEAD
+    git push origin HEAD:main
+fi
