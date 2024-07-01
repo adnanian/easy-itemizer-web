@@ -255,7 +255,7 @@ class CheckSession(Resource):
 
 class Index(Resource):
     
-    def get(self):
+    def get(self, orgId = None):
         # print(f"The CWD at index call is: {os.getcwd()}", flush=True)
         return send_from_directory("../client/dist", "index.html")
 
