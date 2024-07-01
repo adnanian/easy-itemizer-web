@@ -296,7 +296,7 @@ scheduler.start()
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def catch_all(path):
-    return send_from_directory("index.html")
+    return render_template("index.html"), 404
 
 
 if __name__ == "__main__":
