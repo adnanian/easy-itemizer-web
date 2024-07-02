@@ -32,3 +32,13 @@
 h3#profile-table-title {
     text-align: center;
 }
+
+#delete-account-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+#delete-account-blocker {
+    width: 600px;
+}

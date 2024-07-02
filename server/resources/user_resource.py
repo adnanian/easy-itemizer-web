@@ -148,7 +148,9 @@ class CurrentUser(Resource):
     def delete(self):
         user = User.query.filter_by(id = session["user_id"]).first()
         if (user.authenticate(request.get_json().get("password"))):
-            pass
+            db.session.delete(user)
+            db.session.commit()
+            return make_response({"message": "Account deleted"}, 204)
         else:
             return make_response({"message": "Incorrect password entered."}, 403)
         

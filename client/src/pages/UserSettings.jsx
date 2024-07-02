@@ -7,11 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { placeholderImages } from "../helpers";
 import "../styles/Settings.css";
 import EditProfileForm from "../modal-children/EditProfileForm";
+import AccountDeleter from "../modal-children/confirm-deletion/AccountDeleter";
 
 export default function UserSettings() {
     const modalManager = useModalManager();
     const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
-    const {currentUser, setCurrentUser} = useContext(UserContext);
+    const {currentUser, setCurrentUser, logout} = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -44,7 +45,13 @@ export default function UserSettings() {
                 onClose={modalManager.clearView}
             />
         ),
-        [ButtonIds.delete]: null
+        [ButtonIds.delete]: (
+            <AccountDeleter
+                user={currentUser}
+                onLogout={logout}
+                onClose={modalManager.clearView}
+            />
+        )
     });
 
     function handleClick(e) {

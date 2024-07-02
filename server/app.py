@@ -105,6 +105,7 @@ def create_log(response):
         "index",
         "static",
         "get",
+        "currentuser"
     ]
     response_loggable = request.method != "GET"
     status_ok = 200 <= response.status_code < 300
