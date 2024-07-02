@@ -12,7 +12,7 @@ export default function AssignmentRemover({assignment, onDelete, onClose}) {
                 onDelete(assignment);
                 alert("Item successully removed from your organization.");
             } else {
-                throw new Error("An unknown error occurred. Please contact support.");
+                throw new Error("An internal error occurred. Please contact support.");
             }
         })
         .catch((error) => {

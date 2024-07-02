@@ -1,16 +1,37 @@
-import { useScreenSize } from "../../helperHooks";
-import { MemberRole, placeholderImages } from "../../helpers";
+import { useModalManager, useScreenSize } from "../../helperHooks";
+import { MemberRole, correctRoute, placeholderImages } from "../../helpers";
+import MemberExpeller from "../confirm-deletion/MemberExpeller";
 
 export default function MembershipsTable({members, userMember, onUpdate, onDelete}) {
-
+    const modalManager = useModalManager();
     const {scaleByWidth, scaleByHeight} = useScreenSize();
 
-    function handleExpel(id) {
-        //TODO
+    function handleExpel(member) {
+        // console.log(member);
+        modalManager.showView(
+            <MemberExpeller
+                memberToExpel={member}
+                onDelete={onDelete}
+                onClose={modalManager.clearView}
+            />
+        )
     }
 
     function handleRoleChange(id, oldRole, newRole) {
-        //TODO
+        fetch(correctRoute(`/memberships/${id}`), {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                role: newRole
+            })
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            onUpdate(data);
+            alert(`Member, \'${data.user.username}\', has changed roles from ${oldRole} to ${newRole}!`);
+        })
     }
 
 
@@ -57,8 +78,8 @@ export default function MembershipsTable({members, userMember, onUpdate, onDelet
             rowClass=null;
         }
 
-        const roleChangeText = member.role === "REGULAR" ? "Promote" : "Demote";
-        const oppositeRole = member.role === "REGULAR" ? "ADMIN" : "REGULAR";
+        const roleChangeText = member.role === MemberRole.REGULAR ? "Promote" : "Demote";
+        const oppositeRole = member.role === MemberRole.REGULAR ? MemberRole.ADMIN : MemberRole.REGULAR;
         const roleChangteTooltip = `${roleChangeText} user, ${member.user.username} from ${member.role} to ${oppositeRole}.`
 
         return (
@@ -85,14 +106,15 @@ export default function MembershipsTable({members, userMember, onUpdate, onDelet
                                     <div className="button-block-grid">
                                         <button
                                             className="access-control"
-                                            onClick={() => handleExpel(member.id)}
+                                            onClick={() => handleRoleChange(member.id, member.role, oppositeRole)}
+                                            
                                             title={roleChangteTooltip}
                                         >
                                             {roleChangeText}
                                         </button>
                                         <button
                                             className="access-control"
-                                            onClick={() => handleRoleChange(member.id, member.role, oppositeRole)}
+                                            onClick={() => handleExpel(member)}
                                             title={`Remove user, ${member.user.username}, from this organization.`}
                                         >
                                             Expel
@@ -130,6 +152,7 @@ export default function MembershipsTable({members, userMember, onUpdate, onDelet
                     </tbody>
                 </table>
             </div>
+            {modalManager.modal}
         </>
     )
 }

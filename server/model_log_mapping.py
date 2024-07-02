@@ -52,7 +52,7 @@ def membership_patch(membership, admin):
 
 
 def membership_delete(membership, expeller):
-    if expeller.user_id == membership.user_id:
+    if expeller.id == membership['user_id']:
         return [f"User,\"{membership['user']['username']}\" left this organization."]
     else:
         return [

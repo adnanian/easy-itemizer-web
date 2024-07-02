@@ -2,8 +2,6 @@ import { correctRoute } from "../../helpers";
 
 export default function RequestsTable({requests, onProcessRequest}) {
 
-    console.log("Requests prop:", requests);
-
     if (!requests.length) {
         return <h1>There are currently no requests to join this organization.</h1>
     }
@@ -91,12 +89,10 @@ export default function RequestsTable({requests, onProcessRequest}) {
         )
     });
 
-    console.log("requestRows:", requestRows);
-
     return (
         <>
              <div className="table-container">
-                <table>
+                <table className="modal-table">
                     <thead>
                         <tr>
                             <th>Request #</th>

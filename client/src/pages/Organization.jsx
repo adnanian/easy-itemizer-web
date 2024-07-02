@@ -121,6 +121,42 @@ export default function Organization() {
         console.log("Updated organization state:", organization.requests.find((request) => request.id === requestToDelete.id));
     }
 
+    function updateMembership(membershipToUpdate) {
+        setOrganization((oldOrgData) => {
+            const newOrgData = {...oldOrgData};
+            newOrgData.memberships = newOrgData.memberships.map((membership) => {
+                return membership.id === membershipToUpdate.id ? membershipToUpdate : membership;
+            });
+            modalManager.showView(
+                <MembershipsTable
+                    members={newOrgData.memberships}
+                    userMember={userMember}
+                    onUpdate={updateMembership}
+                    onDelete={deleteMembership}
+                />
+            );
+            return newOrgData;
+        });
+    }
+
+    function deleteMembership(membershipToDelete) {
+        setOrganization((oldOrgData) => {
+            const newOrgData = {...oldOrgData};
+            newOrgData.memberships = newOrgData.memberships.filter((membership) => {
+                return membership.id !== membershipToDelete.id;
+            });
+            modalManager.showView(
+                <MembershipsTable
+                    members={newOrgData.memberships}
+                    userMember={userMember}
+                    onUpdate={updateMembership}
+                    onDelete={deleteMembership}
+                />
+            );
+            return newOrgData;
+        });
+    }
+
     const ButtonId = Object.freeze({
         BACK: "back-button",
         LEAVE: "leave-button",
@@ -140,8 +176,8 @@ export default function Organization() {
             <MembershipsTable
                 members={organization.memberships}
                 userMember={userMember}
-                onUpdate={null}
-                onDelete={null}
+                onUpdate={updateMembership}
+                onDelete={deleteMembership}
             />
         ),
         [ButtonId.ADD]: (
