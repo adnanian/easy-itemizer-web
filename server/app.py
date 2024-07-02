@@ -306,18 +306,6 @@ api.add_resource(
     "/signup",
     "/forgot-password",
     "/unauthorized",
-    # DELETE THESE IF THEY DON'T WORK
-    "/items",
-    "/add_new_item",
-    "/report_item",
-    "/items<int:id>",
-    "/current_user",
-    "/assignments",
-    "/assignments/<int:id>",
-    "/accept_request",
-    "/requests/<int:id>",
-    "/organizations",
-    "/organizations/<int:id>",
     endpoint="index",
 )
 api.add_resource(Signup, "/signup")
