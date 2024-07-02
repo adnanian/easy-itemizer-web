@@ -10,7 +10,7 @@ from flask import (
     send_from_directory,
     url_for,
     flash,
-    make_response
+    make_response,
 )
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
@@ -21,7 +21,15 @@ import pytz
 # Local imports
 from models.models import *
 from resources.resources import *
-from config import app, db, api, generate_confirmation_token, confirm_token, send_email, scheduler
+from config import (
+    app,
+    db,
+    api,
+    generate_confirmation_token,
+    confirm_token,
+    send_email,
+    scheduler,
+)
 from model_log_mapping import ModelLogMap
 
 LOG_DURATION_LIMIT = 7
@@ -33,6 +41,7 @@ LOG_DURATION_LIMIT = 7
 SCHEDULER_INTERVAL = 86400
 """ The standard interval, in seconds, to execute a background job. """
 
+
 @app.before_request
 def check_if_logged_in():
     """This view will be run to check if there's a logged in user before attempting to access other data.
@@ -42,7 +51,15 @@ def check_if_logged_in():
     """
     # breakpoint()
     print(f"Current endpoint: {request.endpoint}", flush=True)
-    endpoint_whitelist = ["signup", "login", "checksession", "confirm", "index", "static", "get"]
+    endpoint_whitelist = [
+        "signup",
+        "login",
+        "checksession",
+        "confirm",
+        "index",
+        "static",
+        "get",
+    ]
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
         # print("Returning unauthorized message", flush=True)
         return {"error": "Unauthorized! You must be logged in ree"}, 401
@@ -95,7 +112,7 @@ def create_log(response):
         "confirm",
         "index",
         "static",
-        "get"
+        "get",
     ]
     response_loggable = request.method != "GET"
     status_ok = 200 <= response.status_code < 300
@@ -114,22 +131,21 @@ def create_log(response):
             # print(f"Key: {key}", flush=True)
             # print(f"Map: {model_log_mapping}", flush=True)
             # print(f"Real Response: {body[key]}", flush=True)
-            user = User.query.filter_by(id = session["user_id"]).first()
+            user = User.query.filter_by(id=session["user_id"]).first()
             # Get appropriate CRUD method
             map_method = getattr(model_log_mapping, request.method.lower())
             # Get org_id
-            if (key in ["item_l", "assignment_l"] and request.method == "POST"):
-                org_id = body[key]['assignment']['organization_id']
+            if key in ["item_l", "assignment_l"] and request.method == "POST":
+                org_id = body[key]["assignment"]["organization_id"]
             else:
-                org_id = body[key]['organization_id']
+                org_id = body[key]["organization_id"]
             # Create new log.
             log = OrganizationLog(
-                contents = map_method(body[key], user),
-                organization_id = org_id
+                contents=map_method(body[key], user), organization_id=org_id
             )
             db.session.add(log)
             db.session.commit()
-            #Modify response and return.
+            # Modify response and return.
             return make_response(body[key], response.status_code)
     return response
 
@@ -162,12 +178,12 @@ class Signup(Resource):
             token = generate_confirmation_token(new_user.email)
             confirm_url = url_for("confirm", token=token, _external=True)
             ## print(os.getcwd(), flush=True)
-            #breakpoint()
+            # breakpoint()
             path_to_template = "./html-templates/emails/activate.html"
             with open(path_to_template, "r") as file:
                 template_content = file.read()
             html = render_template_string(template_content, confirm_url=confirm_url)
-            #html = html = render_template_string(open("activate.html").read(), confirm_url=confirm_url)
+            # html = html = render_template_string(open("activate.html").read(), confirm_url=confirm_url)
             subject = "Please Verify Your Email"
             # print("About to send email", flush=True)
             send_email(subject, [new_user.email], html)
@@ -254,8 +270,8 @@ class CheckSession(Resource):
 
 
 class Index(Resource):
-    
-    def get(self, orgId = None):
+
+    def get(self, orgId=None):
         # print(f"The CWD at index call is: {os.getcwd()}", flush=True)
         return send_from_directory("../client/dist", "index.html")
 
@@ -271,13 +287,39 @@ def delete_old_logs():
     https://stackoverflow.com/questions/63693872/flask-how-can-i-delete-data-ranging-back-x-days
     """
     with app.app_context():
-        cutoff = datetime.datetime.now(pytz.utc) - datetime.timedelta(days = LOG_DURATION_LIMIT)
+        cutoff = datetime.datetime.now(pytz.utc) - datetime.timedelta(
+            days=LOG_DURATION_LIMIT
+        )
         OrganizationLog.query.filter(OrganizationLog.occurrence <= cutoff).delete()
         db.session.commit()
         # print("Old logs have been cleared.", flush=True)
 
 
-api.add_resource(Index, "/", "/about", "/settings", "/my-organizations", "/my-organizations/<string:orgId>", "/login", "/signup", "/forgot-password", "/unauthorized", endpoint='index')
+api.add_resource(
+    Index,
+    "/",
+    "/about",
+    "/settings",
+    "/my-organizations",
+    "/my-organizations/<string:orgId>",
+    "/login",
+    "/signup",
+    "/forgot-password",
+    "/unauthorized",
+    # DELETE THESE IF THEY DON'T WORK
+    "/items",
+    "/add_new_item",
+    "/report_item",
+    "/items<int:id>",
+    "/current_user",
+    "/assignments",
+    "/assignments/<int:id>",
+    "/accept_request",
+    "/requests/<int:id>",
+    "/organizations",
+    "/organizations/<int:id>",
+    endpoint="index",
+)
 api.add_resource(Signup, "/signup")
 api.add_resource(Confirm, "/confirm/<string:token>")
 api.add_resource(Login, "/login")
@@ -286,6 +328,7 @@ api.add_resource(CheckSession, "/check_session")
 
 scheduler.add_job(delete_old_logs, "interval", seconds=SCHEDULER_INTERVAL)
 scheduler.start()
+
 
 # Views go here! use either route!
 @app.errorhandler(404)
