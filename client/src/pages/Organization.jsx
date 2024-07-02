@@ -243,7 +243,22 @@ export default function Organization() {
                 navigate(-1);
                 break;
             case ButtonId.SEND_UPDATE:
-                //TODO
+                fetch(correctRoute("/status_report"), {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        org_id: organization.id
+                    })
+                })
+                .then((response) => {
+                    if (response.ok) {
+                        alert("Status report generation and sending successful.");
+                    } else {
+                        alert("An internal error occurred. Please contact support.");
+                    }
+                })
                 break;
             default:
                 modalManager.showView(ModalOpeners[e.target.id]);

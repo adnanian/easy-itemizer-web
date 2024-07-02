@@ -115,7 +115,7 @@ class ReportItem(Resource):
         ).first()
         if item_in_question:
             user = User.query.filter_by(id=session["user_id"]).first()
-            with open("./html-templates/emails/report.html", "r") as file:
+            with open("./html-templates/emails/report_item.html", "r") as file:
                 template_content = file.read()
             html = render_template_string(
                 template_content,

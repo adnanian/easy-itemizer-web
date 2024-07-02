@@ -1,0 +1,76 @@
+<html>
+    <body>
+        <h1><strong>{{org_name}}</strong> Inventory Status</h1>
+        <br/>
+        <p>
+            A status report has been sent to all members of <strong>{{org_name}}</strong>
+            by fellow member, <em>{{sender}}</em>. Below is a table of all inventory information:
+        </p>
+        <table>
+            <tbody>
+                <tr style="background-color: silver; color: black;">
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">Total Items</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{number_of_items}}</td>
+                </tr>
+                <tr style="background-color: red;">
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">OUT</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{number_of_out}}</td>
+                </tr>
+                <tr style="background-color: yellow;">
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">LOW</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{number_of_low}}</td>
+                </tr>
+                <tr style="background-color: green;">
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">GOOD</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{number_of_good}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <h2>The items are sorted by current quantity and enough threshold.</h2>
+        <table id="inventory-table">
+            <thead>
+                <tr style="background-color: silver; color: black;">
+                    <th>Item Name</th>
+                    <th>Part Number</th>
+                    <th>Current Quantity</th>
+                    <th>Enough Threshold</th>
+                    <th>Added At</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody id="easy-itemizer-inventory-body">
+                {% for assignment in out_assignments %}
+                <tr style="background-color: red;">
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.itemName }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.partNumber }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.currentQuantity }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.enoughThreshold }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.addedAt }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.lastUpdated }}</td>
+                </tr>
+                {% endfor %}
+                {% for assignment in low_assignments %}
+                <tr style="background-color: yellow;">
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.itemName }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.partNumber }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.currentQuantity }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.enoughThreshold }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.addedAt }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.lastUpdated }}</td>
+                </tr>
+                {% endfor %}
+                {% for assignment in good_assignments %}
+                <tr style="background-color: green;">
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.itemName }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.partNumber }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.currentQuantity }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.enoughThreshold }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.addedAt }}</td>
+                    <td style="border: 2px solid gray; padding: 0 12px; text-align: center;">{{ assignment.lastUpdated }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
