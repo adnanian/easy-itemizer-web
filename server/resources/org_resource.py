@@ -54,6 +54,8 @@ class OrganizationInventoryReport(Resource):
             # UPDATE THE TWO LINES BELOW BEFORE FINAL DEPLOYMENT
             member_emails = [membership.user.email for membership in org.memberships]
             member_emails.append('adnan.wazwaz1445@easyitemizer.com')
+            
+            # List of assigned items where there are none left.
             out_assignments = [
                 {
                     "itemName": assignment.item.name,
@@ -66,6 +68,9 @@ class OrganizationInventoryReport(Resource):
                 for assignment in org.assignments
                 if assignment.current_quantity == 0
             ]
+            out_assignments.sort(key=lambda e: e["itemName"])
+            
+            # List of assigned items where the count is running low.
             low_assignments = [
                 {
                     "itemName": assignment.item.name,
@@ -78,6 +83,9 @@ class OrganizationInventoryReport(Resource):
                 for assignment in org.assignments
                 if assignment.current_quantity > 0 and assignment.current_quantity < assignment.enough_threshold
             ]
+            low_assignments.sort(key=lambda e: e["itemName"])
+            
+            # List of assigned items where there is enough of them.
             good_assignments = [
                 {
                     "itemName": assignment.item.name,
@@ -90,6 +98,7 @@ class OrganizationInventoryReport(Resource):
                 for assignment in org.assignments
                 if assignment.current_quantity >= assignment.enough_threshold
             ]
+            good_assignments.sort(key=lambda e: e["itemName"])
             
             user = User.query.filter_by(id = session["user_id"]).first()
             with open("./html-templates/emails/inventory_report.html", "r") as file:
