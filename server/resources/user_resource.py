@@ -1,47 +1,122 @@
-from flask import request, g, session, make_response
+from flask import request, g, session, make_response, render_template_string, url_for, flash
 from flask_restful import Resource
-from config import db, api
+from sqlalchemy.exc import IntegrityError
+from config import db, api, generate_confirmation_token, send_email, confirm_token
 from models.models import User
 
-# class UserById(DRYResource):
-#     """Resource tied to the User model. Handles fetch requests for single User instances.
+class Signup(Resource):
+    """Create a new user."""
 
-#     Args:
-#         RestResourceTemplate (RestResourceTemplate): simplify RESTFul API building.
-#     """
-    
-#     def __init__(self):
-#         super().__init__(User)
+    def post(self):
+        """Creates a new instance of User.
+
+        Returns:
+            dict: a JSONified dictionary of the created User and its attributes, if creation successful, otherwise an error message.
+        """
+        # Retrieve form inputs
+        # print("Creating a new user. Standby...", flush=True)
+        try:
+            new_user = User(
+                first_name=request.get_json().get("first_name"),
+                last_name=request.get_json().get("last_name"),
+                username=request.get_json().get("username"),
+                email=request.get_json().get("email"),
+            )
+            # print("Check 1 ", flush=True)
+            new_user.password_hash = request.get_json().get("password")
+            # print("Check 2", flush=True)
+            db.session.add(new_user)
+            db.session.commit()
+            # print("User creation successful!", flush=True)
+            # Send a confirmation token.
+            token = generate_confirmation_token(new_user.email)
+            confirm_url = url_for("confirm", token=token, _external=True)
+            ## print(os.getcwd(), flush=True)
+            # breakpoint()
+            path_to_template = "./html-templates/emails/activate.html"
+            with open(path_to_template, "r") as file:
+                template_content = file.read()
+            html = render_template_string(template_content, confirm_url=confirm_url)
+            # html = html = render_template_string(open("activate.html").read(), confirm_url=confirm_url)
+            subject = "Please Verify Your Email"
+            # print("About to send email", flush=True)
+            send_email(subject, [new_user.email], html)
+            return {"message": "A confirmation email has been sent via email."}, 201
+        except (IntegrityError, ValueError) as e:
+            # print(e)
+            # print("BOO YOU STINK!")
+            return {"message": str(e)}, 422
         
-#     def patch(self, id):
-#         """Updates a user's information.
-#         DO NOT CALL THIS METHOD UNTIL YOU RUN AUTHENTICATE FIRST!
+class Login(Resource):
+    """Logs user into the account."""
 
-#         Args:
-#             id (int): the user id.
+    def post(self):
+        """Sets the session's user_id, so that the user has authorization to access appropriate data.
 
-#         Returns:
-#             dict: a JSONified dictionary of the created User and its attribute, if update successful, otherwise an error message.
-#         """
-#         try:
-#             user = g.record
-#             json = request.get_json()
-#             for attr in json:
-#                 value = json.get(attr)
-#                 print(f"{attr} - {value}")
-#                 if (attr == 'new_password'):
-#                     if (value != ""):
-#                         user.password_hash = value
-#                         print("New password set.")
-#                 else:
-#                     if (getattr(user, attr) != value):
-#                         setattr(user, attr, value)
-#             db.session.add(user)
-#             db.session.commit()
-#             return user.to_dict(), 200
-#         except ValueError as e:
-#             print(e)
-#             return {'error': 'Not Modified'}, 304
+        Returns:
+            JSON: the JSONified user object, if entered password is correct; an "Unauthorized" message otherwise.
+        """
+        login_name = request.get_json().get("username_or_email")
+        # print(login_name, flush=True)
+        try:
+            if login_name:
+                user = (
+                    User.query.filter_by(username=login_name).first()
+                    or User.query.filter_by(email=login_name).first()
+                )
+                if user and user.authenticate(request.get_json().get("password")):
+                    # print(user, flush=True)
+                    session["user_id"] = user.id
+                    return user.to_dict(), 200
+        except Exception as e:
+            # print(f"{str(e)}")
+            return {"message": "401 Unauthorized"}, 401
+
+class Logout(Resource):
+    """Logs user out of the webiste."""
+
+    def delete(self):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
+        # # print("About to log out.")
+        session["user_id"] = None
+        # # print("Logging out")
+        return {}, 204
+    
+class Confirm(Resource):
+    def get(self, token):
+        try:
+            email = confirm_token(token)
+        except:
+            flash("The confirmation link is invalid or has expired.", "danger")
+        user = User.query.filter_by(email=email).first_or_404()
+        if user.is_verified:
+            flash("Account already confirmed. Please login.", "success")
+        else:
+            user.is_verified = True
+            db.session.add(user)
+            db.session.commit()
+            flash("You have confirmed your account. Thanks!", "success")
+        return {"message": "ACCOUNT CONFIRMED"}, 200
+
+class CheckSession(Resource):
+    """Check if user is logged in."""
+
+    def get(self):
+        """
+        Checks if there is a user id for the session object.
+        In other words, checks if a user is logged in.
+
+        Returns:
+          type (dict): the JSONified user object, if there's an id for the session object, the message "Unauthorized" otherwise.
+        """
+        if user := User.query.filter_by(id=session.get("user_id")).first():
+            return user.to_dict(), 200
+        # print("SUPERDUPERDAB", flush=True)
+        return {"message": "401 Unauthorized"}, 401
 
 class CurrentUser(Resource):
     def patch(self):
@@ -77,5 +152,9 @@ class CurrentUser(Resource):
         else:
             return make_response({"message": "Incorrect password entered."}, 403)
         
+api.add_resource(Signup, "/signup")
+api.add_resource(Login, "/login")
+api.add_resource(Logout, "/logout")
+api.add_resource(Confirm, "/confirm/<string:token>")
+api.add_resource(CheckSession, "/check_session")
 api.add_resource(CurrentUser, "/current_user")
-# api.add_resource(UserById, "/users/<int:id>", endpoint="user_by_id")
