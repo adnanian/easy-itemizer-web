@@ -66,11 +66,16 @@ class Login(Resource):
                 )
                 if user and user.authenticate(request.get_json().get("password")):
                     # print(user, flush=True)
+                    if (not user.is_verified):
+                        raise AttributeError("Account needs to be verified first.")
+                    if (user.is_banned):
+                       raise AttributeError("Account with associated username/email is banned.")
                     session["user_id"] = user.id
                     return user.to_dict(), 200
+            raise ValueError("Account with entered credentials does not exist. Please try again!")
         except Exception as e:
             # print(f"{str(e)}")
-            return {"message": "401 Unauthorized"}, 401
+            return make_response({"message": str(e)}, 401)
 
 class Logout(Resource):
     """Logs user out of the webiste."""

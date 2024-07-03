@@ -61,7 +61,7 @@ export default function Login() {
                 //debugger
                 console.error("Login failed.");
                 console.error(error);
-                alert("Account with entered credentials does not exist. Please try again!");
+                alert(error);
             })
             .finally(() => {
                 setFormData((oldFormData) => {
