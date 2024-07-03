@@ -6,7 +6,7 @@
 export default function OrgDescription({name, description}) {
     return (
         <div>
-            <h1>About {name}</h1>
+            <h1>About <em>{name}</em></h1>
             <p>
                 {description}
             </p>

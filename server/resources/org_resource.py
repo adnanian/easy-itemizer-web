@@ -63,7 +63,7 @@ class OrganizationInventoryReport(Resource):
                     "currentQuantity": assignment.current_quantity,
                     "enoughThreshold": assignment.enough_threshold,
                     "addedAt": assignment.added_at,
-                    "lastUpdated": assignment.last_updated
+                    "lastUpdated": assignment.last_updated or "N/A"
                 }
                 for assignment in org.assignments
                 if assignment.current_quantity == 0
@@ -78,7 +78,7 @@ class OrganizationInventoryReport(Resource):
                     "currentQuantity": assignment.current_quantity,
                     "enoughThreshold": assignment.enough_threshold,
                     "addedAt": assignment.added_at,
-                    "lastUpdated": assignment.last_updated
+                    "lastUpdated": assignment.last_updated or "N/A"
                 }
                 for assignment in org.assignments
                 if assignment.current_quantity > 0 and assignment.current_quantity < assignment.enough_threshold
@@ -93,7 +93,7 @@ class OrganizationInventoryReport(Resource):
                     "currentQuantity": assignment.current_quantity,
                     "enoughThreshold": assignment.enough_threshold,
                     "addedAt": assignment.added_at,
-                    "lastUpdated": assignment.last_updated
+                    "lastUpdated": assignment.last_updated or "N/A"
                 }
                 for assignment in org.assignments
                 if assignment.current_quantity >= assignment.enough_threshold

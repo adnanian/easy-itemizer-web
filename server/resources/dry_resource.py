@@ -45,8 +45,11 @@ class DRYResource(Resource):
             record = g.record
             json = request.get_json()
             for attr in json:
+                value = json.get(attr)
+                if getattr(record, attr) != value:
+                    setattr(record, attr, value)
                 #print(f"Attrname: {attr}, Type: {type(json.get(attr))}")
-                setattr(record, attr, json.get(attr))
+                # setattr(record, attr, json.get(attr))
             db.session.add(record)
             db.session.commit()
             if (self.key_name):

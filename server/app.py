@@ -130,6 +130,8 @@ def create_log(response):
             # Get org_id
             if key in ["item_l", "assignment_l"] and request.method == "POST":
                 org_id = body[key]["assignment"]["organization_id"]
+            elif key == "organization_l":
+                org_id = body[key]["id"]
             else:
                 org_id = body[key]["organization_id"]
             # Create new log.

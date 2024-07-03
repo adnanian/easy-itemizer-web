@@ -12,11 +12,13 @@ import ItemFormContainer from "../modal-children/add-item/ItemFormContainer";
 import LogsTable from "../modal-children/info/LogsTable";
 import OrgDescription from "../modal-children/info/OrgDescription";
 import RequestsTable from "../modal-children/info/RequestsTable";
+import EditOrgForm from "../modal-children/EditOrgForm";
 
 export default function Organization() {
     const modalManager = useModalManager();
     const [userMember, setUserMember] = useState(null);
     const [organization, setOrganization] = useState(null);
+    const [title, setTitle] = useState("");
     const { currentUser } = useContext(UserContext);
     const { items, setItems } = useContext(ItemContext);
     const { orgId } = useParams();
@@ -37,6 +39,7 @@ export default function Organization() {
                     .then((data) => {
                         setOrganization(data);
                         setUserMember(userMembership);
+                        setTitle(data.name);
                     });
             } else {
                 navigate("/error");
@@ -196,6 +199,9 @@ export default function Organization() {
         ),
         [ButtonId.ABOUT]: (
             <OrgDescription name={organization.name} description={organization.description} />
+        ),
+        [ButtonId.EDIT]: (
+            <EditOrgForm org={organization} onUpdate={setOrganization} onClose={modalManager.clearView}/>
         )
     };
 
@@ -243,6 +249,7 @@ export default function Organization() {
                 navigate(-1);
                 break;
             case ButtonId.SEND_UPDATE:
+                setTitle("Sending update...");
                 fetch(correctRoute("/status_report"), {
                     method: "POST",
                     headers: {
@@ -259,6 +266,7 @@ export default function Organization() {
                         alert("An internal error occurred. Please contact support.");
                     }
                 })
+                .finally(() => setTitle(organization.name));
                 break;
             default:
                 modalManager.showView(ModalOpeners[e.target.id]);
@@ -269,7 +277,7 @@ export default function Organization() {
     return (
         <React.Fragment>
             <div id="org-header" style={orgHeaderStyling}>
-                <StyledTitle text={organization.name} />
+                <StyledTitle text={title} />
                 <span id="org-controls" className="three-d-round-border">
                     <button
                         id={ButtonId.BACK}
@@ -353,7 +361,7 @@ export default function Organization() {
                         userMember.role !== MemberRole.OWNER ? null : (
                             <>
                                 <button
-                                    id={ButtonId.DELETE}
+                                    id={ButtonId.EDIT}
                                     className={orgControlsClassName}
                                     onClick={handleOrgControlClick}
                                     title=""
