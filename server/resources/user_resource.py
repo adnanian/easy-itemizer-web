@@ -1,4 +1,4 @@
-from flask import request, g, session, make_response, render_template_string, url_for, flash
+from flask import request, session, make_response, render_template, render_template_string, url_for
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config import db, api, generate_confirmation_token, send_email, confirm_token
@@ -91,16 +91,28 @@ class Confirm(Resource):
         try:
             email = confirm_token(token)
         except:
-            flash("The confirmation link is invalid or has expired.", "danger")
+            title = "Activation Error"
+            message = "The confirmation link is invalid or has expired."
         user = User.query.filter_by(email=email).first_or_404()
         if user.is_verified:
-            flash("Account already confirmed. Please login.", "success")
+            title = "Account Already Verified"
+            message = "You already verified your account. Please close this page and login."
         else:
             user.is_verified = True
             db.session.add(user)
             db.session.commit()
-            flash("You have confirmed your account. Thanks!", "success")
-        return {"message": "ACCOUNT CONFIRMED"}, 200
+            title = "Account Verification Complete"
+            message = "Your account hass been successfully verified. You may now close this page and log in."
+        with open("./html-templates/static-pages/activation_complete.html", "r") as file:
+            template_content = file.read()
+        html = render_template_string(
+            template_content,
+            page_title = title,
+            page_message = message
+        )
+        response = make_response(html)
+        response.headers["Content-Type"] = "text/html"
+        return response
 
 class CheckSession(Resource):
     """Check if user is logged in."""

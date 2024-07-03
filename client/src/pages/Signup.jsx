@@ -65,7 +65,7 @@ export default function Signup() {
                 if (status === 201) {
                     navigate("/login");
                     console.log('New user successfully created.');
-                    alert('New user successfully created.');
+                    alert('You should receive an email to verify your account. Once you\'ve done that, you can log in.');
                 } else {
                     console.error('Unexpected response:', data);
                     alert(data.message);
