@@ -112,7 +112,7 @@ a.nav-link:hover {
   border-left: 1px solid maroon;
 }
 
-#cfname, #clname {
+#cfname, #clname, #cemail {
   width: 50%;
 }
 

@@ -6,6 +6,7 @@ from flask import (
     session,
     g,
     render_template,
+    render_template_string,
     send_from_directory,
     make_response,
 )
@@ -21,6 +22,7 @@ from config import (
     db,
     api,
     scheduler,
+    send_email
 )
 from model_log_mapping import ModelLogMap
 
@@ -51,6 +53,7 @@ def check_if_logged_in():
         "index",
         "static",
         "get",
+        "contact"
     ]
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
         # print("Returning unauthorized message", flush=True)
@@ -105,7 +108,8 @@ def create_log(response):
         "index",
         "static",
         "get",
-        "currentuser"
+        "currentuser",
+        "contact"
     ]
     response_loggable = request.method != "GET"
     status_ok = 200 <= response.status_code < 300
@@ -150,6 +154,24 @@ class Index(Resource):
     def get(self, orgId=None):
         # print(f"The CWD at index call is: {os.getcwd()}", flush=True)
         return send_from_directory("../client/dist", "index.html")
+    
+class Contact(Resource):
+    def post(self):
+        try:
+            with open("./html-templates/emails/inquiry.html", "r") as file:
+                template_content = file.read()
+            html = render_template_string(
+                template_content,
+                first_name = request.get_json().get("firstName"),
+                last_name = request.get_json().get("lastName"),
+                email = request.get_json().get("email"),
+                message = request.get_json().get("inquiry")
+            )
+            subject = "You Have a New Inquiry"
+            send_email(subject, ["support@easyitemizer.com"], html)
+            return {}, 204
+        except Exception as e:
+            return {"error": "Unprocessable entry"}, 422
 
 
 def delete_old_logs():
@@ -184,6 +206,7 @@ api.add_resource(
     "/unauthorized",
     endpoint="index"
 )
+api.add_resource(Contact, "/contact")
 
 scheduler.add_job(delete_old_logs, "interval", seconds=SCHEDULER_INTERVAL)
 scheduler.start()
