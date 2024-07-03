@@ -1,8 +1,10 @@
 import { Link, Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import "../../styles/components/Layout.css";
-import { useScreenSize } from "../../helperHooks";
+import { useModalManager, useScreenSize } from "../../helperHooks";
+import ContactForm from "../../modal-children/ContactForm";
 export default function Layout() {
+    const modalManager = useModalManager();
     const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
 
     const headerSizing = {
@@ -27,6 +29,10 @@ export default function Layout() {
     // console.log(logoDivSizing);
     // console.log(logoSizing);
 
+    function openContactForm() {
+        modalManager.showView(<ContactForm onClose={modalManager.clearView}/>)
+    }
+
     return (
         <>
             <header style={headerSizing}>
@@ -43,7 +49,11 @@ export default function Layout() {
                 <NavBar/>
             </header>
             <main><Outlet/></main>
-            <footer><b>&#169; 2024 #EASY_ITEMIZER</b></footer>
+            <footer>
+                <b id="copyright">&#169; 2024 #EASY_ITEMIZER</b>
+                <button id="contact-button" onClick={openContactForm}>CONTACT SUPPORT</button>
+            </footer>
+            {modalManager.modal}
         </>
     )
 }

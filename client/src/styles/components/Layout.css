@@ -24,13 +24,16 @@ footer {
   left: 0;
   display: flex;
   justify-content: center;
+  margin: 0;
   padding: 20px;
   background-color: darkslategray;
 }
 
 footer > * {
   align-items: center;
+  justify-content: center;
   text-align: center;
+  margin: 0 30px;
 }
 
 #site-logo {
@@ -107,6 +110,10 @@ a.nav-link:hover {
   border-right: 5px solid maroon;
   border-bottom: 2px solid darksalmon;
   border-left: 1px solid maroon;
+}
+
+#cfname, #clname {
+  width: 50%;
 }
 
 /* header, footer {
