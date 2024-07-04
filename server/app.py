@@ -54,7 +54,8 @@ def check_if_logged_in():
         "static",
         "get",
         "contact",
-        "invitation"
+        "invitation",
+        "requestresource"
     ]
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
         # print("Returning unauthorized message", flush=True)
@@ -129,7 +130,7 @@ def create_log(response):
             # print(f"Key: {key}", flush=True)
             # print(f"Map: {model_log_mapping}", flush=True)
             # print(f"Real Response: {body[key]}", flush=True)
-            user = User.query.filter_by(id=session["user_id"]).first()
+            user = User.query.filter_by(id=session.get("user_id")).first()
             # Get appropriate CRUD method
             map_method = getattr(model_log_mapping, request.method.lower())
             # Get org_id

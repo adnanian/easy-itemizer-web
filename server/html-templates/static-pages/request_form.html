@@ -1,29 +1,119 @@
 <html>
+
+<head>
     <meta charset="UTF-8" />
     <title>Request Form - Easy Itemizer</title>
+    <style>
+        div * {
+            display: block;
+            width: fit-content;
+            margin: 15px auto;
+        }
+
+        div :not(textarea) {
+            text-align: center;
+        }
+
+        div {
+            margin-top: 50px;
+        }
+
+        textarea {
+            padding: 10px;
+            resize: none;
+        }
+
+        p,
+        label,
+        input,
+        textarea,
+        button {
+            font-size: 20px;
+        }
+
+        #myemail {
+            width: 40%;
+        }
+    </style>
+</head>
+
+<body>
     <div>
+        <h1>Submit Your Request to Join <em>{{org_name}}</em></h1>
         <form>
             <p>Note: You must be an existing user of Easy Itemizer to request to join an organization.</p>
             <label for="myemail">Enter your email:</label>
-            <input
-                id="myemail"
-                name="myemail"
-                type="email"
-                required
-            />
+            <input id="myemail" name="myemail" type="email" required />
             <label for="reason">Why would you like to join?</label>
-            <textarea
-                id="reason"
-                name="reason"
-                rows="5"
-                cols="50"
-                placeholder="Type here why you would like to join this organization. (Min: 50 characters)"
-            >
-            </textarea>
+            <textarea id="reason" name="reason" rows="10" cols="100" maxlength="5000"
+                placeholder="Type here why you would like to join this organization. (Min: 50 characters)">
+                </textarea>
+            <span>0 / 5000 characters</span>
             <button type="submit">Submit</button>
         </form>
     </div>
-    <script type="text/javascript">
-        consol.log("Hi, I\'m John.")
-    </script>
+</body>
+<script type="text/javascript">
+    // Initialize Min Length
+    const minLength = 50;
+    // Initialize button
+    button = document.getElementsByTagName('button')[0];
+    button.disabled = true;
+    // Initialize span
+    span = document.getElementsByTagName('span')[0];
+    // Initialize email field
+    emailInput = document.getElementById('myemail');
+    /**
+     * Initialize textarea
+     * Reference: https://developer.mozilla.org/en-US/docs/Web/API/Element/input_event
+    */
+    textarea = document.getElementById('reason')
+    textarea.textContent = "";
+    textarea.addEventListener('input', (event) => {
+        span.textContent = `${event.target.value.length} / ${event.target.getAttribute('maxlength')} characters`;
+        button.disabled = !emailInput.value.length || (event.target.value.length < minLength);
+    });
+    // Initialize Form
+    form = document.getElementsByTagName('form')[0];
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        /**
+         * Get Route prefix and organization name
+         * Reference: https://www.quora.com/How-can-I-pass-a-value-of-a-Flask-variable-to-a-JavaScript-variable
+        */
+        const routePrefix = '{{route_prefix}}';
+        const orgName = '{{org_name}}';
+        fetch(`${routePrefix}/requests`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: emailInput.value,
+                org_name: orgName,
+                reason_to_join: textarea.value
+            })
+        })
+        .then((response) => response.json().then((data) => (
+            {data, status: response.status}
+        )))
+        .then(({data, status}) => {
+            if (status === 201) {
+                alert(`Request successfully submitted for ${data.organization.name}. You can now close this page.`);
+            } else {
+                throw new Error(data.message);
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            alert(error);
+        })
+        .finally(() => {
+            emailInput.value = "";
+            textarea.value = "";
+        });
+    });
+
+</script>
+
 </html>

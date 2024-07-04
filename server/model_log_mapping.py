@@ -56,7 +56,7 @@ def membership_delete(membership, expeller):
         return [f"User,\"{membership['user']['username']}\" left this organization."]
     else:
         return [
-            f"Admin,\"{expeller.username}', removed user,\"{membership['user']['username']}', from this organization"
+            f"Admin,\"{expeller.username}\", removed user,\"{membership['user']['username']}\", from this organization"
         ]
 
 membership_map = ModelLogMap(
@@ -118,3 +118,11 @@ org_map = ModelLogMap(
     patch = org_patch
 )
 
+# Request Mapping
+def request_post(requester, arg2 = None):
+    return [f"User, \"{requester['user']['username']}\", has requested to join this organization."]
+
+request_map = ModelLogMap(
+    model_key = "request_l",
+    post = request_post
+)

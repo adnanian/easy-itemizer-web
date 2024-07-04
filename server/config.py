@@ -19,33 +19,63 @@ load_dotenv()
 
 # Local imports
 
-def configure_server():
-    """Creates and returns new instance of Flask with the appropriate attributes.
-    The attributes depend on the configuration type.
+# def configure_server():
+#     """Creates and returns new instance of Flask with the appropriate attributes.
+#     The attributes depend on the configuration type.
 
-    Raises:
-        ValueError: if the configuration type read from configType.txt is neither DEVELOPMENT nor SERVER.
+#     Raises:
+#         ValueError: if the configuration type read from configType.txt is neither DEVELOPMENT nor SERVER.
 
-    Returns:
-        Flask: the appropriate instation of Flask for this application.
-    """
+#     Returns:
+#         Flask: the appropriate instation of Flask for this application.
+#     """
+#     with open("../configType.txt", encoding="utf-8") as mode:
+#         config_type = mode.read()
+#     if config_type.lower() == 'development':
+#         return Flask(__name__)
+#     elif config_type.lower() == 'production':
+#         return Flask(
+#             __name__,
+#             static_url_path="",
+#             static_folder="../client/dist",
+#             template_folder="../client/dist",
+#         )
+#     else:
+#         raise ValueError("Invalid configuration type processed.")
+    
+def get_route_configuration_type():
     with open("../configType.txt", encoding="utf-8") as mode:
         config_type = mode.read()
-    if config_type.lower() == 'development':
-        return Flask(__name__)
-    elif config_type.lower() == 'production':
-        return Flask(
+    config_type = config_type.lower()
+    if config_type in ["development", "production"]:
+        return config_type
+    else:
+        raise ValueError("Invalid configuration type processed.")
+
+SERVER_CONFIGS = {
+    "development": {
+        "app": Flask(__name__),
+        "home_page": "http://localhost:3000",
+        "route_prefix": "http://localhost:3000/api"
+    },
+    "production": {
+        "app": Flask(
             __name__,
             static_url_path="",
             static_folder="../client/dist",
             template_folder="../client/dist",
-        )
-    else:
-        raise ValueError("Invalid configuration type processed.")
+        ),
+        "home_page": "https://www.easyitemizer.com",
+        "route_prefix": "https://www.easyitemizer.com"
+    }
+}
 
-# Instantiate app, set attributes
-app = configure_server()
-print(app.template_folder, flush=True)
+# Get configuration type and instantiate app & other appropriate variables based on config type.
+CONFIG_TYPE = get_route_configuration_type()
+app = SERVER_CONFIGS[CONFIG_TYPE]["app"]
+home_page = SERVER_CONFIGS[CONFIG_TYPE]["home_page"]
+route_prefix = SERVER_CONFIGS[CONFIG_TYPE]["route_prefix"]
+# Set app attributes
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False
@@ -108,6 +138,16 @@ def confirm_token(token, expiration=3600):
 def generate_invitation_token(org_name):
     serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     return serializer.dumps(org_name, salt=app.config["SECURITY_PASSWORD_SALT"])
+
+def invitation_token(token, expiration=3600):
+    seralizer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+    try:
+        org_name = seralizer.loads(
+            token, salt=app.config["SECURITY_PASSWORD_SALT"], max_age=expiration
+        )
+    except:
+        return False
+    return org_name
 
 def send_email(subject, recipients, template, sender=app.config["MAIL_DEFAULT_SENDER"]):
     """

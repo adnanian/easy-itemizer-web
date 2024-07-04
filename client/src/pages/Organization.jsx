@@ -275,7 +275,7 @@ export default function Organization() {
                 .then((response) => response.json())
                 .then((data) => {
                     modalManager.showView(
-                        <InvitationLink orgName={organization.name} link={data}/>
+                        <InvitationLink orgName={organization.name} link={data} onClose={modalManager.clearView}/>
                     )
                 })
                 .finally(() => setTitle(organization.name));

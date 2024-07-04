@@ -1,10 +1,12 @@
-export default function InvitationLink({orgName, link}) {
+export default function InvitationLink({orgName, link, onClose}) {
 
     /**
      * Article of reference: https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
      */
     function copyLink() {
         navigator.clipboard.writeText(link);
+        alert("Share link copied.");
+        onClose();
     }
 
     return (
