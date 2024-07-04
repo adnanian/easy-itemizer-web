@@ -55,7 +55,8 @@ def check_if_logged_in():
         "get",
         "contact",
         "invitation",
-        "requestresource"
+        "requestresource",
+        "forgotpassword"
     ]
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
         # print("Returning unauthorized message", flush=True)
@@ -111,7 +112,8 @@ def create_log(response):
         "static",
         "get",
         "currentuser",
-        "contact"
+        "contact",
+        "forgotpassword"
     ]
     response_loggable = request.method != "GET"
     status_ok = 200 <= response.status_code < 300

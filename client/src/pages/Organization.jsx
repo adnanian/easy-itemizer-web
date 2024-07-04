@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { ItemContext, UserContext } from "../SuperContext";
 import { MemberRole, correctRoute, placeholderImages } from "../helpers";
 import LoadingScreen from "../components/LoadingScreen";
-import { useLoadingTimer, useModalManager } from "../helperHooks";
+import { useLoadingTimer, useModalManager, useTitleManager } from "../helperHooks";
 import StyledTitle from "../components/StyledTitle";
 import "../styles/Organization.css";
 import AssignedItemCard from "../components/AssignedItemCard";
@@ -17,6 +17,7 @@ import InvitationLink from "../modal-children/info/InvitationLink";
 
 export default function Organization() {
     const modalManager = useModalManager();
+    const titleManager = useTitleManager("");
     const [userMember, setUserMember] = useState(null);
     const [organization, setOrganization] = useState(null);
     const [title, setTitle] = useState("");
@@ -40,7 +41,7 @@ export default function Organization() {
                     .then((data) => {
                         setOrganization(data);
                         setUserMember(userMembership);
-                        setTitle(data.name);
+                        titleManager.setNewDefault(data.name);
                     });
             } else {
                 navigate("/error");
@@ -250,7 +251,7 @@ export default function Organization() {
                 navigate(-1);
                 break;
             case ButtonId.SEND_UPDATE:
-                setTitle("Sending update...");
+                titleManager.setLoadingTitle("Sending update...");
                 fetch(correctRoute("/status_report"), {
                     method: "POST",
                     headers: {
@@ -267,10 +268,10 @@ export default function Organization() {
                         alert("An internal error occurred. Please contact support.");
                     }
                 })
-                .finally(() => setTitle(organization.name));
+                .finally(() => titleManager.revertToDefault());
                 break;
             case ButtonId.INVITE:
-                setTitle("Retrieving invitation link...")
+                titleManager.setLoadingTitle("Retrieving invitation link...")
                 fetch(correctRoute(`/organization_links/${organization.name}`))
                 .then((response) => response.json())
                 .then((data) => {
@@ -278,7 +279,7 @@ export default function Organization() {
                         <InvitationLink orgName={organization.name} link={data} onClose={modalManager.clearView}/>
                     )
                 })
-                .finally(() => setTitle(organization.name));
+                .finally(() => titleManager.revertToDefault());
                 break;
             default:
                 modalManager.showView(ModalOpeners[e.target.id]);
@@ -289,7 +290,7 @@ export default function Organization() {
     return (
         <React.Fragment>
             <div id="org-header" style={orgHeaderStyling}>
-                <StyledTitle text={title} />
+                <StyledTitle text={titleManager.title} />
                 <span id="org-controls" className="three-d-round-border">
                     <button
                         id={ButtonId.BACK}

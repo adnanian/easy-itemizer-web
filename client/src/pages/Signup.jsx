@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/formik-reusable/Input";
 import "../styles/Signup.css";
 import { correctRoute } from "../helpers";
+import {useTitleManager} from "../helperHooks";
 
 /**
  * Renders a signup page where users can create new accounts.
@@ -11,6 +12,7 @@ import { correctRoute } from "../helpers";
  * @returns the signup page.
  */
 export default function Signup() {
+    const titleManager = useTitleManager("Signup");
     const navigate = useNavigate();
 
     const initialValues = {
@@ -44,6 +46,7 @@ export default function Signup() {
      * @param {*} actions Formik actions.
      */
     function handleSubmit(values, actions) {
+        titleManager.setLoadingTitle("Signing Up...");
         fetch(correctRoute("/signup"), {
             method: "POST",
             headers: {
@@ -75,12 +78,15 @@ export default function Signup() {
                 console.error('Network error:', error);
                 alert(error.message);
             })
-            .finally(() => actions.resetForm());
+            .finally(() => {
+                actions.resetForm()
+                titleManager.revertToDefault();
+            });
     }
 
     return (
         <div id="signup-div" className="form-div">
-            <h1>Signup</h1>
+            <h1>{titleManager.title}</h1>
             <Formik
                 initialValues={initialValues}
                 validationSchema={formSchema}

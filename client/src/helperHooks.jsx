@@ -194,6 +194,37 @@ export const useQuantityAdjuster = (operation) => {
     return quantityAdjuster;
 }
 
+/**
+ * TODO
+ * 
+ * @param {String} defaultTitle 
+ * @returns 
+ */
+export const useTitleManager = (defaultTitle) => {
+    const [defaultTitleText, setDefaultTitleText] = useState(defaultTitle);
+    const [title, setTitle] = useState(defaultTitleText);
+
+    const setLoadingTitle = (loadingTitle) => setTitle(loadingTitle);
+    const revertToDefault = () => setTitle(defaultTitleText);
+
+    /**
+     * 
+     * @param {*} newDefault 
+     */
+    const setDefault = (newDefault) => {
+        setDefaultTitleText(newDefault);
+        setTitle(newDefault);
+    }
+
+    const titleManager = {
+        title: title,
+        setLoadingTitle: setLoadingTitle,
+        revertToDefault: revertToDefault,
+        setNewDefault: setDefault
+    };
+    return titleManager;
+}
+
 // export const useQuantityAdjuster = Object.freeze({
 //     PLUS: (initialValue, addend) => (initialValue + addend),
 //     MINUS: (initialValue, subtrahend) => (initialValue, subtrahend)

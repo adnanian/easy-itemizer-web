@@ -2,8 +2,11 @@ import { Form, Formik } from "formik";
 import * as yup from "yup";
 import Input from "../components/formik-reusable/Input";
 import { correctRoute } from "../helpers";
+import { useTitleManager } from "../helperHooks";
 
 export default function EditProfileForm({user, onUpdate, onClose}) {
+    const titleManager = useTitleManager("Edit Account/Profile Settings");
+
     const initialValues = {
         firstName: user.first_name,
         lastName: user.last_name,
@@ -35,6 +38,7 @@ export default function EditProfileForm({user, onUpdate, onClose}) {
      * @param {*} actions Formik actions.
      */
     function handleSubmit(values, actions) {
+        titleManager.setLoadingTitle("Updating Your Settings...");
         fetch(correctRoute("/current_user"), {
             method: "PATCH",
             headers: {
@@ -69,6 +73,7 @@ export default function EditProfileForm({user, onUpdate, onClose}) {
         })
         .finally(() => {
             actions.resetForm();
+            titleManager.revertToDefault();
             onClose();
             return false;
         })
@@ -76,7 +81,7 @@ export default function EditProfileForm({user, onUpdate, onClose}) {
 
     return (
         <div className="form-div">
-            <h1>Edit Account/Profile Settings</h1>
+            <h1>{titleManager.title}</h1>
             <Formik
                 initialValues={initialValues}
                 validationSchema={formSchema}

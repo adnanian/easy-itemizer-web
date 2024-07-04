@@ -118,6 +118,16 @@ class Confirm(Resource):
         response = make_response(html)
         response.headers["Content-Type"] = "text/html"
         return response
+    
+class ForgotPassword(Resource):
+    def post(self):
+        try:
+            user = User.query.filter(User.email == request.get_json().get("email")).first()
+            if not user:
+                raise ValueError("An account with the entered email does not exist. Please try again.")
+            return {}, 204
+        except Exception as e:
+            return make_response({"message": str(e)}, 404)
 
 class CheckSession(Resource):
     """Check if user is logged in."""
@@ -175,5 +185,6 @@ api.add_resource(Signup, "/signup")
 api.add_resource(Login, "/login")
 api.add_resource(Logout, "/logout")
 api.add_resource(Confirm, "/confirm/<string:token>")
+api.add_resource(ForgotPassword, "/forgot_password")
 api.add_resource(CheckSession, "/check_session")
 api.add_resource(CurrentUser, "/current_user")

@@ -3,14 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 import { UserContext } from "../SuperContext";
 import { correctRoute } from "../helpers";
+import { useTitleManager } from "../helperHooks";
 
 export default function Login() {
+    const titleManager = useTitleManager("Login");
     const [formData, setFormData] = useState({
         usernameOrEmail: "",
         password: ""
     });
     
-    const {currentUser, login} = useContext(UserContext);
+    const {login} = useContext(UserContext);
     const navigate = useNavigate();
 
     /**
@@ -35,6 +37,7 @@ export default function Login() {
      */
     function handleSubmit(e) {
         e.preventDefault();
+        titleManager.setLoadingTitle("Logging In...");
         fetch(correctRoute("/login"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -70,12 +73,13 @@ export default function Login() {
                     newFormData.password = "";
                     return newFormData;
                 });
+                titleManager.revertToDefault();
             });
     }
 
     return (
         <div id="login-div" className="form-div">
-            <h1>Login</h1>
+            <h1>{titleManager.title}</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="username-or-email">Username or Email</label>
                 <input
