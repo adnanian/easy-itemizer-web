@@ -19,6 +19,7 @@ export default function InvitationLink({orgName, link, onClose}) {
                 name="orgLink"
                 type="text"
                 value={link}
+                readOnly
             />
             <button onClick={copyLink}>Copy</button>
         </div>

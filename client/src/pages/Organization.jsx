@@ -391,6 +391,7 @@ export default function Organization() {
                             </>
                         )
                     }
+                    <span id="assignment-count">Items: {organization.assignments.length}</span>
                 </span>
             </div>
             <div id="org-body" style={orgBodyStyling}>

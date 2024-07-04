@@ -98,6 +98,7 @@ export default function ContactForm({onClose}) {
                     style={quickInlineStyles.rectangularPad}
                     maxLength={maxTextLength}
                     onChange={handleChange}
+                    placeholder="Type your message here. Must be at least 50 characters."
                 >
                 </textarea>
                 <span>{formData.inquiry.length} / {maxTextLength} characters</span>

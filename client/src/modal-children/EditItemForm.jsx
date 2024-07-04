@@ -46,7 +46,7 @@ export default function EditItemForm({item, onUpdate, onClose}) {
                 description: values.description,
                 part_number: values.partNumber,
                 is_public: values.isPublic,
-                imageUrl: values.imageUrl
+                image_url: values.imageUrl
             })
         }).then((response) => response.json().then((data) => (
             {data, status: response.status}

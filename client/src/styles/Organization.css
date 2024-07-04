@@ -42,7 +42,7 @@
     width: fit-content;
     height: fit-content;
     text-align: center;
-    margin: 5px 10px;
+    margin: 0 10px 10px;
 }
 
 #assigned-item-list * {
@@ -214,4 +214,23 @@
 
 #existing-item-form input {
     width: 50%;
+}
+
+#assignment-count {
+    font-size: 20px;
+    color: white !important;
+    background-color: black;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+#orgLink {
+    width: 50%;
+    overflow-x: auto;
+}
+
+@media (prefers-color-scheme: light) {
+    #assignment-count {
+        color: black !important;
+    }
 }

@@ -116,6 +116,15 @@ a.nav-link:hover {
   width: 50%;
 }
 
+#contact-button {
+  background-color: transparent;
+  padding: 0 16px;
+}
+
+#contact-button:hover {
+  background-color: skyblue;
+}
+
 /* header, footer {
   flex-grow: 0;
   flex-shrink: 0;
