@@ -13,6 +13,7 @@ import LogsTable from "../modal-children/info/LogsTable";
 import OrgDescription from "../modal-children/info/OrgDescription";
 import RequestsTable from "../modal-children/info/RequestsTable";
 import EditOrgForm from "../modal-children/EditOrgForm";
+import InvitationLink from "../modal-children/info/InvitationLink";
 
 export default function Organization() {
     const modalManager = useModalManager();
@@ -265,6 +266,17 @@ export default function Organization() {
                     } else {
                         alert("An internal error occurred. Please contact support.");
                     }
+                })
+                .finally(() => setTitle(organization.name));
+                break;
+            case ButtonId.INVITE:
+                setTitle("Retrieving invitation link...")
+                fetch(correctRoute(`/organization_links/${organization.name}`))
+                .then((response) => response.json())
+                .then((data) => {
+                    modalManager.showView(
+                        <InvitationLink orgName={organization.name} link={data}/>
+                    )
                 })
                 .finally(() => setTitle(organization.name));
                 break;

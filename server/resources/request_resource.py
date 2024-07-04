@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, make_response
 from flask_restful import Resource
 from config import db, api
 from resources.dry_resource import DRYResource
@@ -41,5 +41,10 @@ class RequestById(DRYResource):
     def __init__(self):
         super().__init__(Request)
         
+class Invitation(Resource):
+    def get(self, token):
+        return make_response({"message": "Success"}, 200)
+        
 api.add_resource(AcceptRequest, "/accept_request")
 api.add_resource(RequestById, "/requests/<int:id>", endpoint="request_by_id")
+api.add_resource(Invitation, "/invitation/<string:token>")

@@ -53,7 +53,8 @@ def check_if_logged_in():
         "index",
         "static",
         "get",
-        "contact"
+        "contact",
+        "invitation"
     ]
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
         # print("Returning unauthorized message", flush=True)

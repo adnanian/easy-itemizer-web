@@ -91,7 +91,7 @@ bcrypt = Bcrypt(app)
 
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
-    print(serializer, flush=True)
+    # print(serializer, flush=True)
     return serializer.dumps(email, salt=app.config["SECURITY_PASSWORD_SALT"])
 
 
@@ -105,6 +105,9 @@ def confirm_token(token, expiration=3600):
         return False
     return email
 
+def generate_invitation_token(org_name):
+    serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+    return serializer.dumps(org_name, salt=app.config["SECURITY_PASSWORD_SALT"])
 
 def send_email(subject, recipients, template, sender=app.config["MAIL_DEFAULT_SENDER"]):
     """
@@ -119,5 +122,5 @@ def send_email(subject, recipients, template, sender=app.config["MAIL_DEFAULT_SE
     message = Message(
         subject=subject, recipients=recipients, html=template, sender=sender
     )
-    print(message, flush=True)
+    # print(message, flush=True)
     mail.send(message)

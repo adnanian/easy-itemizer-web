@@ -1,6 +1,6 @@
-from flask import request, session, g, render_template_string
+from flask import request, session, g, render_template_string, url_for, make_response, jsonify
 from flask_restful import Resource
-from config import db, api, send_email
+from config import db, api, send_email, generate_invitation_token
 from resources.dry_resource import DRYResource
 from models.models import Organization, Membership, User
 from helpers import RoleType
@@ -120,7 +120,19 @@ class OrganizationInventoryReport(Resource):
             return {"message": "Status report sent."}, 201
         else:
             return {"message": "404 Not Found"}, 404
+        
+class OrganizationLink(Resource):
+    def get(self, name):
+        org = Organization.query.filter(Organization.name == name).first()
+        if org:
+            token = generate_invitation_token(org.name)
+            invitation_url = url_for("invitation", token=token, _external=True)
+            return make_response(jsonify(invitation_url), 200)
+        else:
+            return make_response({"message": "Org Name not found"}, 404)
+        
 
 api.add_resource(OrganizationCreator, "/organizations")
 api.add_resource(OrganizationById, "/organizations/<int:id>", endpoint="organization_by_id")
 api.add_resource(OrganizationInventoryReport, "/status_report")
+api.add_resource(OrganizationLink, "/organization_links/<string:name>")
