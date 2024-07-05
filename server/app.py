@@ -117,7 +117,8 @@ def create_log(response):
         "contact",
         "forgotpassword",
         "password_reset_form",
-        "password_reset"
+        "password_reset",
+        "leave_and_transfer"
     ]
     response_loggable = request.method != "GET"
     status_ok = 200 <= response.status_code < 300

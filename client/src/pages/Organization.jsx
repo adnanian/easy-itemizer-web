@@ -14,14 +14,14 @@ import OrgDescription from "../modal-children/info/OrgDescription";
 import RequestsTable from "../modal-children/info/RequestsTable";
 import EditOrgForm from "../modal-children/EditOrgForm";
 import InvitationLink from "../modal-children/info/InvitationLink";
+import ConfirmLeave from "../modal-children/confirm-deletion/ConfirmLeave";
 
 export default function Organization() {
     const modalManager = useModalManager();
     const titleManager = useTitleManager("");
     const [userMember, setUserMember] = useState(null);
     const [organization, setOrganization] = useState(null);
-    const [title, setTitle] = useState("");
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, setCurrentUser } = useContext(UserContext);
     const { items, setItems } = useContext(ItemContext);
     const { orgId } = useParams();
     const navigate = useNavigate();
@@ -144,6 +144,15 @@ export default function Organization() {
         });
     }
 
+    function leaveOrganization() {
+        setCurrentUser({
+            ...currentUser,
+            memberships: currentUser.memberships.filter((membership) => {
+                return membership.id !== userMember.id;
+            })
+        });
+    }
+
     function deleteMembership(membershipToDelete) {
         setOrganization((oldOrgData) => {
             const newOrgData = {...oldOrgData};
@@ -176,7 +185,17 @@ export default function Organization() {
         DELETE: "delete-button" // for owners to delete the entire organization.
     });
 
+    const admins = organization.memberships.filter((membership) => membership.role === MemberRole.ADMIN);
+
     const ModalOpeners = {
+        [ButtonId.LEAVE]: (
+            <ConfirmLeave
+                userMember={userMember}
+                admins={admins}
+                onLeave={leaveOrganization}
+                onClose={modalManager.clearView}
+            />
+        ),
         [ButtonId.VIEW_MEMBERS]: (
             <MembershipsTable
                 members={organization.memberships}
