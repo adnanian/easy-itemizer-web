@@ -416,6 +416,11 @@ def seed_relational_models():
     print("\n")
     for log in logs:
         print(log)
+        
+def print_owners():
+    owners = Membership.query.filter(Membership.role == RoleType.OWNER).all()
+    print("Here are the owners of this seed:")
+    [print(f"{owner.user.username} | {owner.organization.name}") for owner in owners]
 
 if __name__ == "__main__":
     with app.app_context():
@@ -426,6 +431,7 @@ if __name__ == "__main__":
         seed_orgs()
         seed_items()
         seed_relational_models()
+        print_owners()
         print("Seeding complete!")
         end_time = time.time()
         print(f"Seeding duration: {end_time - start_time} seconds.")

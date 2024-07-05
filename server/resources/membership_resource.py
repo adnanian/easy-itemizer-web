@@ -1,4 +1,4 @@
-from flask import request, g, make_response
+from flask import request, session, g, make_response, send_from_directory
 from flask_restful import Resource
 from config import db, api
 from resources.dry_resource import DRYResource
@@ -15,14 +15,18 @@ class MembershipById(DRYResource):
 
     def __init__(self):
         super().__init__(Membership, "membership_l")
+        
+    def get(self, id):
+        return send_from_directory("../client/dist", "index.html")
 
 
 class TransferOwnership(Resource):
-    def delete(self, org_id):
+    def patch(self, org_id):
         try:
             # Delete leaving user's membership
             leaving_member = Membership.query.filter(
-                Membership.organization_id == org_id
+                Membership.organization_id == org_id,
+                Membership.user_id == session["user_id"]
             ).first()
             leaving_username = leaving_member.user.username
             db.session.delete(leaving_member)

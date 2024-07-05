@@ -229,6 +229,11 @@
     overflow-x: auto;
 }
 
+#deletion-warning {
+    display: flex;
+    flex-direction: column;
+}
+
 @media (prefers-color-scheme: light) {
     #assignment-count {
         color: black !important;

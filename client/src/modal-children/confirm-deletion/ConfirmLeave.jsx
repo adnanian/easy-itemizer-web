@@ -5,15 +5,17 @@ import DeletionWarning from "./DeletionWarning";
 
 export default function ConfirmLeave({ userMember, admins, onLeave, onClose }) {
     if (userMember.role === MemberRole.OWNER && !admins.length) {
-        <div>
-            <h1>Unable to Leave Organization</h1>
-            <p>
-                You are the current owner of this organization, and there
-                are currently no admins managing it alongside you. In order
-                to leave, you first need to promote at least one member from
-                &nbsp;<em>{MemberRole.REGULAR}</em> to <em>{MemberRole.ADMIN}</em>.
-            </p>
-        </div>
+        return (
+            <div style={{width: '400px'}}>
+                <h1>Unable to Leave Organization</h1>
+                <p>
+                    You are the current owner of this organization, and there
+                    are currently no admins managing it alongside you. In order
+                    to leave, you first need to promote at least one member from
+                    &nbsp;<em>{MemberRole.REGULAR}</em> to <em>{MemberRole.ADMIN}</em>.
+                </p>
+            </div>
+        );
     }
 
     // Member Id's of admin's.
@@ -42,9 +44,10 @@ export default function ConfirmLeave({ userMember, admins, onLeave, onClose }) {
         const route = correctRoute(
             !selectedAdmin ? `/memberships/${userMember.id}` : `/transfer_ownership/${userMember.organization_id}`
         );
+        const method = !selectedAdmin ? "DELETE" : "PATCH";
         const body = !selectedAdmin ? null : JSON.stringify({ admin_id: selectedAdmin });
         fetch(route, {
-            method: "DELETE",
+            method: method,
             headers: {
                 "Content-Type": "application/json"
             },
@@ -53,13 +56,15 @@ export default function ConfirmLeave({ userMember, admins, onLeave, onClose }) {
             .then((response) => {
                 if (response.ok) {
                     onLeave();
-                    navigate(-1);
+                    navigate("/my-organizations");
                 } else {
-                    throw new Error("An internal error occurred. Please contact support.");
+                    return response.json().then((error) => {
+                        console.error(error);
+                        throw new Error("An internal error occurred. Please contact support.");
+                    })
                 }
             })
             .catch((error) => {
-                console.error(error);
                 alert(error);
             })
             .finally(() => onClose());

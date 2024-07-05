@@ -19,7 +19,7 @@ export default function DeletionWarning({buttonText, preventDefault, onDelete, o
     }
 
     return (
-        <div>
+        <div id="deletion-warning">
             <h1 className="are-you-sure">&#9888; {titleManager.title} &#9888;</h1>
             {children}
             <button
