@@ -4,7 +4,7 @@ import {UserContext} from "../SuperContext";
 import StyledTitle from "../components/StyledTitle";
 import LoadingScreen from "../components/LoadingScreen";
 import { useNavigate } from "react-router-dom";
-import { placeholderImages } from "../helpers";
+import { dtStringToSystemTimeZone, placeholderImages } from "../helpers";
 import "../styles/Settings.css";
 import EditProfileForm from "../modal-children/EditProfileForm";
 import AccountDeleter from "../modal-children/confirm-deletion/AccountDeleter";
@@ -90,11 +90,11 @@ export default function UserSettings() {
                                 </tr>
                                 <tr>
                                     <td>Created At</td>
-                                    <td>{currentUser.created_at}</td>
+                                    <td>{dtStringToSystemTimeZone(currentUser.created_at)}</td>
                                 </tr>
                                 <tr>
                                     <td>Last Updated</td>
-                                    <td>{currentUser.last_updated || "N/A"}</td>
+                                    <td>{dtStringToSystemTimeZone(currentUser.last_updated)}</td>
                                 </tr>
                             </tbody>
                         </table>

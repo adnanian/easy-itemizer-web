@@ -18,10 +18,13 @@ const placeholderImages = {
 
 // TODO
 const quickInlineStyles = {
-    centerText: {textAlign: "center"},
-    biggerFont: {fontSize: "125%"},
-    rectangularPad: {padding: "8px"}
+    centerText: { textAlign: "center" },
+    biggerFont: { fontSize: "125%" },
+    rectangularPad: { padding: "8px" }
 };
+
+// System time Zone
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 /**
  * Adds the correct route prefix to a given route and returns it.
@@ -37,6 +40,29 @@ function correctRoute(route) {
 }
 
 /**
+ * Parses a date time string, converts it
+ * to system's time zone, and return it.
+ * 
+ * References: 
+ * https://stackoverflow.com/questions/40768606/i-have-a-utc-string-and-i-want-to-convert-it-to-utc-date-object-in-javascript
+ * https://www.tutorialspoint.com/how-to-detect-user-timezone-in-javascript
+ * 
+ * 
+ * @param {String} dtString the date time.
+ * @returns the date time in the system's time zone.
+ */
+function dtStringToSystemTimeZone(dtString) {
+    if (!dtString) {
+        return "N/A";
+    }
+    const date = new Date(dtString + "Z");
+    // console.log(timeZone);
+    const dateTZ = date.toLocaleString("en-US", {timeZone: timeZone});
+    // console.log(dateTZ);
+    return dateTZ;
+}
+
+/**
  * TODO
  */
 const MemberRole = Object.freeze({
@@ -45,8 +71,4 @@ const MemberRole = Object.freeze({
     OWNER: "OWNER"
 });
 
-
-
-
-
-export {correctRoute, placeholderImages, quickInlineStyles, MemberRole};
+export { correctRoute, dtStringToSystemTimeZone, placeholderImages, quickInlineStyles, MemberRole };

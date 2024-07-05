@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import { placeholderImages } from "../helpers";
+import { placeholderImages, dtStringToSystemTimeZone } from "../helpers";
 
 export default function MembershipCard({membership}) {
     return (
@@ -11,8 +11,8 @@ export default function MembershipCard({membership}) {
                 />
                 <h2>{membership.organization.name}</h2>
                 <h3>{membership.role}</h3>
-                <p>Created on {membership.organization.created_at}</p>
-                <p>Joined on {membership.joined_at}.</p>
+                <p>Created on {dtStringToSystemTimeZone(membership.organization.created_at)}</p>
+                <p>Joined on {dtStringToSystemTimeZone(membership.joined_at)}.</p>
                 <textarea
                     readOnly
                     rows="5"

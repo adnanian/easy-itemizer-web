@@ -1,4 +1,5 @@
 import { useScreenSize } from "../../helperHooks";
+import { dtStringToSystemTimeZone } from "../../helpers";
 
 export default function LogsTable({logs}) {
 
@@ -41,7 +42,7 @@ export default function LogsTable({logs}) {
                 <td style={{maxWidth: "400px"}}>
                     {logContentLines}
                 </td>
-                <td>{log.occurrence}</td>
+                <td>{dtStringToSystemTimeZone(log.occurrence)}</td>
             </tr>
         )
     });

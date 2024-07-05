@@ -1,5 +1,5 @@
 import { useModalManager } from "../helperHooks";
-import { placeholderImages } from "../helpers";
+import { placeholderImages, dtStringToSystemTimeZone } from "../helpers";
 import AssignmentRemover from "../modal-children/confirm-deletion/AssignmentRemover";
 import AdjustQuantityForm from "../modal-children/edit-assignment/AdjustQuantityForm";
 import AdjustThresholdForm from "../modal-children/edit-assignment/AdjustThresholdForm";
@@ -89,11 +89,11 @@ export default function AssignedItemCard({assignment, currentUserRegular, onUpda
                         </tr>
                         <tr>
                             <td>Added at</td>
-                            <td>{assignment.added_at}</td>
+                            <td>{dtStringToSystemTimeZone(assignment.added_at)}</td>
                         </tr>
                         <tr>
                             <td>Last Updated</td>
-                            <td>{assignment.last_updated || "N/A"}</td>
+                            <td>{dtStringToSystemTimeZone(assignment.last_updated)}</td>
                         </tr>
                     </tbody>
                 </table>

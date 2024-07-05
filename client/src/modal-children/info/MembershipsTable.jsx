@@ -1,5 +1,5 @@
 import { useModalManager, useScreenSize } from "../../helperHooks";
-import { MemberRole, correctRoute, placeholderImages } from "../../helpers";
+import { MemberRole, correctRoute, dtStringToSystemTimeZone, placeholderImages } from "../../helpers";
 import MemberExpeller from "../confirm-deletion/MemberExpeller";
 
 export default function MembershipsTable({members, userMember, onUpdate, onDelete}) {
@@ -96,7 +96,7 @@ export default function MembershipsTable({members, userMember, onUpdate, onDelet
                 <td>{member.user.last_name}</td>
                 <td>{member.user.username}</td>
                 <td>{member.user.email}</td>
-                <td>{member.joined_at}</td>
+                <td>{dtStringToSystemTimeZone(member.joined_at)}</td>
                 <td>{member.role}</td>
                 {
                     userMember.role === MemberRole.REGULAR ? null : (

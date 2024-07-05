@@ -1,4 +1,4 @@
-import { placeholderImages, quickInlineStyles } from "../../helpers";
+import { placeholderImages, quickInlineStyles, dtStringToSystemTimeZone } from "../../helpers";
 import "../../styles/components/ItemCardDetail.css";
 import BigText from "../BigText";
 import { useModalManager, useScreenSize } from "../../helperHooks";
@@ -84,11 +84,11 @@ export default function ItemCardDetail({ user, item, onUpdate, onDelete }) {
                             </tr>
                             <tr>
                                 <td>Added at</td>
-                                <td>{item.created_at}</td>
+                                <td>{dtStringToSystemTimeZone(item.created_at)}</td>
                             </tr>
                             <tr>
                                 <td>Last Updated</td>
-                                <td>{item.last_updated || "N/A"}</td>
+                                <td>{dtStringToSystemTimeZone(item.last_updated)}</td>
                             </tr>
                             <tr>
                                 <td>Visibility</td>

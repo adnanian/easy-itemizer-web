@@ -1,4 +1,4 @@
-import { correctRoute } from "../../helpers";
+import { correctRoute, dtStringToSystemTimeZone } from "../../helpers";
 
 export default function RequestsTable({requests, onProcessRequest}) {
 
@@ -63,7 +63,7 @@ export default function RequestsTable({requests, onProcessRequest}) {
                 <td>{request.user.last_name}</td>
                 <td>{request.user.username}</td>
                 <td>{request.user.email}</td>
-                <td>{request.submitted_at}</td>
+                <td>{dtStringToSystemTimeZone(request.submitted_at)}</td>
                 <td>{request.reason_to_join}</td>
                 <td>
                     <div className="button-block-grid">
