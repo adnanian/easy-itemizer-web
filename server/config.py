@@ -125,7 +125,7 @@ def generate_confirmation_token(email):
     return serializer.dumps(email, salt=app.config["SECURITY_PASSWORD_SALT"])
 
 
-def confirm_token(token, expiration=3600):
+def confirm_token(token, expiration=600):
     seralizer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     try:
         email = seralizer.loads(
@@ -139,7 +139,7 @@ def generate_invitation_token(org_name):
     serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     return serializer.dumps(org_name, salt=app.config["SECURITY_PASSWORD_SALT"])
 
-def invitation_token(token, expiration=3600):
+def invitation_token(token, expiration=300):
     seralizer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     try:
         org_name = seralizer.loads(
@@ -148,6 +148,20 @@ def invitation_token(token, expiration=3600):
     except:
         return False
     return org_name
+
+def generate_password_reset_link(salted_email):
+    serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+    return serializer.dumps(salted_email, salt=app.config["SECURITY_PASSWORD_SALT"])
+
+def password_reset_token(token, expiration=120):
+    seralizer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+    try:
+        salted_email = seralizer.loads(
+            token, salt=app.config["SECURITY_PASSWORD_SALT"], max_age=expiration
+        )
+    except:
+        return False
+    return salted_email
 
 def send_email(subject, recipients, template, sender=app.config["MAIL_DEFAULT_SENDER"]):
     """

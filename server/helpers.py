@@ -2,6 +2,25 @@ import inspect
 import sys
 import types
 from sqlalchemy.exc import IntegrityError
+import random
+
+ALPHANUMERIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+def random_alphanumeric_sequence(size = 0):
+    """_summary_
+    
+    Reference: https://stackoverflow.com/questions/2511222/efficiently-generate-a-16-character-alphanumeric-string
+
+    Args:
+        size (int, optional): _description_. Defaults to 0.
+
+    Returns:
+        _type_: _description_
+    """
+    if (size == 0):
+        size = random.randint(16, 32)
+    sequence = "".join([random.choice(ALPHANUMERIC) for n in range(size)])
+    return sequence
 
 def is_non_empty_string(var):
     """Validates whether a given variable is a non-empty string.

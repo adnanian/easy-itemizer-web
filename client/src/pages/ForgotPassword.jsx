@@ -5,7 +5,7 @@ import {correctRoute} from "../helpers";
 import "../styles/ForgotPassword.css";
 
 export default function ForgotPassword() {
-    const titleManager = useTitleManager("Get Reset Password Link");
+    const titleManager = useTitleManager("Get Password Reset Link");
     const [email, setEmail] = useState("");
     const navigate = useNavigate();
 
