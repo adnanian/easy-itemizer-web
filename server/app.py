@@ -144,6 +144,8 @@ def create_log(response):
             if key in ["item_l", "assignment_l"] and request.method == "POST":
                 org_id = body[key]["assignment"]["organization_id"]
             elif key == "organization_l":
+                if request.method == "DELETE":
+                    return make_response(body[key], response.status_code)
                 org_id = body[key]["id"]
             else:
                 org_id = body[key]["organization_id"]

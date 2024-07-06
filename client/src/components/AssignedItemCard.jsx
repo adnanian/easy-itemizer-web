@@ -76,10 +76,10 @@ export default function AssignedItemCard({assignment, currentUserRegular, showDe
                 <p><b>{quantityStatus.name}</b></p>
                 <img src={assignment.item.image_url || placeholderImages.item}/>
                 <h4 className="assignment-name">{assignment.item.name}</h4>
-                <h5 className="assignment-part">{assignment.item.part_number}</h5>
                 {
                     !showDetails ? <p className="simple-status">{assignment.current_quantity} / {assignment.enough_threshold}</p> : (
                         <>
+                            <h5 className="assignment-part">{assignment.item.part_number}</h5>
                             <table>
                                 <tbody>
                                     <tr>

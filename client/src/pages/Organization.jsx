@@ -15,6 +15,7 @@ import RequestsTable from "../modal-children/info/RequestsTable";
 import EditOrgForm from "../modal-children/EditOrgForm";
 import InvitationLink from "../modal-children/info/InvitationLink";
 import ConfirmLeave from "../modal-children/confirm-deletion/ConfirmLeave";
+import OrgDeleter from "../modal-children/confirm-deletion/OrgDeleter";
 
 export default function Organization() {
     const modalManager = useModalManager();
@@ -224,6 +225,14 @@ export default function Organization() {
         ),
         [ButtonId.EDIT]: (
             <EditOrgForm org={organization} onUpdate={setOrganization} onClose={modalManager.clearView}/>
+        ),
+        [ButtonId.DELETE]: (
+            <OrgDeleter 
+                orgId={organization.id} 
+                orgName={organization.name}
+                onLeave={leaveOrganization}
+                onClose={modalManager.clearView}
+            />
         )
     };
 

@@ -71,7 +71,7 @@ export default function AccountDeleter({ user, onLogout, onClose }) {
                 <p>&#9888; Warning! Deleting your account will delete all data associated with
                     it and <strong>this CANNOT be undone</strong>! By clicking the yellow button below,
                     you agree to these terms and conditions and will not press charges against
-                    &#0169; Itemizer for such matters.
+                    &#0169; Easy Itemizer for such matters.
                 </p>
                 <label htmlFor="password">Enter your password: </label>
                 <input
