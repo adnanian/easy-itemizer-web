@@ -24,18 +24,18 @@
 
 #org-body #assigned-item-list {
     margin-top: 0;
-    margin-bottom: 33px;
+    margin-bottom: 50px;
 }
 
 #assigned-item-list {
     list-style: none;
     display: grid;
     grid-template-columns: 400px 400px 400px 400px;
-    height: 500px;
+    height: 529px;
     /* background: linear-gradient(to right bottom, #020, darkgreen, green, olive, yellow, lime); */
     align-items: center;
     justify-content: center;
-    padding: 13px;
+    padding: 0 0 13px;
 }
 
 #assigned-item-list li {
@@ -69,7 +69,7 @@
 .assigned-item {
     padding: 0 12px;
     width: 360px;
-    height: 529px;
+    height: fit-content;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -96,6 +96,11 @@
 .assignment-part {
     font-size: 13px;
     margin-bottom: 6px !important;
+}
+
+.simple-status {
+    font-size: 20px;
+    padding-bottom: 10px;
 }
 
 .quantity-changer {
@@ -232,6 +237,17 @@
 #deletion-warning {
     display: flex;
     flex-direction: column;
+}
+
+#detail-check-container {
+    background-color: darkgray;
+    margin-left: 15px;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+#detail-check-container * {
+    margin: 0 5px;
 }
 
 @media (prefers-color-scheme: light) {

@@ -4,7 +4,7 @@ import AssignmentRemover from "../modal-children/confirm-deletion/AssignmentRemo
 import AdjustQuantityForm from "../modal-children/edit-assignment/AdjustQuantityForm";
 import AdjustThresholdForm from "../modal-children/edit-assignment/AdjustThresholdForm";
 
-export default function AssignedItemCard({assignment, currentUserRegular, onUpdate, onDelete}) {
+export default function AssignedItemCard({assignment, currentUserRegular, showDetails, onUpdate, onDelete}) {
     const modalManager = useModalManager();
     
     class QuantityStatus {
@@ -77,33 +77,39 @@ export default function AssignedItemCard({assignment, currentUserRegular, onUpda
                 <img src={assignment.item.image_url || placeholderImages.item}/>
                 <h4 className="assignment-name">{assignment.item.name}</h4>
                 <h5 className="assignment-part">{assignment.item.part_number}</h5>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Current Quantity</td>
-                            <td>{assignment.current_quantity}</td>
-                        </tr>
-                        <tr>
-                            <td>Enough Threshold</td>
-                            <td>{assignment.enough_threshold}</td>
-                        </tr>
-                        <tr>
-                            <td>Added at</td>
-                            <td>{dtStringToSystemTimeZone(assignment.added_at)}</td>
-                        </tr>
-                        <tr>
-                            <td>Last Updated</td>
-                            <td>{dtStringToSystemTimeZone(assignment.last_updated)}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <textarea
-                    readOnly
-                    rows="4"
-                    cols="30"
-                    value={assignment.item.description}
-                >
-                </textarea>
+                {
+                    !showDetails ? <p className="simple-status">{assignment.current_quantity} / {assignment.enough_threshold}</p> : (
+                        <>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Current Quantity</td>
+                                        <td>{assignment.current_quantity}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Enough Threshold</td>
+                                        <td>{assignment.enough_threshold}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Added at</td>
+                                        <td>{dtStringToSystemTimeZone(assignment.added_at)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last Updated</td>
+                                        <td>{dtStringToSystemTimeZone(assignment.last_updated)}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <textarea
+                                readOnly
+                                rows="4"
+                                cols="30"
+                                value={assignment.item.description}
+                            >
+                            </textarea>
+                        </>
+                    )
+                }
                 <div className="button-group">
                     <button
                         className={"quantity-changer minus-button"}

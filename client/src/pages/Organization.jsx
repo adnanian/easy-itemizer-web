@@ -24,6 +24,7 @@ export default function Organization() {
     const { currentUser, setCurrentUser } = useContext(UserContext);
     const { items, setItems } = useContext(ItemContext);
     const { orgId } = useParams();
+    const [showAssignedItemDetails, setShowAssignedItemDetails] = useState(false);
     const navigate = useNavigate();
     
     
@@ -257,6 +258,7 @@ export default function Organization() {
                 <AssignedItemCard
                     assignment={assignment}
                     currentUserRegular={userMember.role === MemberRole.REGULAR}
+                    showDetails={showAssignedItemDetails}
                     onUpdate={updateAssignment}
                     onDelete={deleteAssignment}
                 />
@@ -412,6 +414,16 @@ export default function Organization() {
                         )
                     }
                     <span id="assignment-count">Items: {organization.assignments.length}</span>
+                    <div id="detail-check-container" title="Enabling this will expand the item cards to show more details.">
+                        <label htmlFor="detail-check">Show Item Details</label>
+                        <input
+                            id="detail-check"
+                            name="detail-check"
+                            type="checkbox"
+                            checked={showAssignedItemDetails}
+                            onChange={(e) => setShowAssignedItemDetails(e.target.checked)}
+                        />
+                    </div>
                 </span>
             </div>
             <div id="org-body" style={orgBodyStyling}>
