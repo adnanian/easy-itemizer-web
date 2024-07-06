@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes as RouteList, Route } from "react-router-dom";
 import { SuperProvider } from "./SuperContext";
 import Home from "./pages/Home"
@@ -19,6 +19,10 @@ import Organization from "./pages/Organization";
  * @returns 
  */
 export default function App() {
+  useEffect(() => {
+
+  })
+
   return (
     <BrowserRouter>
       <SuperProvider>

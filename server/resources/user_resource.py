@@ -2,9 +2,9 @@ from flask import (
     request,
     session,
     make_response,
-    render_template,
     render_template_string,
     url_for,
+    redirect
 )
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
@@ -229,6 +229,8 @@ class CheckSession(Resource):
           type (dict): the JSONified user object, if there's an id for the session object, the message "Unauthorized" otherwise.
         """
         if user := User.query.filter_by(id=session.get("user_id")).first():
+            if user.is_banned:
+                return redirect("/")
             return user.to_dict(), 200
         # print("SUPERDUPERDAB", flush=True)
         return {"message": "401 Unauthorized"}, 401
@@ -269,7 +271,6 @@ class CurrentUser(Resource):
             return make_response({"message": "Account deleted"}, 204)
         else:
             return make_response({"message": "Incorrect password entered."}, 403)
-
 
 api.add_resource(Signup, "/signup")
 api.add_resource(Login, "/login")

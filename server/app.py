@@ -8,7 +8,7 @@ from flask import (
     render_template,
     render_template_string,
     send_from_directory,
-    make_response,
+    make_response
 )
 from flask_restful import Resource
 import datetime
@@ -44,7 +44,7 @@ def check_if_logged_in():
         JSON: if a user is not logged in, then an "Unauthorized" message will be returned.
     """
     # breakpoint()
-    print(f"Current endpoint: {request.endpoint}", flush=True)
+    # print(f"Current endpoint: {request.endpoint}", flush=True)
     endpoint_whitelist = [
         "signup",
         "login",
@@ -63,7 +63,6 @@ def check_if_logged_in():
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
         # print("Returning unauthorized message", flush=True)
         return {"error": "Unauthorized! You must be logged in ree"}, 401
-
 
 @app.before_request
 def get_record_by_id():

@@ -58,7 +58,7 @@ export default function ExistingItemForm({orgId, user, onAdd}) {
                 onAdd(data);
                 alert("Item assigned to your organization.")
             } else {
-                throw new Error(data.message)
+                throw new Error("You already have this item in your organization.");
             }
         })
         .catch((error) => {
