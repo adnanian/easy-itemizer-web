@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import {UserContext} from "../SuperContext";
+import { UserContext } from "../SuperContext";
 import StyledTitle from "../components/StyledTitle";
 import BigText from "../components/BigText";
 import MembershipCard from "../components/MembershipCard";
@@ -16,7 +16,7 @@ import NewOrgForm from "../modal-children/NewOrgForm";
  */
 export default function UserMemberships() {
     const modalManager = useModalManager();
-    const {currentUser, setCurrentUser} = useContext(UserContext);
+    const { currentUser, setCurrentUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export default function UserMemberships() {
     }, [currentUser?.id]);
 
     if (!currentUser) {
-        return <LoadingScreen/>
+        return <LoadingScreen />
     }
 
     /**
@@ -45,7 +45,7 @@ export default function UserMemberships() {
     const membershipCards = currentUser.memberships?.toSorted(sortByName).map((membership) => {
         return (
             <li key={membership.id} className="three-d-round-border">
-                <MembershipCard membership={membership}/>
+                <MembershipCard membership={membership} />
             </li>
         )
     });
@@ -71,17 +71,17 @@ export default function UserMemberships() {
      */
     function openModal() {
         modalManager.showView(
-            <NewOrgForm userId={currentUser.id} onAdd={addNewMembership} onClose={modalManager.clearView}/>
+            <NewOrgForm userId={currentUser.id} onAdd={addNewMembership} onClose={modalManager.clearView} />
         )
     }
 
     return (
         <>
-            <StyledTitle text="Your Organizations"/>
+            <StyledTitle text="Your Organizations" />
             <BigText id="about-org-page">
                 <h2>Below are the organizations that you currently belong to!</h2>
             </BigText>
-            <button 
+            <button
                 id="new-org-button"
                 title="Opens up a modal form for you to fill out the details of the organization you wish to create."
                 onClick={openModal}

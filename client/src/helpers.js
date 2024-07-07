@@ -57,7 +57,7 @@ function dtStringToSystemTimeZone(dtString) {
     }
     const date = new Date(dtString + "Z");
     // console.log(timeZone);
-    const dateTZ = date.toLocaleString("en-US", {timeZone: timeZone});
+    const dateTZ = date.toLocaleString("en-US", { timeZone: timeZone });
     // console.log(dateTZ);
     return dateTZ;
 }

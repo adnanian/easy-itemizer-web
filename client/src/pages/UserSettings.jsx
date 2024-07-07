@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useLoadingTimer, useModalManager, useScreenSize } from "../helperHooks";
-import {UserContext} from "../SuperContext";
+import { UserContext } from "../SuperContext";
 import StyledTitle from "../components/StyledTitle";
 import LoadingScreen from "../components/LoadingScreen";
 import { useNavigate } from "react-router-dom";
@@ -16,8 +16,8 @@ import AccountDeleter from "../modal-children/confirm-deletion/AccountDeleter";
  */
 export default function UserSettings() {
     const modalManager = useModalManager();
-    const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
-    const {currentUser, setCurrentUser, logout} = useContext(UserContext);
+    const { scaleByWidth, scaleByHeight, scaleByRatio } = useScreenSize();
+    const { currentUser, setCurrentUser, logout } = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,7 +27,7 @@ export default function UserSettings() {
     }, [currentUser?.id]);
 
     if (!currentUser) {
-        return <LoadingScreen/>
+        return <LoadingScreen />
     }
 
     const profilePic = currentUser.profile_picture_url || placeholderImages.userProfile;
@@ -71,7 +71,7 @@ export default function UserSettings() {
 
     return (
         <>
-            <StyledTitle text="Account & Profile"/>
+            <StyledTitle text="Account & Profile" />
             <div id="profile-container" className="three-d-round-border">
                 <span id="profile-info-container">
                     <img

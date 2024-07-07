@@ -6,6 +6,16 @@ import EditItemForm from "../../modal-children/EditItemForm";
 import ReportForm from "../../modal-children/ReportForm";
 import ItemRemover from "../../modal-children/confirm-deletion/ItemRemover";
 
+/**
+ * Displays all of a selected item's information.
+ * 
+ * @param {Object} props
+ * @param {Object} props.user the current user.
+ * @param {Object} props.item the currently selected item.
+ * @param {Function} props.onUpdate the callback function to execute after making a PATCH request to update an item resource.
+ * @param {Function} props.onDelete the callback function to execute after making a DELETE request to delete an item resource. 
+ * @returns a card containing an item's details.
+ */
 export default function ItemCardDetail({ user, item, onUpdate, onDelete }) {
     // console.log(item);
 
@@ -26,20 +36,19 @@ export default function ItemCardDetail({ user, item, onUpdate, onDelete }) {
     });
 
     const modalOpeners = {
-        [ButtonId.EDIT_ITEM]: <EditItemForm item={item} onUpdate={handleUpdate} onClose={modalManager.clearView} />,
-        [ButtonId.DELETE_ITEM]: <ItemRemover item={item} onDelete={onDelete} onClose={modalManager.clearView}/>,
-        [ButtonId.REPORT]: <ReportForm item={item} onClose={modalManager.clearView}/>
+        [ButtonId.EDIT_ITEM]: <EditItemForm item={item} onUpdate={onUpdate} onClose={modalManager.clearView} />,
+        [ButtonId.DELETE_ITEM]: <ItemRemover item={item} onDelete={onDelete} onClose={modalManager.clearView} />,
+        [ButtonId.REPORT]: <ReportForm item={item} onClose={modalManager.clearView} />
     }
 
+    /**
+     * Opens a modal with the appropriate child depending on the button clicked.
+     * 
+     * @param {Event} e the event.
+     */
     function handleClick(e) {
         modalManager.showView(modalOpeners[e.target.id]);
     }
-
-    function handleUpdate(itemToUpdate) {
-        onUpdate(itemToUpdate);
-    }
-
-    
 
     const detailWrapperSizing = {
         padding: `${scaleByHeight(10, 'px')} ${scaleByWidth(15, 'px')}`
@@ -54,8 +63,6 @@ export default function ItemCardDetail({ user, item, onUpdate, onDelete }) {
         textAlign: "center",
         fontSize: scaleByWidth(125, '%')
     };
-
-    
 
     return (
         <div

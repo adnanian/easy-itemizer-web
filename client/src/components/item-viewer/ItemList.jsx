@@ -1,12 +1,23 @@
 import ItemCard from "./ItemCard";
 import BigText from "../BigText";
-import {useScreenSize} from "../../helperHooks";
+import { useScreenSize } from "../../helperHooks";
 
-export default function ItemList({user, items, filters, onSelectItem}) {
+/**
+ * Renders a spaced grid of cards with simple item information: the name, image,
+ * and part number.
+ * 
+ * @param {Object} props
+ * @param {Object} props.user the current user.
+ * @param {Array} props.items the items in the system.
+ * @param {Object} props.filters the filters to apply on the items.
+ * @param {Function} props.onSelectItem the callback function to execute when an ItemCard is clicked on. 
+ * @returns a list of items in the system, displayed as a grid.
+ */
+export default function ItemList({ user, items, filters, onSelectItem }) {
 
     // console.log(filters);
 
-    const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
+    const { scaleByWidth, scaleByHeight, scaleByRatio } = useScreenSize();
 
     const itemListContainerSizing = {
         marginTop: scaleByHeight(10, 'px'),
@@ -26,8 +37,10 @@ export default function ItemList({user, items, filters, onSelectItem}) {
     };
 
     /**
+     * Applies the given filters onto the items, so that only such items that
+     * satisfy the filter constraints will be rendered.
      * 
-     * @returns 
+     * @returns the filtered list of items.
      */
     const filteredItems = () => {
         if (filters.text === "" && !filters.userItemsOnly) {
@@ -35,7 +48,7 @@ export default function ItemList({user, items, filters, onSelectItem}) {
         } else {
             return items.filter((item) => {
                 return (
-                    (filters.text === "" ? true : item.name.toLowerCase().includes(filters.text.toLowerCase())) 
+                    (filters.text === "" ? true : item.name.toLowerCase().includes(filters.text.toLowerCase()))
                     && (!filters.userItemsOnly ? true : item.user_id === user.id)
                 );
             });
@@ -43,11 +56,11 @@ export default function ItemList({user, items, filters, onSelectItem}) {
     };
 
     /**
-     * TODO
+     * Sorts the list of items by name.
      * 
-     * @param {*} itemA 
-     * @param {*} itemB 
-     * @returns 
+     * @param {Object} itemA the item to compare. 
+     * @param {Object} itemB the item to be compared.
+     * @returns the appropriate value resulting from the comparison.
      */
     const sortByName = (itemA, itemB) => {
         if (itemA.name < itemB.name) return -1;
@@ -55,29 +68,26 @@ export default function ItemList({user, items, filters, onSelectItem}) {
         return 0;
     }
 
-    /**
-     * 
-     */
     const itemCards = filteredItems()?.toSorted(sortByName).map((item) => {
         return (
-            <li 
-                key={item.id} 
+            <li
+                key={item.id}
                 className="three-d-round-border"
                 style={liSizing}
             >
-                <ItemCard item={item} onSelectItem={onSelectItem}/>
+                <ItemCard item={item} onSelectItem={onSelectItem} />
             </li>
         )
     });
 
     return (
-        <div 
-            id="item-list-container" 
+        <div
+            id="item-list-container"
             className="round-border"
             style={itemListContainerSizing}
         >
-            <ul 
-                id="item-list" 
+            <ul
+                id="item-list"
                 className="three-d-round-border"
                 style={itemListSizing()}
             >

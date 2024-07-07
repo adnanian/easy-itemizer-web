@@ -24,20 +24,20 @@ const SuperProvider = ({ children }) => {
 
     useEffect(() => {
         fetch(correctRoute("/check_session"))
-        .then((response) => {
-            if (response.ok) {
-                response.json().then((user) => setCurrentUser(user));
-            }
-        });
+            .then((response) => {
+                if (response.ok) {
+                    response.json().then((user) => setCurrentUser(user));
+                }
+            });
     }, []);
 
     useEffect(() => {
         fetch(correctRoute("/items"))
-        .then((response) => {
-            if (response.ok) {
-                return response.json().then((items) => setItems(items));
-            }
-        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json().then((items) => setItems(items));
+                }
+            })
     }, [currentUser]);
 
     /**
@@ -60,20 +60,20 @@ const SuperProvider = ({ children }) => {
         fetch(correctRoute("/logout"), {
             method: "DELETE"
         })
-        .then((response) => {
-            if (response.ok) {
-                // console.log("Logged out.");
-                setCurrentUser(null);
-            } else {
-                throw new Error("Logout failed.");
-            }
-        });
+            .then((response) => {
+                if (response.ok) {
+                    // console.log("Logged out.");
+                    setCurrentUser(null);
+                } else {
+                    throw new Error("Logout failed.");
+                }
+            });
     };
 
     return (
         <UserContext.Provider value={{ currentUser, setCurrentUser, login, logout }}>
-            <ItemContext.Provider value={{items, setItems}}>
-                <SelectedItemContext.Provider value={{selectedItem, setSelectedItem}}>
+            <ItemContext.Provider value={{ items, setItems }}>
+                <SelectedItemContext.Provider value={{ selectedItem, setSelectedItem }}>
                     {children}
                 </SelectedItemContext.Provider>
             </ItemContext.Provider>

@@ -24,7 +24,7 @@ import OrgDeleter from "../modal-children/confirm-deletion/OrgDeleter";
  */
 export default function Organization() {
     const modalManager = useModalManager();
-    const {scaleByWidth, scaleByHeight} = useScreenSize();
+    const { scaleByWidth, scaleByHeight } = useScreenSize();
     const titleManager = useTitleManager("");
     const [userMember, setUserMember] = useState(null);
     const [organization, setOrganization] = useState(null);
@@ -121,7 +121,7 @@ export default function Organization() {
     function processRequest(requestToDelete, membershipToAdd = null) {
         console.log("Deleting request:", requestToDelete);
         setOrganization((oldOrgData) => {
-            const newOrgData = {...oldOrgData};
+            const newOrgData = { ...oldOrgData };
             if (membershipToAdd) {
                 newOrgData.memberships = [...newOrgData.memberships, membershipToAdd];
             }
@@ -129,7 +129,7 @@ export default function Organization() {
             modalManager.showView(<RequestsTable requests={newOrgData.requests} onProcessRequest={processRequest} />)
             return newOrgData;
         })
-    
+
         console.log("Updated organization state:", organization.requests.find((request) => request.id === requestToDelete.id));
     }
 
@@ -140,7 +140,7 @@ export default function Organization() {
      */
     function updateMembership(membershipToUpdate) {
         setOrganization((oldOrgData) => {
-            const newOrgData = {...oldOrgData};
+            const newOrgData = { ...oldOrgData };
             newOrgData.memberships = newOrgData.memberships.map((membership) => {
                 return membership.id === membershipToUpdate.id ? membershipToUpdate : membership;
             });
@@ -176,7 +176,7 @@ export default function Organization() {
      */
     function deleteMembership(membershipToDelete) {
         setOrganization((oldOrgData) => {
-            const newOrgData = {...oldOrgData};
+            const newOrgData = { ...oldOrgData };
             newOrgData.memberships = newOrgData.memberships.filter((membership) => {
                 return membership.id !== membershipToDelete.id;
             });
@@ -243,11 +243,11 @@ export default function Organization() {
             <OrgDescription name={organization.name} description={organization.description} />
         ),
         [ButtonId.EDIT]: (
-            <EditOrgForm org={organization} onUpdate={setOrganization} onClose={modalManager.clearView}/>
+            <EditOrgForm org={organization} onUpdate={setOrganization} onClose={modalManager.clearView} />
         ),
         [ButtonId.DELETE]: (
-            <OrgDeleter 
-                orgId={organization.id} 
+            <OrgDeleter
+                orgId={organization.id}
                 orgName={organization.name}
                 onLeave={leaveOrganization}
                 onClose={modalManager.clearView}
@@ -317,25 +317,25 @@ export default function Organization() {
                         org_id: organization.id
                     })
                 })
-                .then((response) => {
-                    if (response.ok) {
-                        alert("Status report generation and sending successful.");
-                    } else {
-                        alert("An internal error occurred. Please contact support.");
-                    }
-                })
-                .finally(() => titleManager.revertToDefault());
+                    .then((response) => {
+                        if (response.ok) {
+                            alert("Status report generation and sending successful.");
+                        } else {
+                            alert("An internal error occurred. Please contact support.");
+                        }
+                    })
+                    .finally(() => titleManager.revertToDefault());
                 break;
             case ButtonId.INVITE:
                 titleManager.setLoadingTitle("Retrieving invitation link...")
                 fetch(correctRoute(`/organization_links/${organization.name}`))
-                .then((response) => response.json())
-                .then((data) => {
-                    modalManager.showView(
-                        <InvitationLink orgName={organization.name} link={data} onClose={modalManager.clearView}/>
-                    )
-                })
-                .finally(() => titleManager.revertToDefault());
+                    .then((response) => response.json())
+                    .then((data) => {
+                        modalManager.showView(
+                            <InvitationLink orgName={organization.name} link={data} onClose={modalManager.clearView} />
+                        )
+                    })
+                    .finally(() => titleManager.revertToDefault());
                 break;
             default:
                 modalManager.showView(ModalOpeners[e.target.id]);
@@ -452,7 +452,7 @@ export default function Organization() {
                             </>
                         )
                     }
-                    <span 
+                    <span
                         id="assignment-count"
                         title="The number of items in the inventory."
                     >
