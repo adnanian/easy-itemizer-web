@@ -9,6 +9,11 @@ import LoadingScreen from "../components/LoadingScreen";
 import { useLoadingTimer, useModalManager } from "../helperHooks";
 import NewOrgForm from "../modal-children/NewOrgForm";
 
+/**
+ * Displays all the organization and membership details that the current user belongs to.
+ * 
+ * @returns the user's membership details rendered in JoinedOrgTile components.
+ */
 export default function UserMemberships() {
     const modalManager = useModalManager();
     const {currentUser, setCurrentUser} = useContext(UserContext);
@@ -25,11 +30,11 @@ export default function UserMemberships() {
     }
 
     /**
-     * TODO
+     * Sorts the user's memberships by the name of the organization associated with it.
      * 
-     * @param {*} membershipA 
-     * @param {*} membershipB 
-     * @returns 
+     * @param {Object} membershipA the membership to compare.
+     * @param {Object} membershipB the membership to be compared.
+     * @returns the appropriate sorting value that the comparison results in.
      */
     const sortByName = (membershipA, membershipB) => {
         if (membershipA.organization.name < membershipB.organization.name) return -1;
@@ -45,6 +50,15 @@ export default function UserMemberships() {
         )
     });
 
+    /**
+     * Updates the currentUser state value by adding a new membership
+     * object to its membership array.
+     * 
+     * This function is only called when a user creates a new organization.
+     * A membership is added because the user now owns that new organization. 
+     * 
+     * @param {Object} membershipToAdd the membership to add.
+     */
     function addNewMembership(membershipToAdd) {
         setCurrentUser({
             ...currentUser,
@@ -52,6 +66,9 @@ export default function UserMemberships() {
         });
     }
 
+    /**
+     * Displays a dialog with the NewOrgForm component.
+     */
     function openModal() {
         modalManager.showView(
             <NewOrgForm userId={currentUser.id} onAdd={addNewMembership} onClose={modalManager.clearView}/>

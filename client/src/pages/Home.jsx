@@ -4,9 +4,18 @@ import "../styles/Home.css";
 import { UserContext } from "../SuperContext";
 import ItemViewer from "../components/item-viewer/ItemViewer";
 
+/**
+ * The first page that a user sees, whether logged in or not.
+ * If the user is logged in, the user will see all the items in the 
+ * system and the ReportForm, along with all the navigational links.
+ * 
+ * Otherwise, a welcome message will be displayed on this page instead.
+ * 
+ * 
+ * @returns the home page.
+ */
 export default function Home() {
     const { currentUser } = useContext(UserContext);
-    
 
     const welcomeTitle = currentUser ? "Browse Items" : "Welcome to Easy Itemizer";
     

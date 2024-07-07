@@ -14,14 +14,11 @@ import UserSettings from "./pages/UserSettings";
 import Organization from "./pages/Organization";
 
 /**
- * TODO 
+ * Root for all components in this application.
  * 
- * @returns 
+ * @returns all the routes in this application.
  */
 export default function App() {
-  useEffect(() => {
-
-  })
 
   return (
     <BrowserRouter>

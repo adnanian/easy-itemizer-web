@@ -9,6 +9,8 @@ import {useTitleManager} from "../helperHooks";
 /**
  * Renders a signup page where users can create new accounts.
  * 
+ * Video Reference: https://www.youtube.com/watch?v=7Ophfq0lEAY&list=PLsBCPpptQcroC7NxdpGNJTIG8x5jv_66G&index=2
+ * 
  * @returns the signup page.
  */
 export default function Signup() {
@@ -42,8 +44,8 @@ export default function Signup() {
      * and will be rerouted to the login page. Otherwise, an error message will
      * be displayed to the user showing him/her the errors in input.
      * 
-     * @param {*} values the values from Formik.
-     * @param {*} actions Formik actions.
+     * @param {Object} values the values from Formik.
+     * @param {Object} actions Formik actions.
      */
     function handleSubmit(values, actions) {
         titleManager.setLoadingTitle("Signing Up...");

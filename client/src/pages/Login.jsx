@@ -5,20 +5,25 @@ import { UserContext } from "../SuperContext";
 import { correctRoute } from "../helpers";
 import { useTitleManager } from "../helperHooks";
 
+/**
+ * Renders a login page.
+ * 
+ * @returns the login page.
+ */
 export default function Login() {
     const titleManager = useTitleManager("Login");
     const [formData, setFormData] = useState({
         usernameOrEmail: "",
         password: ""
     });
-    
-    const {login} = useContext(UserContext);
+
+    const { login } = useContext(UserContext);
     const navigate = useNavigate();
 
     /**
      * Updates formData state value.
      * 
-     * @param {*} e 
+     * @param {Event} e the event.
      */
     function handleChange(e) {
         setFormData({
@@ -29,11 +34,12 @@ export default function Login() {
 
     /**
      * Attempts to instantiate a session with the user's id.
-     * If credentials are valid, then the user is logged in and is redirected to the Home page.
+     * If credentials are valid, the user is verified and NOT banned, 
+     * then the user is logged in and is redirected to the Home page.
      * Otherwise, an error message will be displayed saying that the user has entered
      * invalid credentials.
      * 
-     * @param {*} e the event.
+     * @param {Event} e the event.
      */
     function handleSubmit(e) {
         e.preventDefault();
@@ -68,7 +74,7 @@ export default function Login() {
             })
             .finally(() => {
                 setFormData((oldFormData) => {
-                    const newFormData = {...oldFormData};
+                    const newFormData = { ...oldFormData };
                     newFormData.usernameOrEmail = "";
                     newFormData.password = "";
                     return newFormData;
@@ -108,9 +114,9 @@ export default function Login() {
             >
                 Forgot Password?
             </Link>
-            <Link 
-                id="signup-instead" 
-                className="link-button" 
+            <Link
+                id="signup-instead"
+                className="link-button"
                 to="/signup"
             >
                 Don't have an account? Click here to signup!

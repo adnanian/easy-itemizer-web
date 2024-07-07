@@ -34,6 +34,8 @@ const ConfigurationType = Object.freeze({
 /**
  * Throws an error message if, somehow an invalid configuration type was passed into the update functions.
  * Although, this should most likely not happen, as the user is restricted to selecting two options.
+ * 
+ * @param {*} configType 
  */
 function invalidConfigTypeAlert(configType) {
     throw new Error("Route configuration failed! Invalid program mode detected!", configType);
@@ -48,7 +50,7 @@ function invalidConfigTypeAlert(configType) {
  * If the developer is configuring for PRODUCTION, then the proxy key and value in the file
  * will be commented out.
  * 
- * @param {*} fs the file system.
+ * @param {fs} fs the file system.
  * @param {String} configType the configuration type.
  */
 function updateViteConfig(fs, configType) {
@@ -113,7 +115,7 @@ function updateViteConfig(fs, configType) {
  * If the developer is configuring for PRODUCTION, then the proxy key and value, which is
  * the API URL, will be added back in.
  * 
- * @param {*} fs the file system.
+ * @param {fs} fs the file system.
  * @param {String} configType the configuration type.
  */
 function updatePackageJSON(fs, configType) {
@@ -144,7 +146,7 @@ function updatePackageJSON(fs, configType) {
  * If the developer is configuring for PRODUCTION, then the routePrefix constant will be
  * set to an empty string.
  * 
- * @param {*} fs the file system.
+ * @param {fs} fs the file system.
  * @param {String} configType the configuration type.
  */
 function updateHelpers(fs, configType) {
@@ -180,8 +182,8 @@ function updateHelpers(fs, configType) {
  * This file only contains a single line, indicating the target configuration type.
  * It should not contain anything else.
  * 
- * @param {*} fs the file system.
- * @param {*} configType the configuration type.
+ * @param {fs} fs the file system.
+ * @param {String} configType the configuration type.
  */
 function updateConfigTypeTxt(fs, configType) {
     let data = fs.readFileSync(CONFIG_TYPE_TXT_FILEPATH, "utf-8");
@@ -205,7 +207,7 @@ function updateConfigTypeTxt(fs, configType) {
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
  * 
  * 
- * @param {*} configType the configuration type.
+ * @param {String} configType the configuration type.
  */
 function configureRoutes(configType) {
     const fs = require('fs');

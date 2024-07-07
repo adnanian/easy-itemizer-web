@@ -16,7 +16,7 @@ const placeholderImages = {
     orgBanner: "/images/placeholder-org-banner.png"
 };
 
-// TODO
+// Object of quick inline styles to apply onto elements.
 const quickInlineStyles = {
     centerText: { textAlign: "center" },
     biggerFont: { fontSize: "125%" },
@@ -30,7 +30,7 @@ const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
  * Adds the correct route prefix to a given route and returns it.
  * This is meant to be used during fetched requests.
  * 
- * @param {*} route the route.
+ * @param {String} route the route.
  * @returns the route prepended with the prefix.
  */
 function correctRoute(route) {
@@ -63,7 +63,7 @@ function dtStringToSystemTimeZone(dtString) {
 }
 
 /**
- * TODO
+ * Member roles.
  */
 const MemberRole = Object.freeze({
     REGULAR: "REGULAR",

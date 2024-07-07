@@ -10,10 +10,11 @@ const SelectedItemContext = createContext();
  * https://medium.com/@anna-cole/a-beginners-guide-on-how-to-implement-context-in-a-react-application-for-better-state-management-06e52897715d
  * https://www.dhiwise.com/post/exploring-react-contexttypes-how-to-use-and-implement
  * 
- * TODO
+ * Contains three context providers. From top to bottom level: User, Item, and selected Item.
  * 
- * @param {*} param0 
- * @returns 
+ * 
+ * @param {*} param0 the children.
+ * @returns the provider for User, Item, and selected Items.
  */
 const SuperProvider = ({ children }) => {
 
@@ -39,8 +40,21 @@ const SuperProvider = ({ children }) => {
         })
     }, [currentUser]);
 
+    /**
+     * Logs a user into Easy Itemizer.
+     * (i.e. sets the currentUser to the user to log in).
+     * 
+     * @param {Object} user the user. 
+     * @returns the setter for loggin a user in.
+     */
     const login = (user) => setCurrentUser(user);
 
+    /**
+     * Logs a user out of Easy Itemizer.
+     * 
+     * i.e. Makes a DELETE request to the server to clear the session. Then,
+     * sets the currentUser here to null.
+     */
     const logout = () => {
         // console.log("Logging out.");
         fetch(correctRoute("/logout"), {

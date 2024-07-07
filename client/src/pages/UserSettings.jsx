@@ -9,6 +9,11 @@ import "../styles/Settings.css";
 import EditProfileForm from "../modal-children/EditProfileForm";
 import AccountDeleter from "../modal-children/confirm-deletion/AccountDeleter";
 
+/**
+ * Renders a page of the user's non-relational information and options to edit or delete the account.
+ * 
+ * @returns the user's profile.
+ */
 export default function UserSettings() {
     const modalManager = useModalManager();
     const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
@@ -54,6 +59,12 @@ export default function UserSettings() {
         )
     });
 
+    /**
+     * Display a dialog with a form to either edit or delete the user's account,
+     * depending on the button clicked.
+     * 
+     * @param {Event} e the event.
+     */
     function handleClick(e) {
         modalManager.showView(ModalOpeners[e.target.id]);
     }

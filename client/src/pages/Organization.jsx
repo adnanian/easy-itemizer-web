@@ -17,6 +17,11 @@ import InvitationLink from "../modal-children/info/InvitationLink";
 import ConfirmLeave from "../modal-children/confirm-deletion/ConfirmLeave";
 import OrgDeleter from "../modal-children/confirm-deletion/OrgDeleter";
 
+/**
+ * Renders all information of a single organization in one page.
+ * 
+ * @returns a page for an organization.
+ */
 export default function Organization() {
     const modalManager = useModalManager();
     const {scaleByWidth, scaleByHeight} = useScreenSize();
@@ -28,8 +33,6 @@ export default function Organization() {
     const { orgId } = useParams();
     const [showAssignedItemDetails, setShowAssignedItemDetails] = useState(false);
     const navigate = useNavigate();
-    
-    
 
     const orgControlsClassName = "org-controls";
 
@@ -109,10 +112,11 @@ export default function Organization() {
     }
 
     /**
-     * TODO
+     * Updates the organization's state value by deleting a request, and then,
+     * if the request was accepted, a membership will be added.
      * 
-     * @param {*} requestToDelete 
-     * @param {*} membershipToAdd 
+     * @param {Object} requestToDelete the request.
+     * @param {Object} membershipToAdd the membership (if the request was accepted).
      */
     function processRequest(requestToDelete, membershipToAdd = null) {
         console.log("Deleting request:", requestToDelete);
@@ -129,6 +133,11 @@ export default function Organization() {
         console.log("Updated organization state:", organization.requests.find((request) => request.id === requestToDelete.id));
     }
 
+    /**
+     * Updates a membership for a user and applies it to the organization's membership array.
+     * 
+     * @param {Object} membershipToUpdate the membership to update.
+     */
     function updateMembership(membershipToUpdate) {
         setOrganization((oldOrgData) => {
             const newOrgData = {...oldOrgData};
@@ -147,6 +156,10 @@ export default function Organization() {
         });
     }
 
+    /**
+     * Updates the currentUser's state value by removing its membership with the
+     * current organization from its membership array.
+     */
     function leaveOrganization() {
         setCurrentUser({
             ...currentUser,
@@ -156,6 +169,11 @@ export default function Organization() {
         });
     }
 
+    /**
+     * Removes a membership from the organization's memberships array.
+     * 
+     * @param {Object} membershipToDelete the membership to delete.
+     */
     function deleteMembership(membershipToDelete) {
         setOrganization((oldOrgData) => {
             const newOrgData = {...oldOrgData};
@@ -251,14 +269,15 @@ export default function Organization() {
     }
 
     /**
+     * Sorts the assignments by their item names.
      * 
-     * @param {*} a 
-     * @param {*} b 
-     * @returns 
+     * @param {Object} assignmentA the assignment to compare.
+     * @param {Object} assignmentB the assignment to be compared.
+     * @returns the appropriate value resulting from the comparison.
      */
-    const sortByName = (a, b) => {
-        if (a.item.name < b.item.name) return -1;
-        if (a.item.name > b.item.name) return 1;
+    const sortByName = (assignmentA, assignmentB) => {
+        if (assignmentA.item.name < assignmentB.item.name) return -1;
+        if (assignmentA.item.name > assignmentB.item.name) return 1;
         return 0;
     };
 
@@ -276,6 +295,12 @@ export default function Organization() {
         )
     });
 
+    /**
+     * Opens the appropriate modal, or executes the appropriate function, based
+     * on the button clicked.
+     * 
+     * @param {Event} e the event.
+     */
     function handleOrgControlClick(e) {
         switch (e.target.id) {
             case ButtonId.BACK:
@@ -331,7 +356,7 @@ export default function Organization() {
                         id={ButtonId.BACK}
                         className={orgControlsClassName}
                         onClick={handleOrgControlClick}
-                        title=""
+                        title="Return to the memberships page."
                     >
                         &larr;Back
                     </button>
@@ -339,7 +364,7 @@ export default function Organization() {
                         id={ButtonId.LEAVE}
                         className={orgControlsClassName}
                         onClick={handleOrgControlClick}
-                        title=""
+                        title="Leave this organization."
                     >
                         Leave
                     </button>
@@ -347,7 +372,7 @@ export default function Organization() {
                         id={ButtonId.VIEW_MEMBERS}
                         className={orgControlsClassName}
                         onClick={handleOrgControlClick}
-                        title=""
+                        title="Displays a table of all the members and their information."
                     >
                         View List of Members
                     </button>
@@ -355,7 +380,7 @@ export default function Organization() {
                         id={ButtonId.SEND_UPDATE}
                         className={orgControlsClassName}
                         onClick={handleOrgControlClick}
-                        title=""
+                        title="Sends a status report on the inventory to all members."
                     >
                         Send Update
                     </button>
@@ -363,7 +388,7 @@ export default function Organization() {
                         id={ButtonId.ADD}
                         className={orgControlsClassName}
                         onClick={handleOrgControlClick}
-                        title=""
+                        title="Click to add a new item."
                     >
                         Add Item
                     </button>
@@ -374,7 +399,7 @@ export default function Organization() {
                                     id={ButtonId.VIEW_REQUESTS}
                                     className={orgControlsClassName}
                                     onClick={handleOrgControlClick}
-                                    title=""
+                                    title="Displays a table of current users who requested to join this organization."
                                 >
                                     View Requests
                                 </button>
@@ -382,7 +407,7 @@ export default function Organization() {
                                     id={ButtonId.INVITE}
                                     className={orgControlsClassName}
                                     onClick={handleOrgControlClick}
-                                    title=""
+                                    title="Generates an invitation link that can be shared with other users."
                                 >
                                     Invite Others
                                 </button>
@@ -390,7 +415,7 @@ export default function Organization() {
                                     id={ButtonId.VIEW_LOGS}
                                     className={orgControlsClassName}
                                     onClick={handleOrgControlClick}
-                                    title=""
+                                    title="Displays a log of all activity that occurred within this organization."
                                 >
                                     View Logs
                                 </button>
@@ -401,7 +426,7 @@ export default function Organization() {
                         id={ButtonId.ABOUT}
                         className={orgControlsClassName}
                         onClick={handleOrgControlClick}
-                        title=""
+                        title="Displays the organization\'s description."
                     >
                         About Org.
                     </button>
@@ -412,7 +437,7 @@ export default function Organization() {
                                     id={ButtonId.EDIT}
                                     className={orgControlsClassName}
                                     onClick={handleOrgControlClick}
-                                    title=""
+                                    title="Edit the organization\'s information."
                                 >
                                     Edit Org.
                                 </button>
@@ -420,14 +445,19 @@ export default function Organization() {
                                     id={ButtonId.DELETE}
                                     className={orgControlsClassName}
                                     onClick={handleOrgControlClick}
-                                    title=""
+                                    title="Delete the organization."
                                 >
                                     Delete Org.
                                 </button>
                             </>
                         )
                     }
-                    <span id="assignment-count">Items: {organization.assignments.length}</span>
+                    <span 
+                        id="assignment-count"
+                        title="The number of items in the inventory."
+                    >
+                        Items: {organization.assignments.length}
+                    </span>
                     <div id="detail-check-container" title="Enabling this will expand the item cards to show more details.">
                         <label htmlFor="detail-check">Show Item Details</label>
                         <input
