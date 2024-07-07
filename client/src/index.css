@@ -251,7 +251,7 @@ table, tr, th, td {
 }
 
 dialog {
-  position: absolute;
+  /* position: absolute; */
   /* translate: 80% 5%; */
   overflow-y: auto;
   overflow-x: hidden;
@@ -324,8 +324,8 @@ textarea {
     margin-bottom: 20px;
   }
 
-  dialog {
+  /* dialog {
     translate: 50% 5%;
-  }
+  } */
 
 }

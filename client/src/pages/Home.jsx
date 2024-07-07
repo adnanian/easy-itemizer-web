@@ -18,7 +18,21 @@ export default function Home() {
                     user={currentUser}
                     allowEdits={true}
                 />
-            ) : <h1 id="login-prompt">Log in to manage items and organizations!</h1>}
+            ) : (
+                <>
+                    <h1 id="login-prompt">Log in to manage items and organizations!</h1>
+                    <h1 style={{
+                        backgroundColor: "red",
+                        padding: "25px",
+                        width: "fit-content",
+                        marginTop: "25px"
+                    }}>
+                        Note: This website is currently in development and testing and is not
+                        yet ready for official use.
+                    </h1>
+                </>
+            )
+            }
         </div>
     )
 }

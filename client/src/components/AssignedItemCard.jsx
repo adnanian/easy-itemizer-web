@@ -1,4 +1,4 @@
-import { useModalManager } from "../helperHooks";
+import { useModalManager, useScreenSize } from "../helperHooks";
 import { placeholderImages, dtStringToSystemTimeZone } from "../helpers";
 import AssignmentRemover from "../modal-children/confirm-deletion/AssignmentRemover";
 import AdjustQuantityForm from "../modal-children/edit-assignment/AdjustQuantityForm";
@@ -6,6 +6,7 @@ import AdjustThresholdForm from "../modal-children/edit-assignment/AdjustThresho
 
 export default function AssignedItemCard({assignment, currentUserRegular, showDetails, onUpdate, onDelete}) {
     const modalManager = useModalManager();
+    const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
     
     class QuantityStatus {
         constructor(name, className) {
@@ -70,11 +71,16 @@ export default function AssignedItemCard({assignment, currentUserRegular, showDe
         }
     }
 
+    const imageStyling = {
+        width: scaleByWidth(200, 'px'),
+        height: scaleByHeight(100, 'px')
+    };
+
     return (
         <>
             <div className={`assigned-item  three-d-round-border ${quantityStatus.className}`}>
                 <p><b>{quantityStatus.name}</b></p>
-                <img src={assignment.item.image_url || placeholderImages.item}/>
+                <img src={assignment.item.image_url || placeholderImages.item} style={imageStyling}/>
                 <h4 className="assignment-name">{assignment.item.name}</h4>
                 {
                     !showDetails ? <p className="simple-status">{assignment.current_quantity} / {assignment.enough_threshold}</p> : (

@@ -9,7 +9,7 @@
     margin: auto;
     background-color: lime;
     width: fit-content;
-    padding: 15px;
+    /* padding: 15px; */
 }
 
 #org-controls button {
@@ -74,10 +74,10 @@
     overflow-x: hidden;
 }
 
-.assigned-item img {
+/* .assigned-item img {
     width: 200px;
     height: 100px;
-}
+} */
 
 .assigned-item table {
     background-color: black;
@@ -253,5 +253,12 @@
 @media (prefers-color-scheme: light) {
     #assignment-count {
         color: black !important;
+    }
+}
+
+@media screen and (max-width: 1366px) {
+    #assigned-item-list {
+        display: grid;
+        grid-template-columns: 400px 400px 400px;
     }
 }

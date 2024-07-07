@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { ItemContext, UserContext } from "../SuperContext";
 import { MemberRole, correctRoute, placeholderImages } from "../helpers";
 import LoadingScreen from "../components/LoadingScreen";
-import { useLoadingTimer, useModalManager, useTitleManager } from "../helperHooks";
+import { useLoadingTimer, useModalManager, useScreenSize, useTitleManager } from "../helperHooks";
 import StyledTitle from "../components/StyledTitle";
 import "../styles/Organization.css";
 import AssignedItemCard from "../components/AssignedItemCard";
@@ -19,6 +19,7 @@ import OrgDeleter from "../modal-children/confirm-deletion/OrgDeleter";
 
 export default function Organization() {
     const modalManager = useModalManager();
+    const {scaleByWidth, scaleByHeight} = useScreenSize();
     const titleManager = useTitleManager("");
     const [userMember, setUserMember] = useState(null);
     const [organization, setOrganization] = useState(null);
@@ -317,11 +318,15 @@ export default function Organization() {
         }
     }
 
+    const orgControlsStyling = {
+        padding: `${scaleByHeight(15, 'px')} ${scaleByWidth(15, 'px')}`
+    }
+
     return (
         <React.Fragment>
             <div id="org-header" style={orgHeaderStyling}>
                 <StyledTitle text={titleManager.title} />
-                <span id="org-controls" className="three-d-round-border">
+                <span id="org-controls" className="three-d-round-border" style={orgControlsStyling}>
                     <button
                         id={ButtonId.BACK}
                         className={orgControlsClassName}

@@ -4,7 +4,7 @@
  * WARNING: THIS IS AUTOMATICALLY SET BY configureClient.cjs!
  * PLEASE DO NOT ALTER THE DECLARED VARIABLE MANUALLY!
  */
-const routePrefix = "";
+const routePrefix = "/api";
 
 /**
  * Placeholder images for items, users, and organizations, in the event that valid URL's are not provided.

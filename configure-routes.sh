@@ -22,4 +22,6 @@ then
     git commit -m "$MESSAGE"
     git push origin HEAD
     git push origin HEAD:main
+else
+    honcho start -f Procfile.dev
 fi

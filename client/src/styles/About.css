@@ -11,3 +11,10 @@ article {
     border: 8px double maroon;
     border-radius: 8px;
   }
+
+  @media screen and (max-width: 1366px) {
+    article {
+      width: 640px;
+      height: 328px;
+    }
+  }
