@@ -1,6 +1,8 @@
+import { useScreenSize } from "../../helperHooks";
 import { correctRoute, dtStringToSystemTimeZone } from "../../helpers";
 
 export default function RequestsTable({requests, onProcessRequest}) {
+    const {scaleByWidth, scaleByHeight} = useScreenSize();
 
     if (!requests.length) {
         return <h1>There are currently no requests to join this organization.</h1>
@@ -55,10 +57,27 @@ export default function RequestsTable({requests, onProcessRequest}) {
             alert(error);
         });
     }
+
+    const profilePicSizing = {
+        width: scaleByWidth(50, 'px'),
+        height: scaleByHeight(50, 'px')
+    };
+
+    const tableSizing = {
+        height: scaleByHeight(500, 'px')
+    };
+
     const requestRows = requests.map((request, requestIndex) => {
         return (
             <tr key={request.id}>
                 <td>{requestIndex + 1}</td>
+                <td>
+                    <img 
+                        src={request.user.profile_picture_url || placeholderImages.userProfile}
+                        style={profilePicSizing}
+                        className="circle"
+                    />
+                </td>
                 <td>{request.user.first_name}</td>
                 <td>{request.user.last_name}</td>
                 <td>{request.user.username}</td>
@@ -91,11 +110,12 @@ export default function RequestsTable({requests, onProcessRequest}) {
 
     return (
         <>
-             <div className="table-container">
+             <div className="table-container" style={tableSizing}>
                 <table className="modal-table">
                     <thead>
                         <tr>
-                            <th>Request #</th>
+                            <th>Row #</th>
+                            <th>Icon</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Username</th>
