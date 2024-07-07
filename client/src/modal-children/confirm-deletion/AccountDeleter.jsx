@@ -3,6 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { MemberRole, correctRoute } from "../../helpers";
 import DeletionWarning from "./DeletionWarning";
 
+/**
+ * Renders a modal view that displays to the user a message about the consequences
+ * of deleting his/her account, and a button to proceed with account deletion.
+ * 
+ * @param {Object} props 
+ * @param {Object} props.user the current user.
+ * @param {Function} props.onLogout the callback function to execute after the account has been successfully deleted.
+ * @param {Function} props.onClose the callback function to execute to close the modal.
+ * @returns a modal view with a confirmation message and a button to confirm deletion.
+ */
 export default function AccountDeleter({ user, onLogout, onClose }) {
     const ownerships = user.memberships.reduce((accumulator, membership) => {
         return accumulator + (membership.role === MemberRole.OWNER ? 1 : 0);
@@ -31,6 +41,12 @@ export default function AccountDeleter({ user, onLogout, onClose }) {
     const [confirmPassword, setConfirmPassword] = useState("");
     const navigate = useNavigate();
 
+    /**
+     * Deletes a user and all its information from the server.
+     * Then, redirects the current user to login information.
+     * 
+     * Note: deletion will fail if user enters incorrect password.
+     */
     function handleDeleteAccount() {
         fetch(correctRoute("/current_user"), {
             method: "DELETE",
@@ -41,22 +57,22 @@ export default function AccountDeleter({ user, onLogout, onClose }) {
                 password: password
             })
         })
-        .then((response) => {
-            if (response.ok) {
-                navigate("/login");
-                onLogout();
-                alert("Your account has been successfully deleted. You will now be redirected to the login page.");
-            } else {
-                return response.json().then((data) => {
-                    throw new Error(data.message);
-                });
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            alert(error);
-        })
-        .finally(() => onClose());
+            .then((response) => {
+                if (response.ok) {
+                    navigate("/login");
+                    onLogout();
+                    alert("Your account has been successfully deleted. You will now be redirected to the login page.");
+                } else {
+                    return response.json().then((data) => {
+                        throw new Error(data.message);
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                alert(error);
+            })
+            .finally(() => onClose());
     }
 
     return (

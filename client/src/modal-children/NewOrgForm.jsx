@@ -9,12 +9,12 @@ import { correctRoute } from "../helpers";
  * by entering a name and description.
  * 
  * @param {Object} props 
- * @param {Integer} props.userId the current user's id.
+ * @param {Number} props.userId the current user's id.
  * @param {Function} props.onAdd the callback function to execute upon creating the organization and membership on the server side.
  * @param {Function} props.onclose the callback function to execute to close the modal.
  * @returns a modal form prompting users to create a new organization.
  */
-export default function NewOrgForm( {userId, onAdd, onClose}) {
+export default function NewOrgForm({ userId, onAdd, onClose }) {
     const initialValues = {
         name: "",
         description: "",
@@ -33,13 +33,13 @@ export default function NewOrgForm( {userId, onAdd, onClose}) {
      * Attempts to create a new organization on the server side.
      * Then if successful, creates a new membership with the current
      * user as the owner. Finally, displays the new organization
-     * on the OrganizationsPage.
+     * on the Memberships page.
      * 
      * If creation fails on the server side, than an error message
      * will be displayed to the user.
      * 
-     * @param {*} values the values from Formik.
-     * @param {*} actions Formik actions.
+     * @param {Object} values the values from Formik.
+     * @param {Object} actions Formik actions.
      * @returns false so that the web app does not refresh.
      */
     function handleSubmit(values, actions) {
@@ -56,26 +56,26 @@ export default function NewOrgForm( {userId, onAdd, onClose}) {
                 user_id: userId
             })
         })
-        .then((response) => response.json().then((data) => (
-            {data, status: response.status}
-        )))
-        .then(({data, status}) => {
-            if (status === 201) {
-                onAdd(data);
-                alert("New organization successfully created.");
-            } else {
-                throw new Error(data.message);
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            alert(error);
-        })
-        .finally(() => {
-            actions.resetForm();
-            onClose();
-            return false;
-        });
+            .then((response) => response.json().then((data) => (
+                { data, status: response.status }
+            )))
+            .then(({ data, status }) => {
+                if (status === 201) {
+                    onAdd(data);
+                    alert("New organization successfully created.");
+                } else {
+                    throw new Error(data.message);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                alert(error);
+            })
+            .finally(() => {
+                actions.resetForm();
+                onClose();
+                return false;
+            });
     }
 
     return (

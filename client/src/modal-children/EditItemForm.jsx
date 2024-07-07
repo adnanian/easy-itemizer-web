@@ -4,6 +4,15 @@ import Input from "../components/formik-reusable/Input";
 import TextAreaInput from "../components/formik-reusable/TextArea";
 import { correctRoute } from "../helpers";
 
+/**
+ * Display a modal form to update the currently selected item's information.
+ * 
+ * @param {Object} props
+ * @param {Object} props.item the item to edit.
+ * @param {Function} props.onUpdate the callback function to execute when the item record is updated from the server.
+ * @param {Function} props.onClose the callback function to execute to close the modal. 
+ * @returns a form to update the current items information.
+ */
 export default function EditItemForm({item, onUpdate, onClose}) {
     const maxNameLength = 200;
     const maxDescLength = 500;
@@ -27,8 +36,8 @@ export default function EditItemForm({item, onUpdate, onClose}) {
     /**
      * Updates the item's data.
      * 
-     * @param {*} values the values from Formik.
-     * @param {*} actions Formik actions.
+     * @param {Object} values the values from Formik.
+     * @param {Object} actions Formik actions.
      * @returns false so that the web app does not refresh.
      */
     function handleSubmit(values, actions) {

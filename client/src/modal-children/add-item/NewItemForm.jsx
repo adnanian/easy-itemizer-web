@@ -2,13 +2,16 @@ import { Form, Formik } from "formik";
 import * as yup from "yup";
 import Input from "../../components/formik-reusable/Input"
 import TextAreaInput from "../../components/formik-reusable/TextArea";
-import {correctRoute} from "../../helpers";
+import { correctRoute } from "../../helpers";
 
 /**
  * Creates a form that allows users to manually enter item information
  * to add a new item to an organization AND the system itself.
  * 
- * @param {Function} onAdd the callback function to execute when adding an item.
+ * @param {Object} props
+ * @param {Number} props.orgId the id of the organization currently being viewed.
+ * @param {Function} props.onAdd the callback function to execute when adding an item.
+ * 
  * @returns a modal form allowing users to manually add information about an item to the system.
  */
 export default function NewItemForm({ orgId, onAdd }) {
@@ -37,8 +40,8 @@ export default function NewItemForm({ orgId, onAdd }) {
     /**
      * Creates a new item and adds it to the system.
      * 
-     * @param {*} values the values from Formik.
-     * @param {*} actions Formik actions.
+     * @param {Object} values the values from Formik.
+     * @param {Object} actions Formik actions.
      * @returns false so that the web app does not refresh.
      */
     function handleSubmit(values, actions) {
@@ -57,26 +60,26 @@ export default function NewItemForm({ orgId, onAdd }) {
                 organization_id: orgId
             })
         })
-        .then((response) => response.json().then((data) => (
-            {data, status: response.status}
-        )))
-        .then(({data, status}) => {
-            if (status === 201) {
-                onAdd(data);
-                alert("New item added to the system.")
-            } else {
-                throw new Error(data.message)
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            onAdd(null);
-            alert(error);
-        })
-        .finally(() => {
-            actions.resetForm();
-            return false;
-        });
+            .then((response) => response.json().then((data) => (
+                { data, status: response.status }
+            )))
+            .then(({ data, status }) => {
+                if (status === 201) {
+                    onAdd(data);
+                    alert("New item added to the system.")
+                } else {
+                    throw new Error(data.message)
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                onAdd(null);
+                alert(error);
+            })
+            .finally(() => {
+                actions.resetForm();
+                return false;
+            });
     }
 
     return (

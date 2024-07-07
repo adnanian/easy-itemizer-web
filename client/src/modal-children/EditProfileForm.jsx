@@ -4,7 +4,20 @@ import Input from "../components/formik-reusable/Input";
 import { correctRoute } from "../helpers";
 import { useTitleManager } from "../helperHooks";
 
-export default function EditProfileForm({user, onUpdate, onClose}) {
+/**
+ * Renders a modal form that allows a user to edit his/her profile information, including
+ * resetting the password. Note: the user will be required to enter his/her current password
+ * to save any changes made.
+ * 
+ * Video Reference: https://www.youtube.com/watch?v=7Ophfq0lEAY&list=PLsBCPpptQcroC7NxdpGNJTIG8x5jv_66G&index=2
+ * 
+ * @param {Object} props 
+ * @param {Object} props.user the current user.
+ * @param {Function} props.onUpdate the callback function execute after a successful update of user info.
+ * @param {Function} props.onClose the callback function to execute to close the modal.
+ * @returns a modal form for a user to edit his/her information.
+ */
+export default function EditProfileForm({ user, onUpdate, onClose }) {
     const titleManager = useTitleManager("Edit Account/Profile Settings");
 
     const initialValues = {
@@ -27,15 +40,15 @@ export default function EditProfileForm({user, onUpdate, onClose}) {
         password: yup.string().min(8).max(32).required("Please enter your password."),
         newPassword: yup.string().min(8).max(32).optional("Change your password or leave blank to keep your current one."),
         confirmNewPassword: yup.string().oneOf([yup.ref('newPassword'), null], "Password must match").optional("Confirm new password, if changing it.")
-    }); 
+    });
 
     /**
-     * Updates the user's information on the server and then logs the user out,
-     * if the user entered his/her password correctly. Otherwise, displays
-     * an error message to the user with all the errors in input.
+     * Updates the user's information on the server if the user entered his/her
+     * password correctly. Otherwise, displays an error message to the user with 
+     * all the errors in input.
      * 
-     * @param {*} values the values from Formik.
-     * @param {*} actions Formik actions.
+     * @param {Object} values the values from Formik.
+     * @param {Object} actions Formik actions.
      */
     function handleSubmit(values, actions) {
         titleManager.setLoadingTitle("Updating Your Settings...");
@@ -54,29 +67,29 @@ export default function EditProfileForm({user, onUpdate, onClose}) {
                 new_password: values.newPassword
             })
         })
-        .then((response) => response.json().then((data) => (
-            {data, status: response.status}
-        )))
-        .then(({data, status}) => {
-            if (status === 200) {
-                onUpdate(data);
-                alert("Your account has been successfully updated.");
-            } else {
-                // console.log("JUST F-ing print something");
-                // console.log(`Response data is: ${data}`);
-                throw new Error(data.message);
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            alert(error);
-        })
-        .finally(() => {
-            actions.resetForm();
-            titleManager.revertToDefault();
-            onClose();
-            return false;
-        })
+            .then((response) => response.json().then((data) => (
+                { data, status: response.status }
+            )))
+            .then(({ data, status }) => {
+                if (status === 200) {
+                    onUpdate(data);
+                    alert("Your account has been successfully updated.");
+                } else {
+                    // console.log("JUST F-ing print something");
+                    // console.log(`Response data is: ${data}`);
+                    throw new Error(data.message);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                alert(error);
+            })
+            .finally(() => {
+                actions.resetForm();
+                titleManager.revertToDefault();
+                onClose();
+                return false;
+            })
     }
 
     return (

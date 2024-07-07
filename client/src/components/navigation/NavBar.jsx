@@ -16,9 +16,9 @@ import { useScreenSize } from "../../helperHooks";
 export default function NavBar() {
     const navLinkClassName = 'nav-link';
 
-    const {scaleByWidth, scaleByHeight, scaleByRatio} = useScreenSize();
-    const {currentUser, logout} = useContext(UserContext);
-    
+    const { scaleByWidth, scaleByHeight, scaleByRatio } = useScreenSize();
+    const { currentUser, logout } = useContext(UserContext);
+
     // console.log(currentUser);
 
     const navigationStyling = {
@@ -27,7 +27,7 @@ export default function NavBar() {
 
     const linkStyling = {
         padding: `0 ${scaleByWidth(40, 'px')}`,
-        margin: `${scaleByHeight(5,'px')} ${scaleByWidth(30, 'px')}`,
+        margin: `${scaleByHeight(5, 'px')} ${scaleByWidth(30, 'px')}`,
         fontSize: scaleByRatio(40, 'px')
     };
 

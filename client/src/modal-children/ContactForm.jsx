@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { correctRoute, quickInlineStyles } from "../helpers";
 
-export default function ContactForm({onClose}) {
+/**
+ * Renders a modal form to send Easy Itemizer support a message.
+ * 
+ * @param {Object} props
+ * @param {Function} props.onClose the callback function to execute to close the modal.
+ * @returns a form to contact Easy Itemizer Support.
+ */
+export default function ContactForm({ onClose }) {
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -12,6 +19,11 @@ export default function ContactForm({onClose}) {
     const minTextLength = 50;
     const maxTextLength = 5000;
 
+    /**
+     * Validates that the user has filled out all needed information in the form.
+     * 
+     * @returns true, if the form is incomplete, false otherwise.
+     */
     const formIncomplete = () => {
         for (const key in formData) {
             if (key === "inquiry" && formData[key].length < minTextLength) {
@@ -23,6 +35,11 @@ export default function ContactForm({onClose}) {
         return false;
     }
 
+    /**
+     * Updates the formData state value.
+     * 
+     * @param {Event} e the event. 
+     */
     function handleChange(e) {
         setFormData({
             ...formData,
@@ -30,27 +47,33 @@ export default function ContactForm({onClose}) {
         });
     }
 
+    /**
+     * Makes a request to the server to send an email to Easy Itemizer Support
+     * with the filled out information. Then closes the modal.
+     * 
+     * @param {Event} e the event. 
+     */
     function handleSubmit(e) {
         e.preventDefault();
-        fetch (correctRoute("/contact"), {
+        fetch(correctRoute("/contact"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(formData)
         })
-        .then((response) => {
-            if (response.ok) {
-                alert("Thank you for contacting us. We will process your request and get back to you as soon as possible.");
-            } else {
-                throw new Error("An internal error occurred. Please contact support.");
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            alert(error);
-        })
-        .finally(() => onClose());
+            .then((response) => {
+                if (response.ok) {
+                    alert("Thank you for contacting us. We will process your request and get back to you as soon as possible.");
+                } else {
+                    throw new Error("An internal error occurred. Please contact support.");
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                alert(error);
+            })
+            .finally(() => onClose());
     }
 
     const isIncomplete = formIncomplete();

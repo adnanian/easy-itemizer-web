@@ -3,6 +3,17 @@ import * as yup from "yup";
 import { correctRoute } from "../../helpers";
 import Input from "../../components/formik-reusable/Input";
 
+/**
+ * Renders a modal form for updating the assigned item's quantity and threshold settings.
+ * 
+ * @param {Object} props
+ * @param {Number} props.assignmentId the assignment's id.
+ * @param {Number} props.currentQuantity the assigned item's current quantity.
+ * @param {Number} props.enoughThreshold the assigned item's enough threshold.
+ * @param {Function} props.onUpdate the callback function to execute when the assignment is updated from the server.
+ * @param {Function} props.onClose the callback function to execute to close the modal.
+ * @returns a form to update the assignment's quantity and threshold settings.
+ */
 export default function AdjustThresholdForm({ assignmentId, currentQuantity, enoughThreshold, onUpdate, onClose }) {
     const initialValues = {
         currentQuantity: currentQuantity,
@@ -17,8 +28,8 @@ export default function AdjustThresholdForm({ assignmentId, currentQuantity, eno
     /**
      * Updates the assignments's quantity and threshold data.
      * 
-     * @param {*} values the values from Formik.
-     * @param {*} actions Formik actions.
+     * @param {Object} values the values from Formik.
+     * @param {Object} actions Formik actions.
      * @returns false so that the web app does not refresh.
      */
     function handleSubmit(values, actions) {
@@ -79,8 +90,8 @@ export default function AdjustThresholdForm({ assignmentId, currentQuantity, eno
                                 type="number"
                                 min="1"
                             />
-                            <button 
-                                disabled={props.isSubmitting} 
+                            <button
+                                disabled={props.isSubmitting}
                                 type="submit"
                             >
                                 Submit

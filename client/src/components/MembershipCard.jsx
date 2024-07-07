@@ -1,11 +1,29 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { placeholderImages, dtStringToSystemTimeZone } from "../helpers";
 
-export default function MembershipCard({membership}) {
+/**
+ * Creates a linkable tile that consists of the basic information
+ * about an organization that the current user belongs to as well as
+ * the users membership information.
+ * 
+ * When the link is clicked, the user is navigated to the Organization page,
+ * where he/she can access the orgnaization information, such as viewing
+ * inventory, and other members.
+ * 
+ * @param {Object} props
+ * @param {Object} props.membership the current user's membership tied to the organization. 
+ * 
+ * @returns A tile of the user's membership information.
+ */
+export default function MembershipCard({ membership }) {
     return (
-        <Link to={`/my-organizations/${membership.organization_id}`} className="org-link">
+        <Link 
+            to={`/my-organizations/${membership.organization_id}`} 
+            className="org-link"
+            title="Click to navigate to this organization's page."
+        >
             <div className="membership-container round-border">
-                <img 
+                <img
                     src={membership.organization.image_url || placeholderImages.orgLogo}
                     className="circle"
                 />

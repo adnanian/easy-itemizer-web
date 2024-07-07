@@ -11,13 +11,14 @@ import { SelectedItemContext } from "../../SuperContext";
  * where a user can add an existing item from the system not yet being
  * used by the user's organization.
  * 
- * @param {Object} param0 
- * @param {Array} param0.items all items not yet in the organizaiton.
- * @param {Function} param0.onAdd the callback function to execute when an item is added.
+ * @param {Object} props 
+ * @param {Number} props.orgId the id of the organization currently being viewed.
+ * @param {Object} props.user the current user.
+ * @param {Function} props.onAdd the callback function to execute when an item is added.
  * @returns a view allowing users to select an item to add.
  */
-export default function ExistingItemForm({orgId, user, onAdd}) {
-    const {selectedItem} = useContext(SelectedItemContext);
+export default function ExistingItemForm({ orgId, user, onAdd }) {
+    const { selectedItem } = useContext(SelectedItemContext);
 
     const initialValues = {
         quantity: 0,
@@ -30,10 +31,12 @@ export default function ExistingItemForm({orgId, user, onAdd}) {
     });
 
     /**
-     * Creates a new item and adds it to the system.
+     * Adds the existing item to the organization.
+     * If that item is already assigned to the organization, than an error
+     * message will be displayed.
      * 
-     * @param {*} values the values from Formik.
-     * @param {*} actions Formik actions.
+     * @param {Object} values the values from Formik.
+     * @param {Object} actions Formik actions.
      * @returns false so that the web app does not refresh.
      */
     function handleSubmit(values, actions) {
@@ -49,35 +52,35 @@ export default function ExistingItemForm({orgId, user, onAdd}) {
                 organization_id: orgId
             })
         })
-        .then((response) => response.json().then((data) => (
-            {data, status: response.status}
-        )))
-        .then(({data, status}) => {
-            if (status === 201) {
-                console.log(data);
-                onAdd(data);
-                alert("Item assigned to your organization.")
-            } else {
-                throw new Error("You already have this item in your organization.");
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            onAdd(null);
-            alert(error);
-        })
-        .finally(() => {
-            actions.resetForm();
-            return false;
-        });
+            .then((response) => response.json().then((data) => (
+                { data, status: response.status }
+            )))
+            .then(({ data, status }) => {
+                if (status === 201) {
+                    console.log(data);
+                    onAdd(data);
+                    alert("Item assigned to your organization.")
+                } else {
+                    throw new Error("You already have this item in your organization.");
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                onAdd(null);
+                alert(error);
+            })
+            .finally(() => {
+                actions.resetForm();
+                return false;
+            });
     }
 
     return (
         <>
             <h1>Add Existing Item</h1>
-                <ItemViewer
-                    user={user}
-                />
+            <ItemViewer
+                user={user}
+            />
             <div id="existing-item-form" className="form-div">
                 <Formik
                     initialValues={initialValues}

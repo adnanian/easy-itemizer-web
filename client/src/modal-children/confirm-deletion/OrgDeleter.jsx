@@ -2,7 +2,20 @@ import { useNavigate } from "react-router-dom";
 import DeletionWarning from "./DeletionWarning";
 import { correctRoute } from "../../helpers";
 
-export default function OrgDeleter({orgId, orgName, onLeave, onClose}) {
+/**
+ * Creates a modal that displays information to an owner, seeking to delete
+ * an organization, on the consequences of the action that he/she would like
+ * to take. If the user would like to proceed, then there is a button to click
+ * that would delete an organization.
+ * 
+ * @param {Object} props 
+ * @param {Number} props.orgId the id of the organization to delete.
+ * @param {String} props.orgName the name of the organization to delete.
+ * @param {Function} props.onLeave the callback function to execute to remove the organization/membership information from the current user.
+ * @param {Function} props.onClose  the callback function to execute to close the modal.
+ * @returns a modal view asking the user to confirm organization deletion.
+ */
+export default function OrgDeleter({ orgId, orgName, onLeave, onClose }) {
     const navigate = useNavigate();
 
     /**
@@ -14,19 +27,19 @@ export default function OrgDeleter({orgId, orgName, onLeave, onClose}) {
         fetch(correctRoute(`/organizations/${orgId}`), {
             method: "DELETE"
         })
-        .then((response) => {
-            if (response.ok) {
-                onLeave();
-                alert(`${orgName} has been deleted.`);
-                navigate("/my-organizations");
-            } else {
-                throw new Error("An internal error occurred. Please contact support.");
-            }
-        })
-        .catch((error) => {
-            alert(error);
-        })
-        .finally(() => onClose());
+            .then((response) => {
+                if (response.ok) {
+                    onLeave();
+                    alert(`${orgName} has been deleted.`);
+                    navigate("/my-organizations");
+                } else {
+                    throw new Error("An internal error occurred. Please contact support.");
+                }
+            })
+            .catch((error) => {
+                alert(error);
+            })
+            .finally(() => onClose());
     }
 
     return (

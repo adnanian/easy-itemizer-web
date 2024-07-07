@@ -1,9 +1,16 @@
 import { useScreenSize } from "../../helperHooks";
 import { dtStringToSystemTimeZone } from "../../helpers";
 
-export default function LogsTable({logs}) {
+/**
+ * Renders a modal table of all the organization's logs from the last seven days.
+ * 
+ * @param {Object} props
+ * @param {Array} props.logs the current organization's logs. 
+ * @returns a table of the organization's logs.
+ */
+export default function LogsTable({ logs }) {
 
-    const {scaleByHeight} = useScreenSize();
+    const { scaleByHeight } = useScreenSize();
 
     const tableSizing = {
         height: scaleByHeight(500, 'px')
@@ -39,7 +46,7 @@ export default function LogsTable({logs}) {
         return (
             <tr key={log.id}>
                 <td>{logIndex + 1}</td>
-                <td style={{maxWidth: "400px"}}>
+                <td style={{ maxWidth: "400px" }}>
                     {logContentLines}
                 </td>
                 <td>{dtStringToSystemTimeZone(log.occurrence)}</td>

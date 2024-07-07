@@ -4,7 +4,16 @@ import Input from "../components/formik-reusable/Input";
 import TextArea from "../components/formik-reusable/TextArea";
 import { correctRoute } from "../helpers";
 
-export default function EditOrgForm({org, onUpdate, onClose}) {
+/**
+ * Displays a form allowing the owner to edit the top level information of an
+ * organization.
+ * 
+ * @param {Object} props
+ * @param {Object} props.org the organization to update.
+ * @param {Function} props.onClose the callback function to execute to close the modal.
+ * @returns a modal form allowing the owner to edit the organization's info.
+ */
+export default function EditOrgForm({ org, onClose }) {
     const initialValues = {
         orgName: org.name,
         orgDescription: org.description,
@@ -23,8 +32,8 @@ export default function EditOrgForm({org, onUpdate, onClose}) {
     /**
      * Updates the organization's data.
      * 
-     * @param {*} values the values from Formik.
-     * @param {*} actions Formik actions.
+     * @param {Object} values the values from Formik.
+     * @param {Object} actions Formik actions.
      */
     function handleSubmit(values, actions) {
         // let shouldNotRefresh = false;
@@ -40,26 +49,26 @@ export default function EditOrgForm({org, onUpdate, onClose}) {
                 banner_url: values.orgBanner
             })
         })
-        .then((response) => {
-            if (response.ok) {
-                alert("Organization info successfully updated.");
-                window.location.reload();
-            } else {
-                throw new Error("Organization name already exists.");
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            alert(error);
-            // shouldNotRefresh = true;
-        })
-        .finally(() => {
-            actions.resetForm();
-            onClose();
-            // if (shouldNotRefresh) {
-            //     return false;
-            // }
-        });
+            .then((response) => {
+                if (response.ok) {
+                    alert("Organization info successfully updated.");
+                    window.location.reload();
+                } else {
+                    throw new Error("Organization name already exists.");
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                alert(error);
+                // shouldNotRefresh = true;
+            })
+            .finally(() => {
+                actions.resetForm();
+                onClose();
+                // if (shouldNotRefresh) {
+                //     return false;
+                // }
+            });
     }
 
     return (

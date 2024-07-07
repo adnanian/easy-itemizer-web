@@ -10,13 +10,19 @@ import ExistingItemForm from "./ExistingItemForm";
  * 
  * @param {Object} props 
  * @param {Integer} props.orgId the organization's id.
- * @param {Array} props.items the array of items not assigned to the organization of given id.
+ * @param {Object} props.user the current user.
  * @param {Function} props.onAdd the callback function to execute when adding a new item.
  * @param {Function} props.onClose the callback function to execute when closing the modal form.
- * @returns a modal child that allows the user to switch between @function NewItemForm and @function ExistingItemForm.
+ * @returns a modal child that allows the user to switch between NewItemForm and ExistingItemForm.
  */
-export default function ItemFormContainer({orgId, user, onAdd, onClose}) {
+export default function ItemFormContainer({ orgId, user, onAdd, onClose }) {
 
+    /**
+     * Adds a new item (if a form was submitted for a new item).
+     * Then closes the modal.
+     * 
+     * @param {Object} data the JSON parsed data response. 
+     */
     const addAndClose = (data) => {
         if (data) {
             onAdd(data);
@@ -50,12 +56,12 @@ export default function ItemFormContainer({orgId, user, onAdd, onClose}) {
     /**
      * Sets the form to display, given the selected radio button's value.
      * 
-     * @param {*} e the event.
+     * @param {Event} e the event.
      */
     function handleChange(e) {
         setForm(e.target.value);
     }
-    
+
     return (
         <>
             <div className="org-radio">
@@ -66,7 +72,7 @@ export default function ItemFormContainer({orgId, user, onAdd, onClose}) {
                         type="radio"
                         value={formRadioValues.new}
                         onChange={handleChange}
-                        checked={form===formRadioValues.new}
+                        checked={form === formRadioValues.new}
                     />
                     <span>Create a New Item</span>
                 </div>
@@ -77,7 +83,7 @@ export default function ItemFormContainer({orgId, user, onAdd, onClose}) {
                         type="radio"
                         value={formRadioValues.existing}
                         onChange={handleChange}
-                        checked={form===formRadioValues.existing}
+                        checked={form === formRadioValues.existing}
                     />
                     <span>Add an Existing Item</span>
                 </div>
