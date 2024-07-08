@@ -181,38 +181,38 @@ Let's assign the following mathematical variables:
 With these assignments and assumptions in mind, we can perform a little algebra
 to calculate the new font size:
 
-1. $$ F = XY, A = WH $$
+1. $$F = XY, A = WH $$
     1. We know what F, A, W, and H are. We need to get X and Y.
     2. This can be done by equating the two products as ratios:
 2. $$\frac{X}{Y} = \frac{W}{H}$$
-3. $$ HX = WY $$
+3. $$HX = WY $$
     1. We can use the font equation, F = XY, to create a substitute for Y.
-    2. $$ Y = \frac{F}{X} $$
+    2. $$Y = \frac{F}{X}$$
     3. Now, Y is in terms of X.
-4. $$ HX = \frac{WF}{X} $$
-5. $$ HX^2 = WF $$
+4. $$HX = \frac{WF}{X}$$
+5. $$HX^2 = WF$$
     1. Solve for X.
-6. $$ X^2 = \frac{WF}{H} $$
-7. $$ X = \sqrt{\frac{WF}{H}} $$
+6. $$X^2 = \frac{WF}{H}$$
+7. $$X = \sqrt{\frac{WF}{H}}$$
     1. If we were to substitute X in terms of Y and solved for Y, we would have gotten the following:
-    2. $$ Y = \sqrt{\frac{HF}{W}} $$
+    2. $$Y = \sqrt{\frac{HF}{W}}$$
 8. To get x and y, use the formulas to scale by width and height, respectively.
     1. x:
-        1. $$ \frac{x}{X} = \frac{w}{W} $$
-        2. $$ Wx = wX $$
-        3. $$ x = \frac{wX}{W}
+        1. $$\frac{x}{X} = \frac{w}{W}$$
+        2. $$Wx = wX$$
+        3. $$x = \frac{wX}{W}$$
     2. y:
-        1. $$ \frac{y}{Y} = \frac{h}{H} $$
-        2. $$ Hy = hY $$
-        3. $$ y = \frac{hY}{H} $$
-9. Since we know that $$ f = xy $$, we can now substitute x and y.
-    1. $$ f = \frac{wX}{W} * \frac{hY}{H}  = \frac{whXY}{WH} $$
+        1. $$\frac{y}{Y} = \frac{h}{H}$$
+        2. $$Hy = hY$$
+        3. $$y = \frac{hY}{H}$$
+9. Since we know that $$f = xy$$, we can now substitute x and y.
+    1. $$f = \frac{wX}{W} * \frac{hY}{H}  = \frac{whXY}{WH}$$
 10. We can also substitute X and Y. This will allow the euqation
 to be simplified in terms of screen size and original font size,
 eliminating both uppercase and lowercase x and y values.
-    1. $$ f = \frac{wh\sqrt{\frac{WF}{H}}\sqrt{\frac{HF}{W}}}{WH} $$
-    2. $$ f = \frac{wh\frac{WHF}{HW}}{WH} $$
-    3. Final result: **$$ f = \frac{whF}{WH} $$**
+    1. $$f = \frac{wh\sqrt{\frac{WF}{H}}\sqrt{\frac{HF}{W}}}{WH}$$
+    2. $$f = \frac{wh\frac{WHF}{HW}}{WH}$$
+    3. Final result: **$$f = \frac{whF}{WH}$$**
 
 This is the formula that is used for the scaleByRation function
 in the useScreenSize helper hook.
