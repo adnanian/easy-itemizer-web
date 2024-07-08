@@ -1,4 +1,4 @@
-# Easy Itemizer (formerly Itemizer)
+# Easy Itemizer
 Author: Adnan Wazwaz
 
 Version: 1.1
@@ -27,13 +27,13 @@ Adnanian Application #3
 
 ### What This Application Does
 
-Easy Itemizer is a full-stack web application that helps organizations and
-individual users keep track of their inventories. The idea is to only count
-their items of each type only once, and they can adjust the quantities of their
-non-stock items after each usage, to avoid having to count everything again. The
-goal is to have members of an organization identify shortages of items as soon
-as possible, instead of noticing when such an item has been depleted at the last
-minute or when it's too late.
+Easy Itemizer (formerly Itemizer) is a full-stack web application that helps
+organizations and individual users keep track of their inventories. The idea is
+to only count their items of each type only once, and they can adjust the
+quantities of their non-stock items after each usage, to avoid having to count
+everything again. The goal is to have members of an organization identify shortages
+of items as soon as possible, instead of noticing when such an item has been
+depleted at the last minute or when it's too late.
 
 When identifying when an item will be depleted, versus when an item is actually
 depleted, managers are able to purchase more of that item ahead of time and will
@@ -102,6 +102,8 @@ tool for faster and leaner development for modern web projects. I would like to
 give my instructors, Enoch Griffith and Stephen Lambert, for providing me with
 the Vite template to develop my app on.
 
+Side note: the CSS has considerably improved.
+
 #### Backend
 
 On the backend, there are some major additions and changes in the technologies used.
@@ -144,7 +146,7 @@ with HTML. However, they all exist in the server folder instead of the client fo
 Flask woudln't be able to open any of the templates if they resided in the client
 folder.
 
-One last technology I used was Bash. I created a bash script for the purposes of
+One last technology I used was Bash. I created a Bash script for the purposes of
 route configuration. But more on that later.
 
 #### Size Scaling
@@ -179,10 +181,41 @@ Let's assign the following mathematical variables:
 With these assignments and assumptions in mind, we can perform a little algebra
 to calculate the new font size:
 
-1. F = XY, A = WH
+1. $$ F = XY, A = WH $$
     1. We know what F, A, W, and H are. We need to get X and Y.
     2. This can be done by equating the two products as ratios:
-2. <mfrac>X Y</mfrac> = <mfrac>W H</mfrac>
+2. $$\frac{X}{Y} = \frac{W}{H}$$
+3. $$ HX = WY $$
+    1. We can use the font equation, F = XY, to create a substitute for Y.
+    2. $$ Y = \frac{F}{X} $$
+    3. Now, Y is in terms of X.
+4. $$ HX = \frac{WF}{X} $$
+5. $$ HX^2 = WF $$
+    1. Solve for X.
+6. $$ X^2 = \frac{WF}{H} $$
+7. $$ X = \sqrt{\frac{WF}{H}} $$
+    1. If we were to substitute X in terms of Y and solved for Y, we would have gotten the following:
+    2. $$ Y = \sqrt{\frac{HF}{W}} $$
+8. To get x and y, use the formulas to scale by width and height, respectively.
+    1. x:
+        1. $$ \frac{x}{X} = \frac{w}{W} $$
+        2. $$ Wx = wX $$
+        3. $$ x = \frac{wX}{W}
+    2. y:
+        1. $$ \frac{y}{Y} = \frac{h}{H} $$
+        2. $$ Hy = hY $$
+        3. $$ y = \frac{hY}{H} $$
+9. Since we know that $$ f = xy $$, we can now substitute x and y.
+    1. $$ f = \frac{wX}{W} * \frac{hY}{H}  = \frac{whXY}{WH} $$
+10. We can also substitute X and Y. This will allow the euqation
+to be simplified in terms of screen size and original font size,
+eliminating both uppercase and lowercase x and y values.
+    1. $$ f = \frac{wh\sqrt{\frac{WF}{H}}\sqrt{\frac{HF}{W}}}{WH} $$
+    2. $$ f = \frac{wh\frac{WHF}{HW}}{WH} $$
+    3. Final result: **$$ f = \frac{whF}{WH} $$**
+
+This is the formula that is used for the scaleByRation function
+in the useScreenSize helper hook.
 
 
 ### Limitations
@@ -191,9 +224,13 @@ In Phase 4, this application had the following limitations, which have all been
 corrected and mitigated in Phase 5:
 
 - User accounts were not real, and were generated using Python's faker library.
+
 - You could only run this application in development mode.
+
 - There was no notification system for updating users.
+
 - Sending status updates and reports of suspicious items actually did nothing.
+
 - You couldn't reset your password, as there was no page for it.
 
 These issues were all solved with Flask Mail, GoDaddy, and Render. But with that
@@ -206,6 +243,23 @@ records in JSON format, which is a major security vulnerability.
 -  But this website is currently not suited to
 be run on mobile devices.
 
+- The tokens generated for links are not secure. The ports are easily exposed.
+There is also almost no code to prevent the same page with the same token from
+being accessed twice.
+
+- Reliance on HTML, internal CSS, and internal Vanilla JS file to create static
+pages isn't really the solution that conforms to best coding practices.
+
+- Fetch requests are fairly slow, and even slower in production.
+
+- You can't upload files from your desktop. You can only copy and paste image
+URL's from the browser.
+
+- When you make a change to a database record, users on other devices won't receive
+those changes on the frontend until they refresh the current page. For example,
+if a system admin decided to ban a user, he/she won't be redirected to the login
+page until the page is refreshed.
+
 All these limitations will hopefully be corrected in the next iteration of
 this project.
 
@@ -214,35 +268,82 @@ this project.
 ### Installation
 
 The good news is that installing this application is quite easy. But before proceeding
-to install, ensure that you have Node v16.20.2 and Python v3.9.2 installed on your local
+to install, ensure that you have Node v18.16.1 and Python v3.9.17 installed on your local
 machine (if that's where you intend to install to). This project is saved in my
-[Flatiron School Phase 4 Project on Github](https://github.com/adnanian/itemizer).
+[Flatiron School Phase 5 Project on Github](https://github.com/adnanian/easy-itemizer-web).
 Once you open the repository, you then fork and clone your own instance on your machine.
+The live website can be found here: (https://www.easyitemizer.com/).
 
 
 ### Execution
 
-Open the project on VS Code. Once VS Code is loaded, open a second terminal. On the
-first terminal you will run `pipenv install && pipenv shell`. You would need to wait
-for about a minute or two to install all the necessary python extensions on your
-machine. Once you're in the python shell, navigate to the server directory by
-typing `cd server`. An optional step that you can take from there is to re-seed
-the database by running `python seed.py`. This will create a full database of 
-users, items, and organizations, and populate them with members, assigned items,
-in an organization, and requests for certain users to join an organization.
-Finally, to power the backend, while still in the server directory, run
-`python app.py`. The terminal would show all requests made by the frontend
-to the API. Take not of them.
+#### Setup
 
-**Note: Make sure you run the backend while in pipenv shell**.
+Open the project on VS Code. Once VS Code is loaded, you'll need to run a few
+installations before launching the application:
 
-On the other terminal, do not navigate to any directory. Instead, you will run
-`npm install` to install all JS and React-related extensions. Once that is finished,
-you will run `npm run dev --prefix client` to start the frontend process of the application.
-The terminal will then show a Vite logo, and a link to open the web application.
-Clickin on the link, you should see the application:
+1. Ensure your current directory is the root of the project.
 
-![The home page of Itemizer when a user opens up the app.](/client/public/images/README/Welcome%20to%20Itemizer.png)
+2. Run `pipenv install && pipenv shell` to install all Python and Flask dependencies,
+as well as the Python virtual environment.
+
+3. Exit the Python Virtual Environment using `CTRL + D` (Windows) or `Cmd + D` (Mac).
+
+4. Navigate to the root directory of your project and run `npm install --prefix client`.
+
+5. *(Optinal)* If you want to view the Postgres SQL database, you can install the
+VSCode extension: [PostgresSQL by Chris Kolkman](https://marketplace.visualstudio.com/items?itemName=ckolkman.vscode-postgres).
+The link also provides a guide on setting up the database on your forked and cloned
+instance. Note: You will need to contact the original developer: Adnan Wazwaz
+for sensitive information.
+
+#### Running in Development Mode
+
+Before running the application on a development server, you will need to configure
+the routes for a development server. The route settings for development are different
+than those for production.
+
+Luckily, I have a nice and handy Bash script to make it easy for you. Go to the root
+of the project directory and type the following command: `./configure-routes.sh`.
+This script runs a Common JS file that will make changes to some of the JS files
+by replacing certain values. You can learn more by looking at the file itself:
+*configureRouteSettings.cjs*.
+
+When you run the Bash script, it will first navigate you to the root directory
+of the project. Then execute *configureRouteSettings.cjs*. You will be prompted
+to select a configuration type. Select *Development* and press **ENTER**. After
+that, the routes will be configured for a development server, and will automatically
+launch using Honcho. You can click on the localhost link that is printed to the
+terminal to open up the page.
+
+If you're using Honcho to run your application, then any changes you make to the
+server will not sync with the currently running application until you stop the
+Honcho-powered service and restart it using `honcho start -f Procfile.dev`.
+If you find this inconvenient, then you can instead run your application the
+following way:
+
+1. Launch your Python Virtual Environment: `pipenv shell`.
+2. Navigate to the server directory: `cd server`.
+3. Launch the Flask application: `python app.py`.
+4. Open a second terminal and make sure you're in the root folder.
+5. Run the React application: `npm run dev --prefix client`.
+
+**PLEASE BE EXTREMELY CAREFUL ABOUT ALTERING ANY ROUTE CONFIGURATION SCRIPT
+OR SETTING!**
+
+#### Running in Production Mode
+
+The first thing you need to make sure is to add any Python extension, library,
+or dependency that you installed to the Pipfile. After that, configuring for
+production is easy.
+
+To test your changes to the application in production mode, use the same Bash
+script and select *Production* instead. Then, you will be prompted to enter
+a message to commit and push your changes to GitHub. Once you've done that, the
+script will rerun `pipenv install` to ensure that all needed python resources
+are included in the Pipfile.lock and requirements.txt. The next thing it would
+do is run commands to push your changes to production. Then, will finally commit
+your changes and push to both the development and main branches.
 
 ## Usage
 
