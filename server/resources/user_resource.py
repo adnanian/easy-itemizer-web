@@ -4,7 +4,7 @@ from flask import (
     make_response,
     render_template_string,
     url_for,
-    redirect
+    redirect,
 )
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
@@ -21,6 +21,7 @@ from config import (
 )
 from models.models import User
 from helpers import random_alphanumeric_sequence
+
 
 class Signup(Resource):
     """Create a new user."""
@@ -79,10 +80,13 @@ class Login(Resource):
         # print(login_name, flush=True)
         try:
             if login_name:
-                user = (
-                    User.query.filter_by(username=login_name).first()
-                    or User.query.filter_by(email=login_name).first()
-                )
+                # user = (
+                #     User.query.filter_by(username=login_name).first()
+                #     or User.query.filter_by(email=login_name).first()
+                # )
+                user = User.query.filter(
+                    (User.username == login_name) | (User.email == login_name)
+                ).first()
                 if user and user.authenticate(request.get_json().get("password")):
                     # print(user, flush=True)
                     if not user.is_verified:
@@ -105,10 +109,10 @@ class Logout(Resource):
     """Logs user out of the webiste."""
 
     def delete(self):
-        """_summary_
+        """Sets the session's user_id key to None.
 
         Returns:
-            _type_: _description_
+            Response: a response with no content.
         """
         # # print("About to log out.")
         session["user_id"] = None
@@ -117,7 +121,22 @@ class Logout(Resource):
 
 
 class Confirm(Resource):
+    """Resource tied to the User model. Used for activation users' accounts.
+
+    Args:
+        Resource (Resource): the RESTful Resource container.
+    """
+
     def get(self, token):
+        """Generates a page using the token generated from the link that was sent to the
+        newly created user, showing his/her account's current verification status.
+
+        Args:
+            token (str): the email token.
+
+        Returns:
+            Response: the page with the appropriate message.
+        """
         try:
             email = confirm_token(token)
         except:
@@ -148,7 +167,22 @@ class Confirm(Resource):
 
 
 class ForgotPassword(Resource):
+    """Resource tied to the User model. Used for sending links to reset passwords.
+
+    Args:
+        Resource (Resource): the RESTful Resource template.
+    """
+
     def post(self):
+        """Generates a custom link for the user to send an email to, so that he/she
+        can reset his/her password. Then sends the email.
+
+        Raises:
+            ValueError: if the email does not exist in the database.
+
+        Returns:
+            Response: the appropriate response depending on the success of the operation.
+        """
         try:
             user = User.query.filter(
                 User.email == request.get_json().get("email")
@@ -173,26 +207,35 @@ class ForgotPassword(Resource):
 
 
 class ResetPasswordForm(Resource):
+    """
+    Displays the reset password form.
+    """
+
     def get(self, token):
-        # org = Organization.query.filter(Organization.name == name).first()
-        # if org:
-        #     token = generate_invitation_token(org.name)
-        #     invitation_url = url_for("invitation", token=token, _external=True)
-        #     return make_response(jsonify(invitation_url), 200)
-        # else:
-        #     return make_response({"message": "Org Name not found"}, 404)
+        """Validates the token that was sent to the user. Then, renders
+        a form for the user to reset his/her password.
+
+        Args:
+            token (str): the token from the link sent to the user.
+
+        Raises:
+            ValueError: if the token is not valid.
+
+        Returns:
+            Response: the reset password form if the token is valid, the error page other wise.
+        """
         try:
             salted_email = password_reset_token(token)
-            email = salted_email[0:salted_email.index("|")]
+            email = salted_email[0 : salted_email.index("|")]
             user = User.query.filter(User.email == email).first()
             if not user:
                 raise ValueError("User with email not found.")
-            with open("./html-templates/static-pages/reset_password_form.html", "r") as file:
+            with open(
+                "./html-templates/static-pages/reset_password_form.html", "r"
+            ) as file:
                 page = file.read()
             html = render_template_string(
-                page,
-                route_prefix = route_prefix,
-                email = user.email
+                page, route_prefix=route_prefix, email=user.email
             )
         except Exception as e:
             print(e, flush=True)
@@ -204,18 +247,38 @@ class ResetPasswordForm(Resource):
             response.headers["Content-Type"] = "text/html"
             return response
 
+
 class ResetPassword(Resource):
+    """Resource tied to the User model. Used for changing passwords.
+
+    Args:
+        Resource (Resource): the RESTful Resource container.
+    """
+
     def patch(self, email):
+        """Updates the user's password.
+
+        Args:
+            email (str): the user's email.
+
+        Raises:
+            ValueError: if the email is not in the database.
+
+        Returns:
+            Response: the appropriate response depending on the success of the operation.
+        """
         try:
             if not (user := User.query.filter(User.email == email).first()):
-                raise ValueError("The account with the associated email does not exist.")
+                raise ValueError(
+                    "The account with the associated email does not exist."
+                )
             user.password_hash = request.get_json().get("new_password")
             db.session.add(user)
             db.session.commit()
             return make_response({}, 204)
         except Exception as e:
             return make_response({"message": str(e)}, 403)
-            
+
 
 class CheckSession(Resource):
     """Check if user is logged in."""
@@ -237,7 +300,22 @@ class CheckSession(Resource):
 
 
 class CurrentUser(Resource):
+    """Resource tied to the User model. Handles fetch request for single users.
+    Note that in this case, since the session stores the logged in user's id,
+    the user's id is retrieved from the session, instead of having to pass the
+    id in the route.
+
+    Args:
+        Resource (Resource): the RESTful Resource container.
+    """
+
     def patch(self):
+        """Updates the current user's information.
+        Note: The user must enter his/her current password in order for this to be successful.
+
+        Returns:
+            Response: the user's updated data, if update successful, an error message otherwise.
+        """
         user = User.query.filter_by(id=session["user_id"]).first()
         json = request.get_json()
         if user.authenticate(json.get("password")):
@@ -264,6 +342,12 @@ class CurrentUser(Resource):
             return make_response({"message": "Incorrect password entered."}, 403)
 
     def delete(self):
+        """Deletes the current user from the server.
+        Note: The user must enter his/her current password in order for this to be successful.
+
+        Returns:
+            Response: a response with no content if the operation was successful, an error message otherwise.
+        """
         user = User.query.filter_by(id=session["user_id"]).first()
         if user.authenticate(request.get_json().get("password")):
             db.session.delete(user)
@@ -272,12 +356,19 @@ class CurrentUser(Resource):
         else:
             return make_response({"message": "Incorrect password entered."}, 403)
 
+
 api.add_resource(Signup, "/signup")
 api.add_resource(Login, "/login")
 api.add_resource(Logout, "/logout")
 api.add_resource(Confirm, "/confirm/<string:token>")
 api.add_resource(ForgotPassword, "/forgot_password")
-api.add_resource(ResetPasswordForm, "/reset_password_form/<string:token>", endpoint="password_reset_form")
-api.add_resource(ResetPassword, "/reset_password/<string:email>", endpoint="password_reset")
+api.add_resource(
+    ResetPasswordForm,
+    "/reset_password_form/<string:token>",
+    endpoint="password_reset_form",
+)
+api.add_resource(
+    ResetPassword, "/reset_password/<string:email>", endpoint="password_reset"
+)
 api.add_resource(CheckSession, "/check_session")
 api.add_resource(CurrentUser, "/current_user")

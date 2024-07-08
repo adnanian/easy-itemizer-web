@@ -94,24 +94,24 @@
                 reason_to_join: textarea.value
             })
         })
-        .then((response) => response.json().then((data) => (
-            {data, status: response.status}
-        )))
-        .then(({data, status}) => {
-            if (status === 201) {
-                alert(`Request successfully submitted for ${data.organization.name}. You can now close this page.`);
-            } else {
-                throw new Error(data.message);
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            alert(error);
-        })
-        .finally(() => {
-            emailInput.value = "";
-            textarea.value = "";
-        });
+            .then((response) => response.json().then((data) => (
+                { data, status: response.status }
+            )))
+            .then(({ data, status }) => {
+                if (status === 201) {
+                    alert(`Request successfully submitted for ${data.organization.name}. You can now close this page.`);
+                } else {
+                    throw new Error(data.message);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                alert(error);
+            })
+            .finally(() => {
+                emailInput.value = "";
+                textarea.value = "";
+            });
     });
 
 </script>

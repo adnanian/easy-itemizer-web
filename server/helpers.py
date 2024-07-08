@@ -4,23 +4,26 @@ import types
 from sqlalchemy.exc import IntegrityError
 import random
 
-ALPHANUMERIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+ALPHANUMERIC = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
-def random_alphanumeric_sequence(size = 0):
-    """_summary_
-    
+
+def random_alphanumeric_sequence(size=0):
+    """Generates a random alphanumeric sequence.
+
     Reference: https://stackoverflow.com/questions/2511222/efficiently-generate-a-16-character-alphanumeric-string
 
     Args:
-        size (int, optional): _description_. Defaults to 0.
+        size (int, optional): The length of the sequence. Defaults to 0. If no argument is passed, then the length
+        will be a random int between 16 and 32.
 
     Returns:
-        _type_: _description_
+        str: the alphanumeric sequence.
     """
-    if (size == 0):
+    if size == 0:
         size = random.randint(16, 32)
     sequence = "".join([random.choice(ALPHANUMERIC) for n in range(size)])
     return sequence
+
 
 def is_non_empty_string(var):
     """Validates whether a given variable is a non-empty string.
@@ -33,6 +36,7 @@ def is_non_empty_string(var):
     """
     return isinstance(var, str) and len(var)
 
+
 class RoleType:
     """
         Static class that holds constants for membership roles.
@@ -40,14 +44,14 @@ class RoleType:
     Raises:
         TypeError: if anyone tries to instantiate this class.
     """
-    
+
     REGULAR = "REGULAR"
     ADMIN = "ADMIN"
     OWNER = "OWNER"
-    
+
     def __init__(self):
-        raise TypeError("The \'RoleType\' class cannot be instantiated")
-    
+        raise TypeError("The 'RoleType' class cannot be instantiated")
+
     @classmethod
     def is_valid_role_name(cls, role_name):
         """Returns whether a given argumnet is one of the three role names defined in this class.
@@ -58,8 +62,10 @@ class RoleType:
         Returns:
             bool: True if role_name is REGULAR, ADMIN, or OWNER; False otherwise.
         """
-        return role_name == cls.REGULAR or role_name == cls.ADMIN or role_name == cls.OWNER
-    
+        return (
+            role_name == cls.REGULAR or role_name == cls.ADMIN or role_name == cls.OWNER
+        )
+
     @classmethod
     def get_all(cls):
         """Returns all the possible role types.
@@ -99,6 +105,7 @@ def stack_trace():
     for method in inspect.stack():
         print(method[INVOKED_METHOD_NAME_INDEX])
 
+
 # For debugging
 def get_model_invoker():
     return inspect.stack()[MODEL_INVOKER_INDEX][INVOKED_METHOD_NAME_INDEX]
@@ -111,7 +118,8 @@ def print_starting_seed(model_name):
         model_name (str): the model name to print.
     """
     print(f"Seeding {model_name}: ", end="", flush=True)
-    
+
+
 def println_starting_seed(model_name):
     """Notifies on terminal that seeding of a model is starting, and then breaks the current line.
 
@@ -119,7 +127,8 @@ def println_starting_seed(model_name):
         model_name (str): the model name to print.
     """
     print(f"Seeding {model_name}: ")
-    
+
+
 def print_ending_seed(model_name):
     """Notifies on terminal that seeding of a model has been complete.
 
@@ -137,6 +146,7 @@ def print_progress(condition, progress_mark="."):
         progress_mark (str, optional): the mark to print. Defaults to ".".
     """
     print(progress_mark, end="" if condition else "\n", flush=True)
+
 
 # Specifically for python seed.py - All callback functions must return something.
 def execute_to_success(callback, progress_condition, limit=sys.maxsize, *args):
@@ -160,7 +170,7 @@ def execute_to_success(callback, progress_condition, limit=sys.maxsize, *args):
         execution_successful = False
         counter = 0
         return_object = None
-        
+
         while (not execution_successful) and counter < limit:
             try:
                 return_object = callback(*args)
@@ -171,7 +181,7 @@ def execute_to_success(callback, progress_condition, limit=sys.maxsize, *args):
                 print(f"Attempt {counter + 1} out of {limit} failed.")
             finally:
                 counter += 1
-                if (not execution_successful and counter < limit):
+                if not execution_successful and counter < limit:
                     print("Trying again!")
         if not execution_successful:
             raise Exception("Execution not successful.")
@@ -180,4 +190,3 @@ def execute_to_success(callback, progress_condition, limit=sys.maxsize, *args):
         raise ValueError(
             "Callback and limit must be of types function and int respectively."
         )
-        

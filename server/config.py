@@ -17,33 +17,16 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 load_dotenv()
 
-# Local imports
 
-# def configure_server():
-#     """Creates and returns new instance of Flask with the appropriate attributes.
-#     The attributes depend on the configuration type.
-
-#     Raises:
-#         ValueError: if the configuration type read from configType.txt is neither DEVELOPMENT nor SERVER.
-
-#     Returns:
-#         Flask: the appropriate instation of Flask for this application.
-#     """
-#     with open("../configType.txt", encoding="utf-8") as mode:
-#         config_type = mode.read()
-#     if config_type.lower() == 'development':
-#         return Flask(__name__)
-#     elif config_type.lower() == 'production':
-#         return Flask(
-#             __name__,
-#             static_url_path="",
-#             static_folder="../client/dist",
-#             template_folder="../client/dist",
-#         )
-#     else:
-#         raise ValueError("Invalid configuration type processed.")
-    
 def get_route_configuration_type():
+    """Retrieves the current configuration setting from the configType.txt file.
+
+    Raises:
+        ValueError: if an invalid setting was somehow set to the file.
+
+    Returns:
+        str: the configuration type in lowercase.
+    """
     with open("../configType.txt", encoding="utf-8") as mode:
         config_type = mode.read()
     config_type = config_type.lower()
@@ -52,11 +35,12 @@ def get_route_configuration_type():
     else:
         raise ValueError("Invalid configuration type processed.")
 
+
 SERVER_CONFIGS = {
     "development": {
         "app": Flask(__name__),
         "home_page": "http://localhost:3000",
-        "route_prefix": "http://localhost:3000/api"
+        "route_prefix": "http://localhost:3000/api",
     },
     "production": {
         "app": Flask(
@@ -66,9 +50,12 @@ SERVER_CONFIGS = {
             template_folder="../client/dist",
         ),
         "home_page": "https://www.easyitemizer.com",
-        "route_prefix": "https://www.easyitemizer.com"
-    }
+        "route_prefix": "https://www.easyitemizer.com",
+    },
 }
+"""
+Mapping of flask and routing settings for each configuration type.
+"""
 
 # Get configuration type and instantiate app & other appropriate variables based on config type.
 CONFIG_TYPE = get_route_configuration_type()
@@ -120,12 +107,29 @@ bcrypt = Bcrypt(app)
 
 
 def generate_confirmation_token(email):
+    """Generates a confirmation token for an email.
+
+    Args:
+        email (str): the email.
+
+    Returns:
+        str: the email confirmation token.
+    """
     serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     # print(serializer, flush=True)
     return serializer.dumps(email, salt=app.config["SECURITY_PASSWORD_SALT"])
 
 
 def confirm_token(token, expiration=600):
+    """Retrieves an email from a confirmation token.
+
+    Args:
+        token (str): the token.
+        expiration (int, optional): the duration (in seconds) that this token will hold the email for. Defaults to 600.
+
+    Returns:
+        str: the email, or false if there is no email for that token.
+    """
     seralizer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     try:
         email = seralizer.loads(
@@ -135,11 +139,30 @@ def confirm_token(token, expiration=600):
         return False
     return email
 
+
 def generate_invitation_token(org_name):
+    """Generates an invitation token for an organization name.
+
+    Args:
+        org_name (str): the name of the organization.
+
+    Returns:
+        str: the invitation token.
+    """
     serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     return serializer.dumps(org_name, salt=app.config["SECURITY_PASSWORD_SALT"])
 
+
 def invitation_token(token, expiration=300):
+    """Retrieves an organization from an invitation token.
+
+    Args:
+        token (str): the token.
+        expiration (int, optional): the duration (in seconds) that this token will hold the orgnization name for. Defaults to 300.
+
+    Returns:
+        str: the organization name, or False if there is no organization name for that token.
+    """
     seralizer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     try:
         org_name = seralizer.loads(
@@ -149,11 +172,30 @@ def invitation_token(token, expiration=300):
         return False
     return org_name
 
+
 def generate_password_reset_link(salted_email):
+    """Generates a password reset token for an email salted with a random alphanumeric sequence.
+
+    Args:
+        salted_email (str): the salted email.
+
+    Returns:
+        str: the email confirmation token.
+    """
     serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     return serializer.dumps(salted_email, salt=app.config["SECURITY_PASSWORD_SALT"])
 
+
 def password_reset_token(token, expiration=120):
+    """Retrieves a salted email from a password reset token.
+
+    Args:
+        token (str): the token.
+        expiration (int, optional): the duration (in seconds) that this token will hold the salted email for. Defaults to 120.
+
+    Returns:
+        str: the salted email, or false if there is no salted email for that token.
+    """
     seralizer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     try:
         salted_email = seralizer.loads(
@@ -162,6 +204,7 @@ def password_reset_token(token, expiration=120):
     except:
         return False
     return salted_email
+
 
 def send_email(subject, recipients, template, sender=app.config["MAIL_DEFAULT_SENDER"]):
     """

@@ -1,4 +1,4 @@
-from flask import request, make_response, render_template_string, jsonify
+from flask import request, make_response, render_template_string
 from flask_restful import Resource
 from config import db, api, home_page, route_prefix, invitation_token
 from resources.dry_resource import DRYResource
@@ -7,8 +7,21 @@ from helpers import RoleType
 
 
 class AcceptRequest(Resource):
+    """Resource tied to the Request model. Used for accepting requests to join organizations.
+
+    Args:
+        Resource (Resource): the RESTful Resource container.
+    """
 
     def post(self):
+        """Deletes a request from the server. Then, uses the information
+        from the request to create a new membership tied to the organization
+        that the user requested to join. When this is done, a log will be entered
+        for the organization tied to it.
+
+        Returns:
+            Response: the appropriate response depending on the success of the operation.
+        """
         try:
             # Delete request from db, marking it accepted.
             request_to_accept = Request.query.filter_by(
@@ -45,7 +58,21 @@ class RequestById(DRYResource):
 
 
 class Invitation(Resource):
+    """Resource tied to the Request model. Used for opening invitation links.
+
+    Args:
+        Resource (Resource): the RESTful Resource container.
+    """
+
     def get(self, token):
+        """Renders a form to submit a request to join an organization to the user.
+
+        Args:
+            token (str): the token generated for the link.
+
+        Returns:
+            Response: the request form page if the token is valid, the error page otherwise.
+        """
         try:
             org_name = invitation_token(token)
             print(org_name, flush=True)
@@ -65,7 +92,18 @@ class Invitation(Resource):
 
 
 class RequestResource(Resource):
+    """Resource tied to the Request model. Handles fetch requests for all Request instances.
+
+    Args:
+        RestResourceTemplate (RestResourceTemplate): simplify RESTFul API building.
+    """
+
     def post(self):
+        """Creates a new instance of Request.
+
+        Returns:
+            dict: a JSONified dictionary of the created Request and its attributes, if creation successful, otherwise an error message.
+        """
         try:
             user = User.query.filter(
                 User.email == request.get_json().get("email")

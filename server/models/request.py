@@ -2,6 +2,7 @@ from sqlalchemy_serializer import SerializerMixin
 from config import db
 from sqlalchemy.orm import validates
 
+
 # Requests to join an organization.
 class Request(db.Model, SerializerMixin):
     """
@@ -10,35 +11,36 @@ class Request(db.Model, SerializerMixin):
     A request can be made in many organizations.
     A request belongs to one organization and one user.
     """
-    
+
     serialize_rules = (
-        '-user.requests',
-        '-user.memberships',
-        '-user.organizations',
-        '-user.items'
-        '-organization.requests',
-        '-organization.memberships',
-        '-organization.assignments',
-        '-organization.users',
-        '-organization.items',
-        '-organization.organization_logs'
+        "-user.requests",
+        "-user.memberships",
+        "-user.organizations",
+        "-user.items" "-organization.requests",
+        "-organization.memberships",
+        "-organization.assignments",
+        "-organization.users",
+        "-organization.items",
+        "-organization.organization_logs",
     )
-    
-    __tablename__ = 'requests'
+
+    __tablename__ = "requests"
     id = db.Column(db.Integer, primary_key=True)
     reason_to_join = db.Column(db.String, default="Reason", nullable=False)
     submitted_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     # Foreign Keys
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    organization_id = db.Column(db.Integer, db.ForeignKey('organizations.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    organization_id = db.Column(
+        db.Integer, db.ForeignKey("organizations.id"), nullable=False
+    )
     # Relationships Established
-    user = db.relationship('User', back_populates='requests')
-    organization = db.relationship('Organization', back_populates='requests')
-    
+    user = db.relationship("User", back_populates="requests")
+    organization = db.relationship("Organization", back_populates="requests")
+
     def __repr__(self):
         return f"<Request {self.id}, {self.reason_to_join}, {self.submitted_at}, {self.user_id}, {self.organization_id}>"
-    
-    @validates('organization_id')
+
+    @validates("organization_id")
     def validate_request(self, key, organization_id):
         """Validates that there is not an existing request with the declared user_id
         and organization_id, or that the user is not already part of that organization.
@@ -54,10 +56,20 @@ class Request(db.Model, SerializerMixin):
         Returns:
             _type_: _description_
         """
-        if Request.query.filter(Request.user_id == self.user_id, Request.organization_id == organization_id).first():
-            raise ValueError(f"User of ID {self.user_id} is already in the request queue for organization ID {organization_id}")
-        
+        if Request.query.filter(
+            Request.user_id == self.user_id, Request.organization_id == organization_id
+        ).first():
+            raise ValueError(
+                f"User of ID {self.user_id} is already in the request queue for organization ID {organization_id}"
+            )
+
         from models.membership import Membership
-        if Membership.query.filter(Membership.user_id == self.user_id, Membership.organization_id == organization_id).first():
-            raise ValueError(f"User ID {self.user_id} already belongs to organization ID {organization_id}")
+
+        if Membership.query.filter(
+            Membership.user_id == self.user_id,
+            Membership.organization_id == organization_id,
+        ).first():
+            raise ValueError(
+                f"User ID {self.user_id} already belongs to organization ID {organization_id}"
+            )
         return organization_id

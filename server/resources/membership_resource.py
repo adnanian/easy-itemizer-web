@@ -8,6 +8,7 @@ from helpers import RoleType
 
 class MembershipById(DRYResource):
     """Resource tied to the Membership model. Handles fetch requests for single Membership instances.
+    When a membership is updated or deleted, a log will be entered for the organization tied to that membership.
 
     Args:
         DRYResource (DRYResource): simplify RESTFul API building.
@@ -15,18 +16,34 @@ class MembershipById(DRYResource):
 
     def __init__(self):
         super().__init__(Membership, "membership_l")
-        
-    def get(self, id):
-        return send_from_directory("../client/dist", "index.html")
 
 
 class TransferOwnership(Resource):
+    """Resource tied to the Membership model. Deletes the current user's
+    membership from the current organization and updates another member's
+    role to OWNER. Once this is done, a log will be entered for the organization
+    tied to the membership.
+
+    Args:
+        Resource (Resource): the RESTful Resource container.
+    """
+
     def patch(self, org_id):
+        """
+        Removes the current member from the organization and assigns
+        the OWNER value to the role of another member.
+
+        Args:
+            org_id (int): the organization id.
+
+        Returns:
+            Response: the appropriate response depending on the success of the transfer.
+        """
         try:
             # Delete leaving user's membership
             leaving_member = Membership.query.filter(
                 Membership.organization_id == org_id,
-                Membership.user_id == session["user_id"]
+                Membership.user_id == session["user_id"],
             ).first()
             leaving_username = leaving_member.user.username
             db.session.delete(leaving_member)
@@ -52,4 +69,6 @@ class TransferOwnership(Resource):
 
 
 api.add_resource(MembershipById, "/memberships/<int:id>", endpoint="membership_by_id")
-api.add_resource(TransferOwnership, "/transfer_ownership/<int:org_id>", endpoint="leave_and_transfer")
+api.add_resource(
+    TransferOwnership, "/transfer_ownership/<int:org_id>", endpoint="leave_and_transfer"
+)

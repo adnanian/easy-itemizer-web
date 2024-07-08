@@ -6,6 +6,7 @@ from models.membership import Membership
 from models.assignment import Assignment
 from helpers import is_non_empty_string
 
+
 class Organization(db.Model, SerializerMixin):
     """
     A group of related users managing a collection of items.
@@ -17,21 +18,20 @@ class Organization(db.Model, SerializerMixin):
     An organization can have many logs.
     A log belongs to one organization.
     """
-    
+
     serialize_rules = (
-        '-memberships.organization',
-        '-users',
-        '-assignments.organization',
-        '-assignments.item_id',
-        '-assignments.organization_id'
-        '-items',
-        '-requests.user.items',
-        '-requests.organization',
-        '-organization_logs.organization'
+        "-memberships.organization",
+        "-users",
+        "-assignments.organization",
+        "-assignments.item_id",
+        "-assignments.organization_id" "-items",
+        "-requests.user.items",
+        "-requests.organization",
+        "-organization_logs.organization",
     )
-    
-    __tablename__ = 'organizations'
-    
+
+    __tablename__ = "organizations"
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
     description = db.Column(db.String)
@@ -39,26 +39,37 @@ class Organization(db.Model, SerializerMixin):
     banner_url = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     last_updated = db.Column(db.DateTime, onupdate=db.func.now())
-    
+
     """
     M:M relationships established here
     """
     # organizations -< memberships >- users
-    memberships = db.relationship('Membership', back_populates='organization', cascade='all, delete-orphan')
-    users = association_proxy('memberships', 'user', creator=lambda user_obj: Membership(user=user_obj))
+    memberships = db.relationship(
+        "Membership", back_populates="organization", cascade="all, delete-orphan"
+    )
+    users = association_proxy(
+        "memberships", "user", creator=lambda user_obj: Membership(user=user_obj)
+    )
     # organizations -< assignments >- items
-    assignments = db.relationship('Assignment', back_populates='organization', cascade='all, delete-orphan')
-    items = association_proxy('assignments', 'item', creator=lambda item_obj: Assignment(item=item_obj))
+    assignments = db.relationship(
+        "Assignment", back_populates="organization", cascade="all, delete-orphan"
+    )
+    items = association_proxy(
+        "assignments", "item", creator=lambda item_obj: Assignment(item=item_obj)
+    )
     # organizations -< requests >- users
-    requests = db.relationship('Request', back_populates='organization', cascade='all, delete-orphan')
+    requests = db.relationship(
+        "Request", back_populates="organization", cascade="all, delete-orphan"
+    )
     # organization -< organization_logs
-    organization_logs = db.relationship('OrganizationLog', back_populates='organization', cascade='all, delete-orphan')
-    
-    
+    organization_logs = db.relationship(
+        "OrganizationLog", back_populates="organization", cascade="all, delete-orphan"
+    )
+
     def __repr__(self):
         return f"<Organization {self.id}, {self.name}, {self.description}, {self.banner_url}, {self.created_at}, {self.last_updated}>"
-    
-    @validates('name')
+
+    @validates("name")
     def validate_name(self, key, name):
         """Validates that the name is a non-empty, non-unique string.
 
@@ -73,7 +84,9 @@ class Organization(db.Model, SerializerMixin):
         Returns:
             str: the value of name..
         """
-        if not(is_non_empty_string(name) and Organization.query.filter_by(name=name).first() is None):
+        if not (
+            is_non_empty_string(name)
+            and Organization.query.filter_by(name=name).first() is None
+        ):
             raise ValueError(f"{key.title()} must be a unique, non-empty string.")
         return name
-    

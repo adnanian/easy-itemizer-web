@@ -8,7 +8,7 @@ from flask import (
     render_template,
     render_template_string,
     send_from_directory,
-    make_response
+    make_response,
 )
 from flask_restful import Resource
 import datetime
@@ -17,13 +17,7 @@ import pytz
 # Local imports
 from models.models import *
 from resources.resources import *
-from config import (
-    app,
-    db,
-    api,
-    scheduler,
-    send_email
-)
+from config import app, db, api, scheduler, send_email
 from model_log_mapping import ModelLogMap
 
 LOG_DURATION_LIMIT = 7
@@ -58,11 +52,12 @@ def check_if_logged_in():
         "requestresource",
         "forgotpassword",
         "password_reset_form",
-        "password_reset"
+        "password_reset",
     ]
     if not (session.get("user_id") or request.endpoint in endpoint_whitelist):
         # print("Returning unauthorized message", flush=True)
         return {"error": "Unauthorized! You must be logged in ree"}, 401
+
 
 @app.before_request
 def get_record_by_id():
@@ -93,15 +88,28 @@ def get_record_by_id():
 
 @app.after_request
 def create_log(response):
-    """_summary_
+    """Creates a new OrganizationLog instance if one of the following took place:
+
+    A user created a new organization.
+    A user updated the organization's information.
+    A user added a new item.
+    A user created a new item assignment.
+    A user updated an assigned item.
+    A user removed an item from the system.
+    An admin removed an item from the organization.
+    An admin updated a user's membership status.
+    An admin removed a user from the organization.
+    An admin accepted a requested user's request to join an organization.
+    A user left the organization.
+    The owner of an organization left and transferred ownership to another member.
 
     Article of Reference: https://stackoverflow.com/questions/2612610/how-to-access-get-or-set-object-attribute-given-string-corresponding-to-name-o
 
     Args:
-        response (_type_): _description_
+        response (Response): the response.
 
     Returns:
-        _type_: _description_
+        Response: the response. If a log was created or the organization is deleted, then the response is modified before returning.
     """
     endpoint_blacklist = [
         "signup",
@@ -117,7 +125,7 @@ def create_log(response):
         "forgotpassword",
         "password_reset_form",
         "password_reset",
-        "leave_and_transfer"
+        "leave_and_transfer",
     ]
     response_loggable = request.method != "GET"
     status_ok = 200 <= response.status_code < 300
@@ -160,22 +168,43 @@ def create_log(response):
 
 
 class Index(Resource):
+    """The first resource that a request is made to in production mode."""
 
     def get(self, orgId=None):
+        """Renders the index.html document from the frontend.
+
+        Args:
+            orgId (int, optional): the organization id (mainly used for /my-organizations/:orgId). Defaults to None.
+
+        Returns:
+            Response: the index.html document.
+        """
         # print(f"The CWD at index call is: {os.getcwd()}", flush=True)
         return send_from_directory("../client/dist", "index.html")
-    
+
+
 class Contact(Resource):
+    """
+    Sends an inquiry email to Easy Itemizer Support.
+    """
+
     def post(self):
+        """
+        Generates an inquiry template using the details filled out from the contact
+        form, and sends it to Easy Itemizer Support.
+
+        Returns:
+            Response: a response with no content if the operation was successful, an error message otherwise.
+        """
         try:
             with open("./html-templates/emails/inquiry.html", "r") as file:
                 template_content = file.read()
             html = render_template_string(
                 template_content,
-                first_name = request.get_json().get("firstName"),
-                last_name = request.get_json().get("lastName"),
-                email = request.get_json().get("email"),
-                message = request.get_json().get("inquiry")
+                first_name=request.get_json().get("firstName"),
+                last_name=request.get_json().get("lastName"),
+                email=request.get_json().get("email"),
+                message=request.get_json().get("inquiry"),
             )
             subject = "You Have a New Inquiry"
             send_email(subject, ["support@easyitemizer.com"], html)
@@ -186,7 +215,7 @@ class Contact(Resource):
 
 def delete_old_logs():
     """
-    TODO
+    Deletes all logs from all organizations that are at least seven days old.
 
     Articles of Reference:
     https://www.geeksforgeeks.org/how-to-make-a-timezone-aware-datetime-object-in-python/
@@ -214,7 +243,7 @@ api.add_resource(
     "/signup",
     "/forgot-password",
     "/unauthorized",
-    endpoint="index"
+    endpoint="index",
 )
 api.add_resource(Contact, "/contact")
 

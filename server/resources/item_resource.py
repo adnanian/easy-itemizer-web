@@ -14,7 +14,11 @@ class ItemResource(Resource):
     """
 
     def get(self):
-        """_summary_"""
+        """Returns a list of items, with only certain attributes being serialized.
+
+        Returns:
+            Response: list of items and their basic information.
+        """
         items = [
             item.to_dict(only=("id", "name", "part_number", "image_url", "user_id"))
             for item in Item.query.filter(
@@ -25,8 +29,16 @@ class ItemResource(Resource):
 
 
 class AddItemAndAssignment(Resource):
+    """
+    Resource tied to the Item and Assignment models.
+
+    Args:
+        Resource (Resource): the Restful Resource container.
+    """
+
     def post(self):
         """Creates a new instance of Item and an Assignment with that Item.
+        When an item is created, a log will be entered for the organization tied to the newly created assignment.
 
             Returns:
         #         dict: a JSONified dictionary of the created Item and its attributes, if creation successful, otherwise an error message.
@@ -65,6 +77,8 @@ class AddItemAndAssignment(Resource):
 
 class ItemById(DRYResource):
     """Resource tied to the Item model. Handles fetch requests for single Item instances.
+    When an item is deleted, a log will be entered for all organizations that were using
+    it.
 
     Args:
         DRYResource (DRYResource): simplify RESTFul API building.
@@ -74,6 +88,14 @@ class ItemById(DRYResource):
         super().__init__(Item)
 
     def delete(self, id):
+        """_summary_
+
+        Args:
+            id (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         record = g.record
         assignments = [
             {
@@ -81,7 +103,7 @@ class ItemById(DRYResource):
                 "item_part_number": assignment.item.part_number,
                 "current_quantity": assignment.current_quantity,
                 "enough_threshold": assignment.enough_threshold,
-                "organization_id": assignment.organization_id
+                "organization_id": assignment.organization_id,
             }
             for assignment in Assignment.query.filter_by(item_id=record.id).all()
         ]
@@ -98,7 +120,7 @@ class ItemById(DRYResource):
                     f"Current Quantity: {assignment['current_quantity']}",
                     f"Enough Threshold: {assignment['enough_threshold']}",
                 ],
-                organization_id=assignment["organization_id"]
+                organization_id=assignment["organization_id"],
             )
             logs.append(log)
         if len(logs):
@@ -108,8 +130,20 @@ class ItemById(DRYResource):
 
 
 class ReportItem(Resource):
+    """Resource tied to the Item model. Sends an email to Easy Itemizer Support
+    whose contents consist of the information
+    that the user enterered to report the item in question.
+
+    Args:
+        Resource (Resource): the RESTful resource container.
+    """
+
     def post(self):
-        pass
+        """Sends a report of a suspicious item to Easy Itemizer Support.
+
+        Returns:
+            Response: the appropriate response depending on the success of the report generation.
+        """
         item_in_question = Item.query.filter_by(
             id=request.get_json().get("item_id")
         ).first()

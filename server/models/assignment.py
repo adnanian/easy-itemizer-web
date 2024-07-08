@@ -3,6 +3,7 @@ from config import db
 from sqlalchemy.orm import validates
 from helpers import get_model_invoker
 
+
 class Assignment(db.Model, SerializerMixin):
     """
     Connects an organization and item together.
@@ -12,14 +13,14 @@ class Assignment(db.Model, SerializerMixin):
     Purpose of this model is to ensure that an item type locally used in an organization would
     have an accurately different quantity than that of another organization.
     """
-    
+
     serialize_rules = (
-        '-organization.assignments',
-        '-organization.items',
-        '-organization.memberships',
-        '-organization.users',
-        '-organization.requests',
-        '-organization.organization_logs'
+        "-organization.assignments",
+        "-organization.items",
+        "-organization.memberships",
+        "-organization.users",
+        "-organization.requests",
+        "-organization.organization_logs",
     )
 
     __tablename__ = "assignments"
@@ -51,7 +52,7 @@ class Assignment(db.Model, SerializerMixin):
         """Validates that the current_quantity attribute is a non-negative integer.
 
         Args:
-            key (str): the attribute name. (Must be key)
+            key (str): the attribute name.
             current_quantity (int): the current_quantity attribute value.
 
         Raises:
@@ -66,10 +67,10 @@ class Assignment(db.Model, SerializerMixin):
 
     @validates("enough_threshold")
     def validate_enough_threshold(self, key, enough_threshold):
-        """Validates that the enough_threshold attribute is a non-negative integer.
+        """Validates that the enough_threshold attribute is a positive integer.
 
         Args:
-            key (str): the attribute name. (Must be key)
+            key (str): the attribute name.
             enough_threshold (int): the enough_threshold attribute value.
 
         Raises:
@@ -78,18 +79,33 @@ class Assignment(db.Model, SerializerMixin):
         Returns:
             int: the value of enough_threshold.
         """
-        if type(enough_threshold) is not int or enough_threshold < 1:
+        if type(enough_threshold) is not int or enough_threshold <= 0:
             raise ValueError(
                 f"{key} - Minimum threshold for inventory to be considered enough must be a positive integer."
             )
         return enough_threshold
-    
+
     @validates("organization_id")
     def validate_organization_id(self, key, organization_id):
-        if assignment := Assignment.query.filter(Assignment.item_id == self.item_id, Assignment.organization_id == organization_id).first():
-            print(assignment, flush=True)
-            if (get_model_invoker() != 'patch'):
-                raise ValueError(f"Item with id {self.item_id} already exists for {key} {organization_id}")
-        return organization_id
-    
+        """Validates that the organization_id attribute is not already associated with the entered item_id.
 
+        Args:
+            key (str): the attribute name.
+            organization_id (int): the organization_id attribute value.
+
+        Raises:
+            ValueError: if there is already an assignment with the item_id and organization_id pair.
+
+        Returns:
+            int: the organization_id
+        """
+        if assignment := Assignment.query.filter(
+            Assignment.item_id == self.item_id,
+            Assignment.organization_id == organization_id,
+        ).first():
+            print(assignment, flush=True)
+            if get_model_invoker() != "patch":
+                raise ValueError(
+                    f"Item with id {self.item_id} already exists for {key} {organization_id}"
+                )
+        return organization_id

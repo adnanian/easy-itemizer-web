@@ -9,7 +9,7 @@ from helpers import (
     print_ending_seed,
     print_progress,
     execute_to_success,
-    RoleType
+    RoleType,
 )
 import random
 import time
@@ -53,13 +53,12 @@ ATTEMPT_LIMIT = 5
 """The number of times that the execute_to_success helper function will execute."""
 
 
-
 def clear_tables():
     """
     Delete all items from the tables before recreating the seeds.
     """
     print("Deleting old data.")
-    
+
     # Check if cascading works for single instances.
     Request.query.delete()
     Assignment.query.delete()
@@ -69,8 +68,9 @@ def clear_tables():
     Organization.query.delete()
     User.query.delete()
     db.session.commit()
-    
+
     print("Old data deletion complete.")
+
 
 def seed_users():
     """
@@ -86,6 +86,7 @@ def seed_users():
     db.session.add_all(users)
     db.session.commit()
     print_ending_seed("users")
+
 
 def create_user():
     """Creates a new instance of User and returns it.
@@ -108,19 +109,20 @@ def create_user():
     )
     email = (first_name + "." + last_name).lower() + number + "@itemizer.com"
     user = User(
-        first_name=first_name, 
-        last_name=last_name, 
-        username=username, 
+        first_name=first_name,
+        last_name=last_name,
+        username=username,
         email=email,
         profile_picture_url=random.choice(PROFILE_PICTURE_URLS),
-        is_verified=True
+        is_verified=True,
     )
     user.password_hash = PASSWORD
-    
+
     # 5% chance of banning a user.
-    if (not random.randint(0, 20)):
+    if not random.randint(0, 20):
         user.is_banned = True
     return user
+
 
 def seed_orgs():
     """
@@ -137,6 +139,7 @@ def seed_orgs():
     db.session.commit()
     print_ending_seed("organizations")
 
+
 def create_org():
     """Creates a new instance of Organization and returns it.
 
@@ -146,12 +149,13 @@ def create_org():
     name = fake.company()
     description = fake.sentence()
     org = Organization(
-        name=name, 
+        name=name,
         description=description,
         image_url=random.choice(ORGANIZATION_PROFILE_PICTURE_URLS),
-        banner_url=random.choice(ORGANIZATION_IMAGE_BANNER_URLS)
+        banner_url=random.choice(ORGANIZATION_IMAGE_BANNER_URLS),
     )
     return org
+
 
 def seed_items():
     """
@@ -169,6 +173,7 @@ def seed_items():
     db.session.add_all(items)
     db.session.commit()
     print_ending_seed("items")
+
 
 def create_item(key, value, active_users):
     """Creates a new instance of Item and returns it.
@@ -192,9 +197,10 @@ def create_item(key, value, active_users):
         part_number=part_number,
         image_url=value["image_url"],
         is_public=bool(random.getrandbits(1)),
-        user_id=random.choice(active_users).id
+        user_id=random.choice(active_users).id,
     )
     return item
+
 
 def seed_relational_models():
     """Seeds Memberships, Assignments, and Requests, by establishing randomized relations with Users, Items, and Organizations."""
@@ -229,22 +235,31 @@ def seed_relational_models():
         for n in range(membership_size):
             user = random.choice(user_selection)
             user_selection.remove(user)
-            role = RoleType.OWNER if n == 0 else random.choice((RoleType.REGULAR, RoleType.REGULAR, RoleType.REGULAR, RoleType.ADMIN))
-            membership = Membership(
-                user_id=user.id,
-                organization_id=org.id,
-                role=role
+            role = (
+                RoleType.OWNER
+                if n == 0
+                else random.choice(
+                    (
+                        RoleType.REGULAR,
+                        RoleType.REGULAR,
+                        RoleType.REGULAR,
+                        RoleType.ADMIN,
+                    )
+                )
             )
+            membership = Membership(user_id=user.id, organization_id=org.id, role=role)
             db.session.add(membership)
-            if (n == 0):
+            if n == 0:
                 log = OrganizationLog(
-                    contents = [f"{user.username} created a new organization: \'{org.name}\'!"],
-                    organization_id = org.id
+                    contents=[
+                        f"{user.username} created a new organization: '{org.name}'!"
+                    ],
+                    organization_id=org.id,
                 )
             else:
                 log = OrganizationLog(
-                    contents = [f"{user.username} has joined \'{org.name}\'!"],
-                    organization_id = org.id
+                    contents=[f"{user.username} has joined '{org.name}'!"],
+                    organization_id=org.id,
                 )
             db.session.add(log)
             db.session.commit()
@@ -260,17 +275,17 @@ def seed_relational_models():
                 item_id=item.id,
                 organization_id=org.id,
                 current_quantity=current_quantity,
-                enough_threshold=enough_threshold
+                enough_threshold=enough_threshold,
             )
             db.session.add(assignment)
             log = OrganizationLog(
-                    contents=[
-                        "An item has been assigned by the seed to this organization",
-                        f"Name: {item.name}",
-                        f"Part #: {item.part_number}"
-                    ],
-                    organization_id=org.id
-                )
+                contents=[
+                    "An item has been assigned by the seed to this organization",
+                    f"Name: {item.name}",
+                    f"Part #: {item.part_number}",
+                ],
+                organization_id=org.id,
+            )
             db.session.add(log)
             db.session.commit()
             logs.append(log)
@@ -280,17 +295,15 @@ def seed_relational_models():
             user = random.choice(user_selection)
             user_selection.remove(user)
             request = Request(
-                user_id=user.id, 
-                organization_id=org.id,
-                reason_to_join=fake.sentence()
+                user_id=user.id, organization_id=org.id, reason_to_join=fake.sentence()
             )
             db.session.add(request)
             log = OrganizationLog(
-                    contents=[
-                        f"User, {user.username}, has requested to join this organization."
-                    ],
-                    organization_id=org.id
-                )
+                contents=[
+                    f"User, {user.username}, has requested to join this organization."
+                ],
+                organization_id=org.id,
+            )
             db.session.add(log)
             db.session.commit()
             logs.append(log)
@@ -302,11 +315,17 @@ def seed_relational_models():
     print("\n")
     for log in logs:
         print(log)
-        
+
+
 def print_owners():
+    """
+    Prints all the owners of the organizations that were just seeded, and the
+    organizations that they own.
+    """
     owners = Membership.query.filter(Membership.role == RoleType.OWNER).all()
     print("Here are the owners of this seed:")
     [print(f"{owner.user.username} | {owner.organization.name}") for owner in owners]
+
 
 if __name__ == "__main__":
     with app.app_context():
