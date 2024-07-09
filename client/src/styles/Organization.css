@@ -251,8 +251,14 @@
 }
 
 @media (prefers-color-scheme: light) {
+
+    .assigned-item {
+        color: white !important;
+    }
+
     #assignment-count {
         color: black !important;
+        background-color: gray !important;
     }
 }
 

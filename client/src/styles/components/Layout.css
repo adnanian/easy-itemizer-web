@@ -34,6 +34,7 @@ footer > * {
   justify-content: center;
   text-align: center;
   margin: 0 30px;
+  color: white !important;
 }
 
 #site-logo {

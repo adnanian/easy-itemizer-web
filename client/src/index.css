@@ -304,6 +304,15 @@ textarea {
   dialog {
     background: linear-gradient(to bottom right, white, #f9f9f9, cyan, #f9f9f9, white)
   }
+
+  .form-div :not(a) {
+    color: black !important;
+    font-weight: bold;
+  }
+  
+  .form-div a {
+    color: white !important;
+  }
 }
 
 @media screen and (max-width: 1366px) {
