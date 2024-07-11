@@ -1,5 +1,5 @@
 import { useScreenSize } from "../../helperHooks";
-import { correctRoute, dtStringToSystemTimeZone } from "../../helpers";
+import { correctRoute, dtStringToSystemTimeZone, placeholderImages } from "../../helpers";
 
 /**
  * Renders a modal table of the users who have submitted requests to join an organization.
